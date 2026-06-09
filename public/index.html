@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Anonyme - Justice AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 { text-align: center; color: #1a1a2e; margin-bottom: 20px; }
+        .badge {
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; }
+        select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .result { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; }
+        .success { background: #d4edda; color: #155724; display: block; }
+        .error { background: #f8d7da; color: #721c24; display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">🔒 100% ANONYME</div>
+        <h1>⚖️ Assistance Juridique</h1>
+        
+        <form id="myForm">
+            <label>🌍 Pays</label>
+            <select id="country">
+                <option value="fr">France</option>
+                <option value="ca">Canada</option>
+                <option value="us">USA</option>
+            </select>
+            
+            <label>📝 Votre situation</label>
+            <textarea id="description" rows="5" placeholder="Decrivez votre situation..."></textarea>
+            
+            <button type="submit">Envoyer anonyme</button>
+        </form>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('myForm');
+        const resultDiv = document.getElementById('result');
+        
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                country: document.getElementById('country').value,
+                description: document.getElementById('description').value,
+                date: new Date().toISOString()
+            };
+            
+            resultDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/submit-anonymous-case', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = '✅ ' + result.message + '<br>Ref: ' + result.reference;
+                resultDiv.style.display = 'block';
+                form.reset();
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '❌ Erreur: ' + error.message;
+                resultDiv.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>

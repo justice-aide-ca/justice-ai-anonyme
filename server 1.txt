@@ -1,0 +1,27 @@
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') return res.sendStatus(200);
+    next();
+});
+
+app.get('/', (req, res) => {
+    res.json({ message: 'Backend justice-ai fonctionne !' });
+});
+
+app.post('/api/submit', (req, res) => {
+    console.log('📩 Données reçues:', req.body);
+    res.json({ success: true, data: req.body });
+});
+
+app.listen(port, () => {
+    console.log(`🚀 Serveur démarré sur http://localhost:${port}`);
+});

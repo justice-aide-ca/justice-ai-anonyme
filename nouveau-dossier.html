@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer mon dossier - Justice AI Canada</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 40px 20px; color: white; }
+        header h1 { font-size: 36px; margin-bottom: 10px; }
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        textarea { resize: vertical; min-height: 100px; }
+        .btn-submit {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-submit:hover { background: #c0392b; }
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        .message.success { background: #d4edda; color: #155724; display: block; }
+        .message.error { background: #f8d7da; color: #721c24; display: block; }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+        .back-link a { color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Créer mon dossier de défense</h1>
+            <p>Remplissez ce formulaire pour commencer votre procédure</p>
+        </header>
+        <div class="form-card">
+            <form id="defenseForm">
+                <div class="form-group">
+                    <label>Nom complet *</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" id="phone">
+                </div>
+                <div class="form-group">
+                    <label>Type d'accusation *</label>
+                    <select id="accusationType" required>
+                        <option value="">Sélectionnez...</option>
+                        <option>Accusation criminelle</option>
+                        <option>Accusation civile</option>
+                        <option>Accusation administrative</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Décrivez votre situation *</label>
+                    <textarea id="description" placeholder="Décrivez les faits, les accusations..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Documents supplémentaires (liens ou références)</label>
+                    <input type="text" id="documents" placeholder="Liens Google Drive, témoins, etc.">
+                </div>
+                <button type="submit" class="btn-submit">📤 Envoyer mon dossier</button>
+            </form>
+            <div id="message" class="message"></div>
+        </div>
+        <div class="back-link">
+            <a href="index.html">← Retour à l'accueil</a>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('defenseForm');
+        const messageDiv = document.getElementById('message');
+        const API_URL = 'http://localhost:3000/api/submit';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                accusationType: document.getElementById('accusationType').value,
+                description: document.getElementById('description').value,
+                documents: document.getElementById('documents').value,
+                date: new Date().toISOString()
+            };
+
+            const submitBtn = document.querySelector('.btn-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Envoi en cours...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = '✅ Dossier envoyé avec succès ! Un conseiller vous contactera sous 48h.';
+                    form.reset();
+                } else {
+                    throw new Error(result.message || 'Erreur lors de l\'envoi');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '❌ Erreur de connexion au serveur. Vérifiez que le backend est démarré sur localhost:3000';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Envoyer mon dossier';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulaire Anonyme</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h2>Formulaire Anonyme</h2>
+    <form id="monForm">
+        <label>Nom :</label>
+        <input type="text" name="nom" required>
+        <br><br>
+        <label>Email :</label>
+        <input type="email" name="email" required>
+        <br><br>
+        <button type="submit">Envoyer</button>
+    </form>
+    <div id="resultat" style="margin-top:20px;"></div>
+
+    <script>
+        const form = document.getElementById('monForm');
+        const resultat = document.getElementById('resultat');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                nom: form.nom.value,
+                email: form.email.value
+            };
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                resultat.innerHTML = '<p style="color:green; font-weight:bold;">✅ Envoyé avec succes !</p>';
+                form.reset();
+            } catch (error) {
+                resultat.innerHTML = '<p style="color:red; font-weight:bold;">❌ Erreur: ' + error.message + '</p>';
+            }
+        });
+    </script>
+</body>
+</html>
