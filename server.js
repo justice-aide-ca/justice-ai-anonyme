@@ -1,28 +1,31 @@
 ﻿const express = require('express');
 const path = require('path');
-const app = express();
-const port = 3000;
+const fs = require('fs');
 
-// Middleware IMPORTANT - doit être avant les routes
-app.use(express.json({ strict: false }));
-app.use(express.urlencoded({ extended: true }));
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
 app.use(express.static('public'));
 
-// Route de test GET
-app.get('/api/test', (req, res) => {
-    res.json({ message: 'API fonctionne' });
+// Route pour obtenir la liste des pays
+app.get('/api/countries', (req, res) => {
+    try {
+        const data = fs.readFileSync('./data/countries.json', 'utf8');
+        const json = JSON.parse(data);
+        res.json(json.countries);
+    } catch (err) {
+        console.error('Erreur lecture pays:', err);
+        res.json([{ code: "fr", name: "France" }, { code: "ca", name: "Canada" }, { code: "us", name: "USA" }]);
+    }
 });
 
-// Route pour les demandes anonymes POST
+// Route pour les demandes anonymes
 app.post('/api/submit-anonymous-case', (req, res) => {
     console.log('\n🕵️ Demande anonyme reçue');
-    console.log('Body reçu:', req.body);
-    
-    const country = req.body.country || 'non spécifié';
-    const description = req.body.description || 'non spécifié';
-    
-    console.log('Pays:', country);
-    console.log('Description:', description);
+    console.log('Pays:', req.body.country);
+    console.log('Description:', req.body.description);
     
     const reference = 'REF_' + Date.now().toString(36).toUpperCase();
     
@@ -38,8 +41,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Démarrage - Version compatible avec Render
-const PORT = process.env.PORT || 3000;
+// Démarrage
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
-});
+})
