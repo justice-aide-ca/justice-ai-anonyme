@@ -2,96 +2,443 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Justice AI - Formulaire Anonyme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justice AI - Assistance Juridique Anonyme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-        .container {
-            max-width: 600px;
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Particules d'arrière-plan */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
         }
-        h1 { text-align: center; color: #1a1a2e; margin-bottom: 20px; }
-        .badge {
-            background: #4CAF50;
-            color: white;
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Container principal */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Carte principale */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 32px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* En-tête */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 40px 30px;
             text-align: center;
-            padding: 8px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
-        label { display: block; margin: 15px 0 5px; font-weight: bold; }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: glow 4s ease-in-out infinite;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .badge i {
+            font-size: 16px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Corps du formulaire */
+        .form-body {
+            padding: 40px;
+        }
+
+        /* Info box */
+        .info-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-text strong {
+            color: #1a1a2e;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .info-text p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Champs du formulaire */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        label i {
+            color: #667eea;
+            font-size: 16px;
+        }
+
         select, textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
         }
-        button {
+
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        select:hover, textarea:hover {
+            border-color: #667eea;
+        }
+
+        /* Bouton */
+        .btn-submit {
             width: 100%;
-            padding: 14px;
-            background: #4CAF50;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
-        .result { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }
-        .success { background: #d4edda; color: #155724; display: block; }
-        .error { background: #f8d7da; color: #721c24; display: block; }
-        .info { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 14px; }
-        .ai-response { background: #f0f4ff; padding: 15px; border-radius: 10px; margin-top: 15px; white-space: pre-wrap; }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Résultat */
+        .result {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 20px;
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .result.success {
+            display: block;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.error {
+            display: block;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .ai-response {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px 40px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .footer i {
+            margin: 0 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-body {
+                padding: 25px;
+            }
+            
+            .info-box {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="particles" id="particles"></div>
+    
     <div class="container">
-        <div class="badge">🔒 100% ANONYME</div>
-        <h1>⚖️ Assistance Juridique</h1>
-        
-        <div class="info">
-            🕵️ Aucun nom ni email demandé. Votre message reste anonyme.
+        <div class="card">
+            <div class="header">
+                <div class="badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>100% ANONYME</span>
+                </div>
+                <h1>⚖️ Assistance Juridique</h1>
+                <div class="subtitle">Justice accessible à tous, en toute confidentialité</div>
+            </div>
+            
+            <div class="form-body">
+                <div class="info-box">
+                    <div class="info-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <div class="info-text">
+                        <strong>🔒 Confidentialité totale</strong>
+                        <p>Aucune information personnelle n'est demandée ni stockée. Votre identité reste anonyme.</p>
+                    </div>
+                </div>
+                
+                <form id="anonymousForm">
+                    <div class="form-group">
+                        <label><i class="fas fa-globe-americas"></i> Pays de résidence</label>
+                        <select id="country" required>
+                            <option value="">Chargement des pays...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-gavel"></i> Type de situation juridique</label>
+                        <select id="caseType" required>
+                            <option value="">Sélectionnez le type</option>
+                            <option value="civil">🏛️ Litige civil (contrat, voisinage, etc.)</option>
+                            <option value="criminal">⚖️ Droit pénal</option>
+                            <option value="family">👨‍👩‍👧 Droit de la famille</option>
+                            <option value="labor">💼 Droit du travail</option>
+                            <option value="housing">🏠 Logement / Immobilier</option>
+                            <option value="consumer">🛒 Consommation</option>
+                            <option value="immigration">🛂 Immigration / Droit des étrangers</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-pen"></i> Décrivez votre situation</label>
+                        <textarea id="description" rows="6" placeholder="Décrivez votre situation juridique de manière claire et précise... (ex: 'Mon propriétaire refuse de faire des réparations essentielles')" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Envoyer ma demande anonyme</span>
+                    </button>
+                </form>
+                
+                <div id="result"></div>
+            </div>
+            
+            <div class="footer">
+                <i class="fas fa-lock"></i> Aucune donnée personnelle collectée
+                <span style="margin: 0 8px">•</span>
+                <i class="fas fa-clock"></i> Réponse sous 24h
+                <span style="margin: 0 8px">•</span>
+                <i class="fas fa-shield-alt"></i> SSL Sécurisé
+            </div>
         </div>
-        
-        <form id="anonymousForm">
-            <label>🌍 Pays</label>
-            <select id="country" required>
-                <option value="">Sélectionnez</option>
-            </select>
-            
-            <label>⚖️ Type de situation</label>
-            <select id="caseType" required>
-                <option value="">Sélectionnez</option>
-                <option value="civil">Litige civil</option>
-                <option value="criminal">Droit pénal</option>
-                <option value="family">Droit de la famille</option>
-                <option value="labor">Droit du travail</option>
-                <option value="housing">Logement / Immobilier</option>
-            </select>
-            
-            <label>📝 Votre situation</label>
-            <textarea id="description" rows="6" placeholder="Décrivez votre situation juridique..." required></textarea>
-            
-            <button type="submit" id="submitBtn">📤 Envoyer ma demande anonyme</button>
-        </form>
-        
-        <div id="result"></div>
     </div>
 
     <script>
+        // Générer des particules d'arrière-plan
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 6 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.animationDuration = `${Math.random() * 4 + 3}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
         const form = document.getElementById('anonymousForm');
         const resultDiv = document.getElementById('result');
         const submitBtn = document.getElementById('submitBtn');
@@ -102,7 +449,7 @@
                 const response = await fetch('/api/countries');
                 const countries = await response.json();
                 const select = document.getElementById('country');
-                select.innerHTML = '<option value="">Sélectionnez votre pays</option>';
+                select.innerHTML = '<option value="">🌍 Sélectionnez votre pays</option>';
                 countries.forEach(c => {
                     const option = document.createElement('option');
                     option.value = c.code;
@@ -111,6 +458,7 @@
                 });
             } catch (error) {
                 console.error('Erreur chargement pays:', error);
+                document.getElementById('country').innerHTML = '<option value="">Erreur de chargement</option>';
             }
         }
         
@@ -120,7 +468,7 @@
             e.preventDefault();
             
             submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Envoi en cours...';
+            submitBtn.innerHTML = '<span class="spinner"></span><span>Envoi en cours...</span>';
             
             const formData = {
                 country: document.getElementById('country').value,
@@ -142,23 +490,52 @@
                 
                 let aiResponseHtml = '';
                 if (result.aiResponse) {
-                    aiResponseHtml = `<div class="ai-response"><strong>🤖 VOTRE CONSEIL PERSONNALISÉ :</strong><br><br>${result.aiResponse.replace(/\n/g, '<br>')}</div>`;
+                    aiResponseHtml = `<div class="ai-response"><strong>🤖 Conseil personnalisé</strong><br><br>${result.aiResponse.replace(/\n/g, '<br>')}</div>`;
                 }
                 
                 resultDiv.innerHTML = `
-                    <strong>✅ ${result.message}</strong><br>
-                    Référence: <strong>${result.reference}</strong><br>
-                    Date: ${new Date(result.date).toLocaleString()}
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                        <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                        <div>
+                            <strong style="font-size: 1rem;">✅ ${result.message}</strong><br>
+                            <small>Référence: <strong>${result.reference}</strong></small>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.85rem; color: #155724;">
+                        📅 ${new Date(result.date).toLocaleString()}
+                    </div>
                     ${aiResponseHtml}
                 `;
                 form.reset();
                 
+                // Faire défiler jusqu'au résultat
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+                // Effacer le résultat après 10 secondes
+                setTimeout(() => {
+                    if (resultDiv.classList.contains('success')) {
+                        resultDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            resultDiv.style.display = 'none';
+                            resultDiv.style.opacity = '1';
+                        }, 500);
+                    }
+                }, 10000);
+                
             } catch (error) {
                 resultDiv.className = 'result error';
-                resultDiv.innerHTML = `<strong>❌ Erreur</strong><br>${error.message}<br>Veuillez réessayer.`;
+                resultDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 24px;"></i>
+                        <div>
+                            <strong>❌ Erreur</strong><br>
+                            <small>${error.message}</small>
+                        </div>
+                    </div>
+                `;
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = '📤 Envoyer ma demande anonyme';
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span>Envoyer ma demande anonyme</span>';
             }
         });
     </script>
