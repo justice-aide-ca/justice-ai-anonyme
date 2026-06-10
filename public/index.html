@@ -2,24 +2,25 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Formulaire Anonyme - Justice AI</title>
+    <title>Justice AI - Formulaire Anonyme</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background: #1a1a2e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
         }
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         h1 { text-align: center; color: #1a1a2e; margin-bottom: 20px; }
         .badge {
@@ -33,24 +34,27 @@
         label { display: block; margin: 15px 0 5px; font-weight: bold; }
         select, textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
         }
         button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            cursor: pointer;
+            border-radius: 8px;
             font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
         }
-        .result { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }
         .success { background: #d4edda; color: #155724; display: block; }
         .error { background: #f8d7da; color: #721c24; display: block; }
+        .info { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 14px; }
+        .ai-response { background: #f0f4ff; padding: 15px; border-radius: 10px; margin-top: 15px; white-space: pre-wrap; }
     </style>
 </head>
 <body>
@@ -58,57 +62,105 @@
         <div class="badge">🔒 100% ANONYME</div>
         <h1>⚖️ Assistance Juridique</h1>
         
-        <form id="myForm">
+        <div class="info">
+            🕵️ Aucun nom ni email demandé. Votre message reste anonyme.
+        </div>
+        
+        <form id="anonymousForm">
             <label>🌍 Pays</label>
-            <select id="country">
-                <option value="fr">France</option>
-                <option value="ca">Canada</option>
-                <option value="us">USA</option>
+            <select id="country" required>
+                <option value="">Sélectionnez</option>
+            </select>
+            
+            <label>⚖️ Type de situation</label>
+            <select id="caseType" required>
+                <option value="">Sélectionnez</option>
+                <option value="civil">Litige civil</option>
+                <option value="criminal">Droit pénal</option>
+                <option value="family">Droit de la famille</option>
+                <option value="labor">Droit du travail</option>
+                <option value="housing">Logement / Immobilier</option>
             </select>
             
             <label>📝 Votre situation</label>
-            <textarea id="description" rows="5" placeholder="Decrivez votre situation..."></textarea>
+            <textarea id="description" rows="6" placeholder="Décrivez votre situation juridique..." required></textarea>
             
-            <button type="submit">Envoyer anonyme</button>
+            <button type="submit" id="submitBtn">📤 Envoyer ma demande anonyme</button>
         </form>
         
         <div id="result"></div>
     </div>
 
     <script>
-        const form = document.getElementById('myForm');
+        const form = document.getElementById('anonymousForm');
         const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
         
-        form.onsubmit = async (e) => {
+        // Charger les pays
+        async function loadCountries() {
+            try {
+                const response = await fetch('/api/countries');
+                const countries = await response.json();
+                const select = document.getElementById('country');
+                select.innerHTML = '<option value="">Sélectionnez votre pays</option>';
+                countries.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.code;
+                    option.textContent = c.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erreur chargement pays:', error);
+            }
+        }
+        
+        loadCountries();
+        
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const data = {
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Envoi en cours...';
+            
+            const formData = {
                 country: document.getElementById('country').value,
+                caseType: document.getElementById('caseType').value,
                 description: document.getElementById('description').value,
                 date: new Date().toISOString()
             };
-            
-            resultDiv.style.display = 'none';
             
             try {
                 const response = await fetch('/api/submit-anonymous-case', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(formData)
                 });
                 
                 const result = await response.json();
                 
                 resultDiv.className = 'result success';
-                resultDiv.innerHTML = '✅ ' + result.message + '<br>Ref: ' + result.reference;
-                resultDiv.style.display = 'block';
+                
+                let aiResponseHtml = '';
+                if (result.aiResponse) {
+                    aiResponseHtml = `<div class="ai-response"><strong>🤖 VOTRE CONSEIL PERSONNALISÉ :</strong><br><br>${result.aiResponse.replace(/\n/g, '<br>')}</div>`;
+                }
+                
+                resultDiv.innerHTML = `
+                    <strong>✅ ${result.message}</strong><br>
+                    Référence: <strong>${result.reference}</strong><br>
+                    Date: ${new Date(result.date).toLocaleString()}
+                    ${aiResponseHtml}
+                `;
                 form.reset();
+                
             } catch (error) {
                 resultDiv.className = 'result error';
-                resultDiv.innerHTML = '❌ Erreur: ' + error.message;
-                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<strong>❌ Erreur</strong><br>${error.message}<br>Veuillez réessayer.`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Envoyer ma demande anonyme';
             }
-        };
+        });
     </script>
 </body>
 </html>

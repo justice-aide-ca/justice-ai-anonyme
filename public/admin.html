@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Administration - Demandes juridiques</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .demande { background: white; margin: 20px 0; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .ref { color: #4CAF50; font-weight: bold; }
+        .date { color: #999; font-size: 12px; }
+        .conseil { background: #f0f4ff; padding: 15px; border-radius: 8px; margin-top: 10px; }
+        h1 { color: #1a1a2e; }
+        .login { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="login" class="login">
+        <h2>🔐 Accès administrateur</h2>
+        <input type="password" id="password" placeholder="Mot de passe">
+        <button onclick="checkPassword()">Se connecter</button>
+        <p id="error" style="color:red; display:none;">Mot de passe incorrect</p>
+    </div>
+    
+    <div id="admin" style="display:none;">
+        <h1>📋 Demandes juridiques reçues</h1>
+        <p>🔒 Mode administrateur</p>
+        <div id="demandes"></div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "justice2026"; // Change ce mot de passe
+        
+        function checkPassword() {
+            const pwd = document.getElementById('password').value;
+            if (pwd === ADMIN_PASSWORD) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('admin').style.display = 'block';
+                loadDemandes();
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+        
+        async function loadDemandes() {
+            const response = await fetch('/api/admin/demandes');
+            const demandes = await response.json();
+            
+            const container = document.getElementById('demandes');
+            container.innerHTML = '';
+            
+            demandes.reverse().forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'demande';
+                div.innerHTML = `
+                    <div class="ref">📌 ${d.reference}</div>
+                    <div class="date">📅 ${new Date(d.date).toLocaleString()}</div>
+                    <div><strong>🌍 Pays:</strong> ${d.country}</div>
+                    <div><strong>⚖️ Type:</strong> ${d.caseType}</div>
+                    <div><strong>📝 Description:</strong><br>${d.description}</div>
+                    <div class="conseil"><strong>🤖 Réponse IA:</strong><br>${(d.aiResponse || 'En attente').replace(/\n/g, '<br>')}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        setInterval(loadDemandes, 30000); // Rafraîchir toutes les 30 secondes
+    </script>
+</body>
+</html>
