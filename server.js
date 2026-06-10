@@ -14,7 +14,11 @@ app.get('/api/countries', (req, res) => {
         const json = JSON.parse(data);
         res.json(json.countries);
     } catch (err) {
-        res.json([{ code: "fr", name: "France" }, { code: "ca", name: "Canada" }, { code: "us", name: "USA" }]);
+        res.json([
+            { code: "fr", name: "France" },
+            { code: "ca", name: "Canada" },
+            { code: "us", name: "USA" }
+        ]);
     }
 });
 
