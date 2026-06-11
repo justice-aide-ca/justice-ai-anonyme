@@ -118,9 +118,9 @@
                     <div class="form-group">
                         <label>⚖️ Type de situation</label>
                         <select id="caseType" required>
-                            <option value="">Selectionnez</option>
+                            <option value="">Sélectionnez</option>
                             <option value="civil">Litige civil</option>
-                            <option value="criminal">Droit penal</option>
+                            <option value="criminal">Droit pénal</option>
                             <option value="family">Famille</option>
                             <option value="labor">Travail</option>
                             <option value="housing">Logement</option>
@@ -147,7 +147,7 @@
                 const res = await fetch('/api/countries');
                 const countries = await res.json();
                 const select = document.getElementById('country');
-                select.innerHTML = '<option value="">Selectionnez votre pays</option>';
+                select.innerHTML = '<option value="">Sélectionnez votre pays</option>';
                 countries.forEach(c => {
                     const option = document.createElement('option');
                     option.value = c.code;
@@ -164,7 +164,7 @@
             submitBtn.textContent = 'Envoi...';
             resultDiv.style.display = 'block';
             resultDiv.className = 'success';
-            resultDiv.innerHTML = 'Generation de la reponse...';
+            resultDiv.innerHTML = '⏳ Génération du conseil...';
             
             const data = {
                 country: document.getElementById('country').value,
@@ -179,15 +179,17 @@
                     body: JSON.stringify(data)
                 });
                 const result = await res.json();
+                
                 let aiHtml = '';
                 if (result.aiResponse) {
-                    aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
+                    aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil personnalisé :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
                 }
-                resultDiv.innerHTML = '<strong>✅ ' + result.message + '</strong><br>Reference: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
+                
+                resultDiv.innerHTML = '<strong>✅ Votre demande anonyme a bien été reçue</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
                 form.reset();
             } catch(err) {
                 resultDiv.className = 'error';
-                resultDiv.innerHTML = 'Erreur: ' + err.message;
+                resultDiv.innerHTML = '❌ Erreur: ' + err.message;
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Envoyer anonyme';
