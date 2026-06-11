@@ -14,18 +14,29 @@ app.get('/api/countries', (req, res) => {
         const json = JSON.parse(data);
         res.json(json.countries);
     } catch (err) {
-        res.json([{ code: "fr", name: "France" }, { code: "ca", name: "Canada" }]);
+        res.json([
+            { code: "fr", name: "France" },
+            { code: "ca", name: "Canada" },
+            { code: "us", name: "USA" }
+        ]);
     }
 });
 
 app.post('/api/submit-anonymous-case', (req, res) => {
     const { country, caseType, description } = req.body;
-    console.log('Demande reçue:', country, caseType, description);
+    
+    console.log('\n📋 Nouvelle demande anonyme reçue');
+    console.log('Pays:', country);
+    console.log('Type:', caseType);
+    console.log('Description:', description);
+    
+    const reference = 'REF_' + Date.now().toString(36).toUpperCase();
+    
     res.json({
         success: true,
-        message: 'Demande reçue',
-        reference: 'REF_' + Date.now(),
-        aiResponse: 'Votre demande a bien été reçue. Un conseiller vous répondra sous 24h.'
+        message: 'Votre demande anonyme a bien été reçue',
+        reference: reference,
+        date: new Date().toISOString()
     });
 });
 
@@ -35,3 +46,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
+});
