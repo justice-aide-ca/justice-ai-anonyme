@@ -1,10 +1,11 @@
-﻿async function loadCountries() {
+﻿
+async function loadCountries() {
     const select = document.getElementById('country');
-    // Pays en dur (pas besoin d'API)
+    // Liste complète des pays (pas besoin d'API)
     const countries = [
         { code: "fr", name: "France" },
         { code: "ca", name: "Canada" },
-        { code: "us", name: "USA" },
+        { code: "us", name: "États-Unis" },
         { code: "ma", name: "Maroc" },
         { code: "dz", name: "Algérie" },
         { code: "tn", name: "Tunisie" },
@@ -15,7 +16,16 @@
         { code: "ch", name: "Suisse" },
         { code: "de", name: "Allemagne" },
         { code: "es", name: "Espagne" },
-        { code: "it", name: "Italie" }
+        { code: "it", name: "Italie" },
+        { code: "pt", name: "Portugal" },
+        { code: "gb", name: "Royaume-Uni" },
+        { code: "br", name: "Brésil" },
+        { code: "mx", name: "Mexique" },
+        { code: "in", name: "Inde" },
+        { code: "cn", name: "Chine" },
+        { code: "jp", name: "Japon" },
+        { code: "kr", name: "Corée du Sud" },
+        { code: "ru", name: "Russie" }
     ];
     select.innerHTML = '<option value="">Sélectionnez votre pays</option>';
     countries.forEach(c => {
