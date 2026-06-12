@@ -62,6 +62,34 @@ app.post('/api/submit-anonymous-case', async (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+// Route pour créer une session d'abonnement Stripe
+app.post('/api/create-subscription', async (req, res) => {
+    const { userId, successUrl, cancelUrl } = req.body;
+    
+    // Vérifie que Stripe est configuré
+    if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ error: 'Stripe non configuré' });
+    }
+    
+    try {
+        const session = await stripe.checkout.sessions.create({
+            mode: 'subscription',
+            payment_method_types: ['card'],
+            line_items: [{
+                price: process.env.STRIPE_PRICE_ID || 'price_1RANDOM', // Remplace par ton vrai price ID
+                quantity: 1,
+            }],
+            success_url: successUrl || 'https://justice-ai-anonyme-2.onrender.com/success',
+            cancel_url: cancelUrl || 'https://justice-ai-anonyme-2.onrender.com/cancel',
+            metadata: { userId }
+        });
+        
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error('Erreur Stripe:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
