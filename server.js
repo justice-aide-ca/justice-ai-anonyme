@@ -3,27 +3,65 @@ const path = require('path');
 const fs = require('fs');
 const OpenAI = require('openai');
 
+require('dotenv').config();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.static('public'));
+// Stripe
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+// OpenAI
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
+app.use(express.json());
+app.use(express.static('public'));
+
+// Route pays
 app.get('/api/countries', (req, res) => {
-    try {
-        const data = fs.readFileSync('./data/countries.json', 'utf8');
-        const json = JSON.parse(data);
-        res.json(json.countries);
-    } catch (err) {
-        res.json([{ code: "fr", name: "France" }, { code: "ca", name: Canada }]);
-    }
+    res.json([
+        { code: "fr", name: "France" },
+        { code: "ca", name: "Canada" },
+        { code: "us", name: "USA" }
+    ]);
 });
 
-// Route pour l'abonnement Stripe
+// Route demande anonyme avec IA
+app.post('/api/submit-anonymous-case', async (req, res) => {
+    const { country, caseType, description } = req.body;
+    
+    console.log('Demande reçue:', country, caseType);
+    
+    const reference = 'REF_' + Date.now().toString(36).toUpperCase();
+    
+    let aiResponse = "Service IA en cours d'activation...";
+    
+    try {
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                { role: "system", content: "Tu es un conseiller juridique professionnel." },
+                { role: "user", content: `Pays: ${country}\nSituation: ${description}\n\nDonne des conseils juridiques pratiques en français.` }
+            ],
+            max_tokens: 500
+        });
+        aiResponse = completion.choices[0].message.content;
+    } catch (err) {
+        console.error('Erreur IA:', err.message);
+    }
+    
+    res.json({
+        success: true,
+        message: 'Votre demande a bien été reçue',
+        reference: reference,
+        aiResponse: aiResponse,
+        date: new Date().toISOString()
+    });
+});
+
+// Route abonnement Stripe
 app.post('/api/create-subscription', async (req, res) => {
     const { userId, successUrl, cancelUrl } = req.body;
     
@@ -39,8 +77,8 @@ app.post('/api/create-subscription', async (req, res) => {
                 price: process.env.STRIPE_PRICE_ID,
                 quantity: 1,
             }],
-            success_url: successUrl || 'https://justice-ai-anonyme-2.onrender.com/success',
-            cancel_url: cancelUrl || 'https://justice-ai-anonyme-2.onrender.com/cancel',
+            success_url: successUrl || 'https://justice-ai.onrender.com/success',
+            cancel_url: cancelUrl || 'https://justice-ai.onrender.com/cancel',
             metadata: { userId }
         });
         res.json({ url: session.url });
@@ -48,4 +86,22 @@ app.post('/api/create-subscription', async (req, res) => {
         console.error('Erreur Stripe:', error);
         res.status(500).json({ error: error.message });
     }
+});
+
+// Accueil
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Pages success et cancel
+app.get('/success', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'success.html'));
+});
+
+app.get('/cancel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cancel.html'));
+});
+
+app.listen(PORT, () => {
+    console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
