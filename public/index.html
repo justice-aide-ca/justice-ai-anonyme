@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justice AI - Assistance Juridique</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -156,11 +157,10 @@
                     <button type="submit" id="submitBtn">Envoyer anonyme</button>
                 </form>
                 <div id="result"></div>
-                
-                <!-- Section Abonnement Stripe -->
+
                 <div class="subscription-section">
-                    <p style="margin-bottom: 15px;">🔒 <strong>Accès illimité à tous les conseils juridiques</strong></p>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Après 2,5 mois gratuits ou 10 demandes, abonnez-vous pour continuer</p>
+                    <p><strong>🔒 Accès illimité à tous les conseils juridiques</strong></p>
+                    <p>Après 2,5 mois gratuits ou 10 demandes, abonnez-vous pour continuer</p>
                     <button id="subscribeButton" class="subscribe-btn">💳 S'abonner $29.99/an</button>
                 </div>
             </div>
@@ -170,24 +170,85 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-    let userId = localStorage.getItem('justice_ai_user_id');
-    if (!userId) {
-        userId = 'USER_' + Math.random().toString(36).substr(2, 16) + '_' + Date.now();
-        localStorage.setItem('justice_ai_user_id', userId);
-    }
-    
-    const subscribeButton = document.getElementById('subscribeButton');
-    if (subscribeButton) {
-        subscribeButton.onclick = async function() {
-            this.disabled = true;
-            this.textContent = '⏳ Redirection...';
-            const response = await fetch('/api/create-subscription', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: userId })
-            });
-            const data = await response.json();
-            if (data.url) window.location.href = data.url;
+        const form = document.getElementById('anonForm');
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        async function loadCountries() {
+            try {
+                const res = await fetch('/api/countries');
+                const countries = await res.json();
+                const select = document.getElementById('country');
+                select.innerHTML = '<option value="">Sélectionnez votre pays</option>';
+                countries.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.code;
+                    option.textContent = c.name;
+                    select.appendChild(option);
+                });
+            } catch(e) { console.log(e); }
+        }
+        loadCountries();
+        
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi...';
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'success';
+            resultDiv.innerHTML = '⏳ Génération du conseil...';
+            
+            const data = {
+                country: document.getElementById('country').value,
+                caseType: document.getElementById('caseType').value,
+                description: document.getElementById('description').value
+            };
+            
+            try {
+                const res = await fetch('/api/submit-anonymous-case', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                
+                let aiHtml = '';
+                if (result.aiResponse) {
+                    aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil personnalisé :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
+                }
+                
+                resultDiv.innerHTML = '<strong>✅ Votre demande a bien été reçue</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
+                form.reset();
+            } catch(err) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = '❌ Erreur: ' + err.message;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Envoyer anonyme';
+            }
         };
-    }
-</script>
+        
+        let userId = localStorage.getItem('justice_ai_user_id');
+        if (!userId) {
+            userId = 'USER_' + Math.random().toString(36).substr(2, 16) + '_' + Date.now();
+            localStorage.setItem('justice_ai_user_id', userId);
+        }
+        
+        const subscribeButton = document.getElementById('subscribeButton');
+        if (subscribeButton) {
+            subscribeButton.onclick = async function() {
+                this.disabled = true;
+                this.textContent = '⏳ Redirection Stripe...';
+                const response = await fetch('/api/create-subscription', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: userId })
+                });
+                const data = await response.json();
+                if (data.url) window.location.href = data.url;
+                else alert('Erreur: ' + data.error);
+            };
+        }
+    </script>
+</body>
+</html>
