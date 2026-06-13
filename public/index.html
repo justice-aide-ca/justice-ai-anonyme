@@ -218,7 +218,7 @@
                     aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil personnalisé :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
                 }
                 
-                resultDiv.innerHTML = '<strong>✅ Votre demande anonyme a bien été reçue</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
+                resultDiv.innerHTML = '<strong>✅ Votre demande a bien été reçue</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
                 form.reset();
             } catch(err) {
                 resultDiv.className = 'error';
@@ -235,8 +235,6 @@
             userId = 'USER_' + Math.random().toString(36).substr(2, 16) + '_' + Date.now();
             localStorage.setItem('justice_ai_user_id', userId);
         }
-        
-        const stripe = Stripe('pk_live_51TgtyELg3bnLPIVPUNyZEMW7iH4nsC4NDmXsemxRnoFC2CaanLyGwHw5mcmxokLbQLjYhqA9Vr69efexi5721qd0093apuzMs');
         
         const subscribeButton = document.getElementById('subscribeButton');
         if (subscribeButton) {
