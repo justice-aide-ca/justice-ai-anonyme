@@ -52,6 +52,7 @@ app.post('/api/submit-anonymous-case', async (req, res) => {
 
     let aiResponse = "Service IA en cours d'activation...";
 
+    // Définition des noms de langues pour le prompt
     const languageNames = {
         fr: 'français',
         en: 'anglais',
@@ -75,7 +76,7 @@ Le type de situation est : ${caseType}.
 Voici la description de l'utilisateur :
 "${description}"
 
-Réponds dans la langue suivante : ${promptLang}.
+**Réponds dans la langue suivante : ${promptLang}.**
 
 Structure ta réponse comme suit :
 
@@ -83,7 +84,8 @@ Structure ta réponse comme suit :
    - Reformule la situation en 2-3 phrases dans la langue choisie.
 
 2. DOCUMENTS À PRÉPARER
-   - Liste les documents et preuves à rassembler, en fonction du type de situation.
+   - Liste les documents et preuves à rassembler, en fonction du type de situation (licenciement, divorce, logement, accident, consommation, etc.).
+   - Exemple : contrats, relevés bancaires, courriers, photos, témoignages, etc.
 
 3. CONSEILS JURIDIQUES PRATIQUES
    - Donne des conseils clairs et concrets, adaptés au pays et au type de situation.
@@ -117,29 +119,5 @@ Sois clair, structuré, empathique et pratique.
         reference: reference,
         aiResponse: aiResponse,
         date: new Date().toISOString()
-    });
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-const server = app.listen(PORT, () => {
-    console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
-    console.log('🤖 IA conseillère activée');
-}).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Le port ${PORT} est déjà utilisé.`);
-        console.log(`💡 Essaie de libérer le port ou utilise un autre port.`);
-    } else {
-        console.error('❌ Erreur serveur:', err);
-    }
-});
-
-process.on('SIGINT', () => {
-    console.log('🛑 Arrêt du serveur...');
-    server.close(() => {
-        console.log('✅ Serveur arrêté proprement.');
-        process.exit(0);
     });
 });
