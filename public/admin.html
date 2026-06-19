@@ -1,71 +1,211 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Administration - Demandes juridiques</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Justice AI</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
-        .demande { background: white; margin: 20px 0; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .ref { color: #4CAF50; font-weight: bold; }
-        .date { color: #999; font-size: 12px; }
-        .conseil { background: #f0f4ff; padding: 15px; border-radius: 8px; margin-top: 10px; }
-        h1 { color: #1a1a2e; }
-        .login { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; }
-        input, button { width: 100%; padding: 10px; margin: 10px 0; }
-        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex: 1;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-card .label {
+            color: #666;
+            font-size: 14px;
+        }
+        .demande {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+        }
+        .demande .ref {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 16px;
+        }
+        .demande .date {
+            color: #999;
+            font-size: 13px;
+            margin-left: 15px;
+        }
+        .demande .info {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .demande .info strong {
+            color: #333;
+        }
+        .demande .description {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .demande .ia-response {
+            background: #f0f4ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            border-left: 4px solid #667eea;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .language-tag {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .empty {
+            text-align: center;
+            color: #999;
+            font-size: 18px;
+            padding: 60px 0;
+        }
+        .admin-badge {
+            background: #1a1a2e;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .refresh-info {
+            text-align: right;
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            float: right;
+        }
+        .delete-btn:hover {
+            background: #dc2626;
+        }
     </style>
 </head>
 <body>
-    <div id="login" class="login">
-        <h2>🔐 Accès administrateur</h2>
-        <input type="password" id="password" placeholder="Mot de passe">
-        <button onclick="checkPassword()">Se connecter</button>
-        <p id="error" style="color:red; display:none;">Mot de passe incorrect</p>
-    </div>
-    
-    <div id="admin" style="display:none;">
-        <h1>📋 Demandes juridiques reçues</h1>
-        <p>🔒 Mode administrateur</p>
-        <div id="demandes"></div>
+    <div class="container">
+        <div class="admin-badge">🔐 Admin</div>
+        <a href="/" class="back-link">← Retour à l'accueil</a>
+        <h1>📋 Demandes reçues</h1>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="number" id="totalDemandes">0</div>
+                <div class="label">Total demandes</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="totalPays">0</div>
+                <div class="label">Pays différents</div>
+            </div>
+        </div>
+
+        <div class="refresh-info">🔄 Actualisation automatique toutes les 10 secondes</div>
+
+        <div id="demandesList"></div>
     </div>
 
     <script>
-        const ADMIN_PASSWORD = "justice2026"; // Change ce mot de passe
-        
-        function checkPassword() {
-            const pwd = document.getElementById('password').value;
-            if (pwd === ADMIN_PASSWORD) {
-                document.getElementById('login').style.display = 'none';
-                document.getElementById('admin').style.display = 'block';
-                loadDemandes();
-            } else {
-                document.getElementById('error').style.display = 'block';
+        async function loadDemandes() {
+            try {
+                const response = await fetch('/api/admin/demandes');
+                const demandes = await response.json();
+
+                const container = document.getElementById('demandesList');
+                const totalSpan = document.getElementById('totalDemandes');
+                const paysSpan = document.getElementById('totalPays');
+
+                if (!demandes || demandes.length === 0) {
+                    container.innerHTML = '<div class="empty">📭 Aucune demande reçue pour le moment.</div>';
+                    totalSpan.textContent = '0';
+                    paysSpan.textContent = '0';
+                    return;
+                }
+
+                totalSpan.textContent = demandes.length;
+                const paysUniques = new Set(demandes.map(d => d.country));
+                paysSpan.textContent = paysUniques.size;
+
+                // Trier par date (plus récent en premier)
+                demandes.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                container.innerHTML = demandes.map(d => `
+                    <div class="demande">
+                        <div>
+                            <span class="ref">📌 ${d.reference || 'N/A'}</span>
+                            <span class="date">📅 ${new Date(d.date).toLocaleString()}</span>
+                            <span class="language-tag">${d.language || 'fr'}</span>
+                        </div>
+                        <div class="info"><strong>🌍 Pays :</strong> ${d.country || 'Non spécifié'}</div>
+                        <div class="info"><strong>⚖️ Type :</strong> ${d.caseType || 'Non spécifié'}</div>
+                        <div class="description"><strong>📝 Description :</strong><br>${d.description || 'Aucune description'}</div>
+                        ${d.aiResponse ? `<div class="ia-response"><strong>🤖 Réponse IA :</strong><br>${d.aiResponse}</div>` : ''}
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erreur chargement:', error);
+                document.getElementById('demandesList').innerHTML = '<div class="empty">❌ Erreur de chargement des demandes.</div>';
             }
         }
-        
-        async function loadDemandes() {
-            const response = await fetch('/api/admin/demandes');
-            const demandes = await response.json();
-            
-            const container = document.getElementById('demandes');
-            container.innerHTML = '';
-            
-            demandes.reverse().forEach(d => {
-                const div = document.createElement('div');
-                div.className = 'demande';
-                div.innerHTML = `
-                    <div class="ref">📌 ${d.reference}</div>
-                    <div class="date">📅 ${new Date(d.date).toLocaleString()}</div>
-                    <div><strong>🌍 Pays:</strong> ${d.country}</div>
-                    <div><strong>⚖️ Type:</strong> ${d.caseType}</div>
-                    <div><strong>📝 Description:</strong><br>${d.description}</div>
-                    <div class="conseil"><strong>🤖 Réponse IA:</strong><br>${(d.aiResponse || 'En attente').replace(/\n/g, '<br>')}</div>
-                `;
-                container.appendChild(div);
-            });
-        }
-        
-        setInterval(loadDemandes, 30000); // Rafraîchir toutes les 30 secondes
+
+        // Charger toutes les 10 secondes (auto-refresh)
+        loadDemandes();
+        setInterval(loadDemandes, 10000);
     </script>
 </body>
 </html>
