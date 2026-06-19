@@ -1,4 +1,49 @@
-﻿app.post('/api/submit-anonymous-case', async (req, res) => {
+﻿require('dotenv').config();
+
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const OpenAI = require('openai');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
+
+app.use(express.json());
+app.use(express.static('public'));
+
+app.get('/api/countries', (req, res) => {
+    res.json([
+        { code: "fr", name: "France" },
+        { code: "ca", name: "Canada" },
+        { code: "us", name: "États-Unis" },
+        { code: "ma", name: "Maroc" },
+        { code: "dz", name: "Algérie" },
+        { code: "tn", name: "Tunisie" },
+        { code: "sn", name: "Sénégal" },
+        { code: "ci", name: "Côte d'Ivoire" },
+        { code: "cm", name: "Cameroun" },
+        { code: "be", name: "Belgique" },
+        { code: "ch", name: "Suisse" },
+        { code: "de", name: "Allemagne" },
+        { code: "es", name: "Espagne" },
+        { code: "it", name: "Italie" },
+        { code: "pt", name: "Portugal" },
+        { code: "gb", name: "Royaume-Uni" },
+        { code: "br", name: "Brésil" },
+        { code: "mx", name: "Mexique" },
+        { code: "in", name: "Inde" },
+        { code: "cn", name: "Chine" },
+        { code: "jp", name: "Japon" },
+        { code: "kr", name: "Corée du Sud" },
+        { code: "ru", name: "Russie" }
+    ]);
+});
+
+app.post('/api/submit-anonymous-case', async (req, res) => {
     const { country, caseType, description } = req.body;
 
     console.log('📋 Demande reçue:', country, caseType);
@@ -52,5 +97,29 @@ Sois clair, structuré, empathique et pratique.
         reference: reference,
         aiResponse: aiResponse,
         date: new Date().toISOString()
+    });
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+const server = app.listen(PORT, () => {
+    console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+    console.log('🤖 IA conseillère activée');
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`❌ Le port ${PORT} est déjà utilisé.`);
+        console.log(`💡 Essaie de libérer le port ou utilise un autre port.`);
+    } else {
+        console.error('❌ Erreur serveur:', err);
+    }
+});
+
+process.on('SIGINT', () => {
+    console.log('🛑 Arrêt du serveur...');
+    server.close(() => {
+        console.log('✅ Serveur arrêté proprement.');
+        process.exit(0);
     });
 });
