@@ -1,4 +1,5 @@
-﻿require('dotenv').config();
+﻿// Version 100% gratuite - Sans Stripe;
+require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
