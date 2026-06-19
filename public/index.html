@@ -95,11 +95,41 @@
             font-size: 12px;
             color: #666;
         }
+        .language-selector {
+            text-align: right;
+            padding: 10px 20px;
+            background: #f0f4ff;
+            border-bottom: 1px solid #ddd;
+        }
+        .language-selector select {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
+            <!-- Sélecteur de langues -->
+            <div class="language-selector">
+                <label for="languageSelector" style="font-weight: bold; margin-right: 8px;">🌐</label>
+                <select id="languageSelector">
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="pt">🇵🇹 Português</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                </select>
+            </div>
+
             <div class="header">
                 <div class="badge">🔒 100% ANONYME</div>
                 <h1>⚖️ Assistance Juridique</h1>
@@ -108,11 +138,14 @@
             <div class="form-body">
                 <div class="info-box">
                     <div>🔒</div>
-                    <div><strong>Confidentialité totale</strong><br>Aucune donnée personnelle</div>
+                    <div>
+                        <strong>Confidentialité totale</strong>
+                        <br>Aucune donnée personnelle
+                    </div>
                 </div>
                 <form id="anonForm">
                     <div class="form-group">
-                        <label>🌍 Pays</label>
+                        <label for="country">🌍 Pays</label>
                         <select id="country" required>
                             <option value="">Sélectionnez votre pays</option>
                             <option value="fr">France</option>
@@ -141,7 +174,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>⚖️ Type de situation</label>
+                        <label for="caseType">⚖️ Type de situation</label>
                         <select id="caseType" required>
                             <option value="">Sélectionnez</option>
                             <option value="civil">Litige civil</option>
@@ -152,8 +185,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>📝 Votre situation</label>
-                        <textarea id="description" rows="5" required></textarea>
+                        <label for="description">📝 Votre situation</label>
+                        <textarea id="description" rows="5" placeholder="Décrivez votre situation juridique..." required></textarea>
                     </div>
                     <button type="submit" id="submitBtn">Envoyer anonyme</button>
                 </form>
@@ -164,6 +197,203 @@
     </div>
 
     <script>
+        // ===== TRADUCTIONS =====
+        const translations = {
+            fr: {
+                badge: "🔒 100% ANONYME",
+                title: "⚖️ Assistance Juridique",
+                subtitle: "Justice accessible à tous",
+                info_title: "Confidentialité totale",
+                info_text: "Aucune donnée personnelle",
+                label_country: "🌍 Pays",
+                label_case: "⚖️ Type de situation",
+                label_description: "📝 Votre situation",
+                button: "Envoyer anonyme",
+                footer: "🔒 100% anonyme - Sans inscription",
+                placeholder: "Décrivez votre situation juridique...",
+                success: "✅ Votre demande a bien été reçue",
+                error: "❌ Erreur: "
+            },
+            en: {
+                badge: "🔒 100% ANONYMOUS",
+                title: "⚖️ Legal Assistance",
+                subtitle: "Justice for all",
+                info_title: "Total confidentiality",
+                info_text: "No personal data collected",
+                label_country: "🌍 Country",
+                label_case: "⚖️ Case type",
+                label_description: "📝 Your situation",
+                button: "Submit anonymously",
+                footer: "🔒 100% anonymous - No registration",
+                placeholder: "Describe your legal situation...",
+                success: "✅ Your request has been received",
+                error: "❌ Error: "
+            },
+            es: {
+                badge: "🔒 100% ANÓNIMO",
+                title: "⚖️ Asistencia Legal",
+                subtitle: "Justicia para todos",
+                info_title: "Confidencialidad total",
+                info_text: "Sin datos personales",
+                label_country: "🌍 País",
+                label_case: "⚖️ Tipo de caso",
+                label_description: "📝 Tu situación",
+                button: "Enviar anónimamente",
+                footer: "🔒 100% anónimo - Sin registro",
+                placeholder: "Describe tu situación legal...",
+                success: "✅ Tu solicitud ha sido recibida",
+                error: "❌ Error: "
+            },
+            ar: {
+                badge: "🔒 مجهول 100%",
+                title: "⚖️ مساعدة قانونية",
+                subtitle: "العدالة للجميع",
+                info_title: "سرية تامة",
+                info_text: "لا يتم جمع أي بيانات شخصية",
+                label_country: "🌍 البلد",
+                label_case: "⚖️ نوع القضية",
+                label_description: "📝 وضعك",
+                button: "إرسال بشكل مجهول",
+                footer: "🔒 مجهول 100% - بدون تسجيل",
+                placeholder: "صف وضعك القانوني...",
+                success: "✅ تم استلام طلبك",
+                error: "❌ خطأ: "
+            },
+            de: {
+                badge: "🔒 100% ANONYM",
+                title: "⚖️ Rechtsberatung",
+                subtitle: "Gerechtigkeit für alle",
+                info_title: "Absolute Vertraulichkeit",
+                info_text: "Keine persönlichen Daten",
+                label_country: "🌍 Land",
+                label_case: "⚖️ Falltyp",
+                label_description: "📝 Ihre Situation",
+                button: "Anonym senden",
+                footer: "🔒 100% anonym - Keine Registrierung",
+                placeholder: "Beschreiben Sie Ihre rechtliche Situation...",
+                success: "✅ Ihre Anfrage wurde empfangen",
+                error: "❌ Fehler: "
+            },
+            pt: {
+                badge: "🔒 100% ANÔNIMO",
+                title: "⚖️ Assistência Jurídica",
+                subtitle: "Justiça para todos",
+                info_title: "Confidencialidade total",
+                info_text: "Sem dados pessoais",
+                label_country: "🌍 País",
+                label_case: "⚖️ Tipo de caso",
+                label_description: "📝 Sua situação",
+                button: "Enviar anonimamente",
+                footer: "🔒 100% anônimo - Sem registro",
+                placeholder: "Descreva sua situação legal...",
+                success: "✅ Sua solicitação foi recebida",
+                error: "❌ Erro: "
+            },
+            it: {
+                badge: "🔒 100% ANONIMO",
+                title: "⚖️ Assistenza Legale",
+                subtitle: "Giustizia per tutti",
+                info_title: "Riservatezza totale",
+                info_text: "Nessun dato personale",
+                label_country: "🌍 Paese",
+                label_case: "⚖️ Tipo di caso",
+                label_description: "📝 La tua situazione",
+                button: "Invia anonimamente",
+                footer: "🔒 100% anonimo - Senza registrazione",
+                placeholder: "Descrivi la tua situazione legale...",
+                success: "✅ La tua richiesta è stata ricevuta",
+                error: "❌ Errore: "
+            },
+            ru: {
+                badge: "🔒 100% АНОНИМНО",
+                title: "⚖️ Юридическая помощь",
+                subtitle: "Правосудие для всех",
+                info_title: "Полная конфиденциальность",
+                info_text: "Без личных данных",
+                label_country: "🌍 Страна",
+                label_case: "⚖️ Тип дела",
+                label_description: "📝 Ваша ситуация",
+                button: "Отправить анонимно",
+                footer: "🔒 100% анонимно - Без регистрации",
+                placeholder: "Опишите вашу юридическую ситуацию...",
+                success: "✅ Ваш запрос получен",
+                error: "❌ Ошибка: "
+            },
+            zh: {
+                badge: "🔒 100% 匿名",
+                title: "⚖️ 法律援助",
+                subtitle: "人人享有正义",
+                info_title: "完全保密",
+                info_text: "不收集个人数据",
+                label_country: "🌍 国家",
+                label_case: "⚖️ 案件类型",
+                label_description: "📝 您的情况",
+                button: "匿名发送",
+                footer: "🔒 100% 匿名 - 无需注册",
+                placeholder: "描述您的法律情况...",
+                success: "✅ 您的请求已收到",
+                error: "❌ 错误: "
+            },
+            ja: {
+                badge: "🔒 100% 匿名",
+                title: "⚖️ 法的支援",
+                subtitle: "すべての人に正義を",
+                info_title: "完全な機密性",
+                info_text: "個人データは収集されません",
+                label_country: "🌍 国",
+                label_case: "⚖️ ケースタイプ",
+                label_description: "📝 あなたの状況",
+                button: "匿名で送信",
+                footer: "🔒 100% 匿名 - 登録不要",
+                placeholder: "法的な状況を説明してください...",
+                success: "✅ リクエストを受信しました",
+                error: "❌ エラー: "
+            },
+            ko: {
+                badge: "🔒 100% 익명",
+                title: "⚖️ 법률 지원",
+                subtitle: "모두를 위한 정의",
+                info_title: "완전한 기밀성",
+                info_text: "개인 데이터 수집 없음",
+                label_country: "🌍 국가",
+                label_case: "⚖️ 사건 유형",
+                label_description: "📝 당신의 상황",
+                button: "익명으로 보내기",
+                footer: "🔒 100% 익명 - 등록 필요 없음",
+                placeholder: "법적 상황을 설명하세요...",
+                success: "✅ 요청이 접수되었습니다",
+                error: "❌ 오류: "
+            }
+        };
+
+        // ===== FONCTION CHANGEMENT DE LANGUE =====
+        function changeLanguage(lang) {
+            const t = translations[lang] || translations.fr;
+            document.querySelector('.badge').textContent = t.badge;
+            document.querySelector('h1').textContent = t.title;
+            document.querySelector('.subtitle').textContent = t.subtitle;
+            document.querySelector('.info-box strong').textContent = t.info_title;
+            document.querySelector('.info-box p').textContent = t.info_text;
+            document.querySelector('label[for="country"]').textContent = t.label_country;
+            document.querySelector('label[for="caseType"]').textContent = t.label_case;
+            document.querySelector('label[for="description"]').textContent = t.label_description;
+            document.querySelector('#submitBtn').textContent = t.button;
+            document.querySelector('.footer').textContent = t.footer;
+            document.querySelector('#description').placeholder = t.placeholder;
+
+            // Mettre à jour les options des pays si nécessaire (optionnel)
+            // Pour simplifier, on ne traduit pas les noms des pays ici
+        }
+
+        // ===== DÉTECTION DU CHANGEMENT DE LANGUE =====
+        document.getElementById('languageSelector').addEventListener('change', function() {
+            changeLanguage(this.value);
+        });
+
+        // ===== APPLIQUER LA LANGUE PAR DÉFAUT (FRANÇAIS) =====
+        changeLanguage('fr');
+
+        // ===== FORMULAIRE =====
         const form = document.getElementById('anonForm');
         const resultDiv = document.getElementById('result');
         const submitBtn = document.getElementById('submitBtn');
@@ -211,14 +441,21 @@
                     aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil personnalisé :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
                 }
                 
-                resultDiv.innerHTML = '<strong>✅ Votre demande a bien été reçue</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
+                const currentLang = document.getElementById('languageSelector').value;
+                const t = translations[currentLang] || translations.fr;
+                const successMsg = t.success || '✅ Votre demande a bien été reçue';
+                const errorMsg = t.error || '❌ Erreur: ';
+                
+                resultDiv.innerHTML = '<strong>' + successMsg + '</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
                 form.reset();
             } catch(err) {
+                const currentLang = document.getElementById('languageSelector').value;
+                const t = translations[currentLang] || translations.fr;
                 resultDiv.className = 'error';
-                resultDiv.innerHTML = '❌ Erreur: ' + err.message;
+                resultDiv.innerHTML = (t.error || '❌ Erreur: ') + err.message;
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Envoyer anonyme';
+                submitBtn.textContent = document.querySelector('label[for="country"]')?.textContent || 'Envoyer anonyme';
             }
         };
     </script>
