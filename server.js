@@ -1,5 +1,4 @@
-﻿// Version 100% gratuite - Sans Stripe;
-require('dotenv').config();
+﻿require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
@@ -57,14 +56,43 @@ app.post('/api/submit-anonymous-case', async (req, res) => {
 
     let aiResponse = "Service IA en cours d'activation...";
 
+    // === PROMPT ADAPTÉ AU TYPE DE SITUATION ===
+    const prompt = `
+Tu es un conseiller juridique professionnel, bienveillant et précis.
+
+Le pays concerné est : ${country}.
+Le type de situation est : ${caseType}.
+Voici la description de l'utilisateur :
+"${description}"
+
+Réponds avec la structure suivante, en français :
+
+1. RÉSUMÉ DE LA SITUATION
+   - Reformule la situation en 2-3 phrases.
+
+2. PREUVES À RASSEMBLER
+   - Liste les documents et preuves que l'utilisateur doit rassembler pour se défendre devant le juge, en fonction du type de situation (licenciement, divorce, logement, accident, consommation, etc.).
+
+3. DÉFENSE DEVANT LE JUGE
+   - Explique comment structurer sa défense : exposé des faits, présentation des preuves, arguments juridiques, demandes à formuler.
+
+4. ATTITUDE EN AUDIENCE
+   - Donne 3 conseils pratiques sur le comportement à adopter devant le juge (calme, respect, clarté).
+
+5. AVERTISSEMENT LÉGAL
+   - Rappelle que ce conseil ne remplace pas l'avis d'un avocat et qu'il est recommandé de consulter un professionnel avant l'audience.
+
+Sois clair, structuré, empathique et pratique.
+`;
+
     try {
         const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [
                 { role: "system", content: "Tu es un conseiller juridique professionnel." },
-                { role: "user", content: `Pays: ${country}\nSituation: ${description}\n\nDonne des conseils juridiques pratiques en français.` }
+                { role: "user", content: prompt }
             ],
-            max_tokens: 600
+            max_tokens: 900
         });
         aiResponse = completion.choices[0].message.content;
         console.log('✅ IA a répondu');
