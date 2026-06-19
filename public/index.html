@@ -369,20 +369,36 @@
         // ===== FONCTION CHANGEMENT DE LANGUE =====
         function changeLanguage(lang) {
             const t = translations[lang] || translations.fr;
-            document.querySelector('.badge').textContent = t.badge;
-            document.querySelector('h1').textContent = t.title;
-            document.querySelector('.subtitle').textContent = t.subtitle;
-            document.querySelector('.info-box strong').textContent = t.info_title;
-            document.querySelector('.info-box p').textContent = t.info_text;
-            document.querySelector('label[for="country"]').textContent = t.label_country;
-            document.querySelector('label[for="caseType"]').textContent = t.label_case;
-            document.querySelector('label[for="description"]').textContent = t.label_description;
-            document.querySelector('#submitBtn').textContent = t.button;
-            document.querySelector('.footer').textContent = t.footer;
-            document.querySelector('#description').placeholder = t.placeholder;
 
-            // Mettre à jour les options des pays si nécessaire (optionnel)
-            // Pour simplifier, on ne traduit pas les noms des pays ici
+            const badge = document.querySelector('.badge');
+            const title = document.querySelector('h1');
+            const subtitle = document.querySelector('.subtitle');
+            const infoTitle = document.querySelector('.info-box strong');
+            const infoText = document.querySelector('.info-box p');
+            const countryLabel = document.querySelector('label[for="country"]');
+            const caseLabel = document.querySelector('label[for="caseType"]');
+            const descLabel = document.querySelector('label[for="description"]');
+            const submitBtn = document.getElementById('submitBtn');
+            const footer = document.querySelector('.footer');
+            const placeholder = document.getElementById('description');
+
+            if (badge) badge.textContent = t.badge;
+            if (title) title.textContent = t.title;
+            if (subtitle) subtitle.textContent = t.subtitle;
+            if (infoTitle) infoTitle.textContent = t.info_title;
+            if (infoText) infoText.textContent = t.info_text;
+            if (countryLabel) countryLabel.textContent = t.label_country;
+            if (caseLabel) caseLabel.textContent = t.label_case;
+            if (descLabel) descLabel.textContent = t.label_description;
+            if (submitBtn) submitBtn.textContent = t.button;
+            if (footer) footer.textContent = t.footer;
+            if (placeholder) placeholder.placeholder = t.placeholder;
+
+            // Met à jour aussi les messages de résultat si présents
+            const resultDiv = document.getElementById('result');
+            if (resultDiv) {
+                // On ne modifie pas le contenu ici, il sera mis à jour par le formulaire
+            }
         }
 
         // ===== DÉTECTION DU CHANGEMENT DE LANGUE =====
@@ -397,7 +413,7 @@
         const form = document.getElementById('anonForm');
         const resultDiv = document.getElementById('result');
         const submitBtn = document.getElementById('submitBtn');
-        
+
         async function loadCountries() {
             try {
                 const res = await fetch('/api/countries');
@@ -413,7 +429,7 @@
             } catch(e) { console.log(e); }
         }
         loadCountries();
-        
+
         form.onsubmit = async (e) => {
             e.preventDefault();
             submitBtn.disabled = true;
@@ -421,13 +437,13 @@
             resultDiv.style.display = 'block';
             resultDiv.className = 'success';
             resultDiv.innerHTML = '⏳ Génération du conseil...';
-            
+
             const data = {
                 country: document.getElementById('country').value,
                 caseType: document.getElementById('caseType').value,
                 description: document.getElementById('description').value
             };
-            
+
             try {
                 const res = await fetch('/api/submit-anonymous-case', {
                     method: 'POST',
@@ -435,17 +451,16 @@
                     body: JSON.stringify(data)
                 });
                 const result = await res.json();
-                
-                let aiHtml = '';
-                if (result.aiResponse) {
-                    aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil personnalisé :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
-                }
-                
+
                 const currentLang = document.getElementById('languageSelector').value;
                 const t = translations[currentLang] || translations.fr;
+
+                let aiHtml = '';
+                if (result.aiResponse) {
+                    aiHtml = '<div class="ai-response"><strong>🤖 ' + (t.conseil || 'Votre conseil personnalisé') + ' :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
+                }
+
                 const successMsg = t.success || '✅ Votre demande a bien été reçue';
-                const errorMsg = t.error || '❌ Erreur: ';
-                
                 resultDiv.innerHTML = '<strong>' + successMsg + '</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
                 form.reset();
             } catch(err) {
@@ -455,7 +470,9 @@
                 resultDiv.innerHTML = (t.error || '❌ Erreur: ') + err.message;
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = document.querySelector('label[for="country"]')?.textContent || 'Envoyer anonyme';
+                const currentLang = document.getElementById('languageSelector').value;
+                const t = translations[currentLang] || translations.fr;
+                submitBtn.textContent = t.button || 'Envoyer anonyme';
             }
         };
     </script>
