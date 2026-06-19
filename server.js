@@ -1,53 +1,4 @@
-﻿require('dotenv').config();
-
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const OpenAI = require('openai');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// === OpenAI ===
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
-
-// === Middleware ===
-app.use(express.json());
-app.use(express.static('public'));
-
-// === Route pays ===
-app.get('/api/countries', (req, res) => {
-    res.json([
-        { code: "fr", name: "France" },
-        { code: "ca", name: "Canada" },
-        { code: "us", name: "États-Unis" },
-        { code: "ma", name: "Maroc" },
-        { code: "dz", name: "Algérie" },
-        { code: "tn", name: "Tunisie" },
-        { code: "sn", name: "Sénégal" },
-        { code: "ci", name: "Côte d'Ivoire" },
-        { code: "cm", name: "Cameroun" },
-        { code: "be", name: "Belgique" },
-        { code: "ch", name: "Suisse" },
-        { code: "de", name: "Allemagne" },
-        { code: "es", name: "Espagne" },
-        { code: "it", name: "Italie" },
-        { code: "pt", name: "Portugal" },
-        { code: "gb", name: "Royaume-Uni" },
-        { code: "br", name: "Brésil" },
-        { code: "mx", name: "Mexique" },
-        { code: "in", name: "Inde" },
-        { code: "cn", name: "Chine" },
-        { code: "jp", name: "Japon" },
-        { code: "kr", name: "Corée du Sud" },
-        { code: "ru", name: "Russie" }
-    ]);
-});
-
-// === Route demande anonyme + IA ===
-app.post('/api/submit-anonymous-case', async (req, res) => {
+﻿app.post('/api/submit-anonymous-case', async (req, res) => {
     const { country, caseType, description } = req.body;
 
     console.log('📋 Demande reçue:', country, caseType);
@@ -69,25 +20,12 @@ Réponds avec la structure suivante, en français :
 1. RÉSUMÉ DE LA SITUATION
    - Reformule la situation en 2-3 phrases.
 
-2. CONSEIL POUR UNE RÉSOLUTION AMIABLE (Sans passer devant le juge)
-   - Propose des démarches concrètes : négociation, médiation, lettre recommandée, etc.
-   - Indique les documents à préparer.
-   - Mentionne les délais à respecter et les bonnes pratiques.
-   - Donne des conseils pour désamorcer le conflit.
+2. CONSEILS JURIDIQUES PRATIQUES
+   - Donne des conseils clairs et concrets, adaptés au pays et au type de situation.
+   - Indique les démarches à suivre, les documents à préparer, les délais à respecter.
 
-3. SI LA RÉSOLUTION AMIABLE ÉCHOUE (Évolution possible)
-   - Explique comment reconnaître les signes d'échec de la voie amiable.
-   - Indique les prochaines étapes possibles avant d'aller en justice.
-   - Mentionne les délais à surveiller (prescription, délais de recours).
-
-4. QUE FAIRE SI L'AFFAIRE VA DEVANT LE JUGE (Préparation)
-   - Liste les preuves à rassembler dès maintenant (pour être prêt).
-   - Explique comment structurer sa défense.
-   - Donne des conseils sur l'attitude à adopter en audience.
-
-5. AVERTISSEMENT LÉGAL
-   - Rappelle que ce conseil ne remplace pas l'avis d'un avocat.
-   - Recommande de consulter un professionnel si la situation s'aggrave.
+3. RECOMMANDATION FINALE
+   - Recommande vivement de consulter un avocat spécialisé pour un accompagnement personnalisé.
 
 Sois clair, structuré, empathique et pratique.
 `;
@@ -99,7 +37,7 @@ Sois clair, structuré, empathique et pratique.
                 { role: "system", content: "Tu es un conseiller juridique professionnel." },
                 { role: "user", content: prompt }
             ],
-            max_tokens: 1100
+            max_tokens: 800
         });
         aiResponse = completion.choices[0].message.content;
         console.log('✅ IA a répondu');
@@ -114,32 +52,5 @@ Sois clair, structuré, empathique et pratique.
         reference: reference,
         aiResponse: aiResponse,
         date: new Date().toISOString()
-    });
-});
-
-// === Accueil ===
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// === Gestion propre du port ===
-const server = app.listen(PORT, () => {
-    console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
-    console.log('🤖 IA conseillère activée');
-}).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Le port ${PORT} est déjà utilisé.`);
-        console.log(`💡 Essaie de libérer le port ou utilise un autre port.`);
-    } else {
-        console.error('❌ Erreur serveur:', err);
-    }
-});
-
-// === Gestion de l'arrêt propre ===
-process.on('SIGINT', () => {
-    console.log('🛑 Arrêt du serveur...');
-    server.close(() => {
-        console.log('✅ Serveur arrêté proprement.');
-        process.exit(0);
     });
 });
