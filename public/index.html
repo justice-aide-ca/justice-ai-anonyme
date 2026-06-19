@@ -1,14 +1,226 @@
-﻿<option value="be">Belgique</option>
-<option value="ch">Suisse</option>
-<option value="de">Allemagne</option>
-<option value="es">Espagne</option>
-<option value="it">Italie</option>
-<option value="pt">Portugal</option>
-<option value="gb">Royaume-Uni</option>
-<option value="br">Brésil</option>
-<option value="mx">Mexique</option>
-<option value="in">Inde</option>
-<option value="cn">Chine</option>
-<option value="jp">Japon</option>
-<option value="kr">Corée du Sud</option>
-<option value="ru">Russie</option>
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Justice AI - Assistance Juridique</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 30px;
+            text-align: center;
+        }
+        .badge {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+        }
+        h1 { color: white; margin: 15px 0 5px; font-size: 1.8rem; }
+        .subtitle { color: rgba(255,255,255,0.9); font-size: 14px; }
+        .form-body { padding: 30px; }
+        .info-box {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; }
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        .success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .ai-response {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .footer {
+            background: #f9fafb;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div class="badge">🔒 100% ANONYME</div>
+                <h1>⚖️ Assistance Juridique</h1>
+                <div class="subtitle">Justice accessible à tous</div>
+            </div>
+            <div class="form-body">
+                <div class="info-box">
+                    <div>🔒</div>
+                    <div><strong>Confidentialité totale</strong><br>Aucune donnée personnelle</div>
+                </div>
+                <form id="anonForm">
+                    <div class="form-group">
+                        <label>🌍 Pays</label>
+                        <select id="country" required>
+                            <option value="">Sélectionnez votre pays</option>
+                            <option value="fr">France</option>
+                            <option value="ca">Canada</option>
+                            <option value="us">États-Unis</option>
+                            <option value="ma">Maroc</option>
+                            <option value="dz">Algérie</option>
+                            <option value="tn">Tunisie</option>
+                            <option value="sn">Sénégal</option>
+                            <option value="ci">Côte d'Ivoire</option>
+                            <option value="cm">Cameroun</option>
+                            <option value="be">Belgique</option>
+                            <option value="ch">Suisse</option>
+                            <option value="de">Allemagne</option>
+                            <option value="es">Espagne</option>
+                            <option value="it">Italie</option>
+                            <option value="pt">Portugal</option>
+                            <option value="gb">Royaume-Uni</option>
+                            <option value="br">Brésil</option>
+                            <option value="mx">Mexique</option>
+                            <option value="in">Inde</option>
+                            <option value="cn">Chine</option>
+                            <option value="jp">Japon</option>
+                            <option value="kr">Corée du Sud</option>
+                            <option value="ru">Russie</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>⚖️ Type de situation</label>
+                        <select id="caseType" required>
+                            <option value="">Sélectionnez</option>
+                            <option value="civil">Litige civil</option>
+                            <option value="criminal">Droit pénal</option>
+                            <option value="family">Famille</option>
+                            <option value="labor">Travail</option>
+                            <option value="housing">Logement</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>📝 Votre situation</label>
+                        <textarea id="description" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn">Envoyer anonyme</button>
+                </form>
+                <div id="result"></div>
+            </div>
+            <div class="footer">🔒 100% anonyme - Sans inscription</div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('anonForm');
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        async function loadCountries() {
+            try {
+                const res = await fetch('/api/countries');
+                const countries = await res.json();
+                const select = document.getElementById('country');
+                select.innerHTML = '<option value="">Sélectionnez votre pays</option>';
+                countries.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.code;
+                    option.textContent = c.name;
+                    select.appendChild(option);
+                });
+            } catch(e) { console.log(e); }
+        }
+        loadCountries();
+        
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi...';
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'success';
+            resultDiv.innerHTML = '⏳ Génération du conseil...';
+            
+            const data = {
+                country: document.getElementById('country').value,
+                caseType: document.getElementById('caseType').value,
+                description: document.getElementById('description').value
+            };
+            
+            try {
+                const res = await fetch('/api/submit-anonymous-case', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                
+                let aiHtml = '';
+                if (result.aiResponse) {
+                    aiHtml = '<div class="ai-response"><strong>🤖 Votre conseil personnalisé :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
+                }
+                
+                resultDiv.innerHTML = '<strong>✅ Votre demande a bien été reçue</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
+                form.reset();
+            } catch(err) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = '❌ Erreur: ' + err.message;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Envoyer anonyme';
+            }
+        };
+    </script>
+</body>
+</html>
