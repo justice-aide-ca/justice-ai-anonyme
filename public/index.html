@@ -391,31 +391,31 @@
         };
 
         // ===== TRADUCTION DES PAYS (11 langues) =====
-        const countryNames = {
-            fr: { fr: "Frankreich", en: "France", es: "Francia", ar: "فرنسا", de: "Frankreich", pt: "França", it: "Francia", ru: "Франция", zh: "法国", ja: "フランス", ko: "프랑스" },
-            ca: { fr: "Kanada", en: "Canada", es: "Canadá", ar: "كندا", de: "Kanada", pt: "Canadá", it: "Canada", ru: "Канада", zh: "加拿大", ja: "カナダ", ko: "캐나다" },
-            us: { fr: "Vereinigte Staaten", en: "United States", es: "Estados Unidos", ar: "الولايات المتحدة", de: "Vereinigte Staaten", pt: "Estados Unidos", it: "Stati Uniti", ru: "США", zh: "美国", ja: "アメリカ", ko: "미국" },
-            ma: { fr: "Marokko", en: "Morocco", es: "Marruecos", ar: "المغرب", de: "Marokko", pt: "Marrocos", it: "Marocco", ru: "Марокко", zh: "摩洛哥", ja: "モロッコ", ko: "모로코" },
-            dz: { fr: "Algerien", en: "Algeria", es: "Argelia", ar: "الجزائر", de: "Algerien", pt: "Argélia", it: "Algeria", ru: "Алжир", zh: "阿尔及利亚", ja: "アルジェリア", ko: "알제리" },
-            tn: { fr: "Tunesien", en: "Tunisia", es: "Túnez", ar: "تونس", de: "Tunesien", pt: "Tunísia", it: "Tunisia", ru: "Тунис", zh: "突尼斯", ja: "チュニジア", ko: "튀니지" },
-            sn: { fr: "Senegal", en: "Senegal", es: "Senegal", ar: "السنغال", de: "Senegal", pt: "Senegal", it: "Senegal", ru: "Сенегал", zh: "塞内加尔", ja: "セネガル", ko: "세네갈" },
-            ci: { fr: "Elfenbeinküste", en: "Ivory Coast", es: "Costa de Marfil", ar: "ساحل العاج", de: "Elfenbeinküste", pt: "Costa do Marfim", it: "Costa d'Avorio", ru: "Кот-д'Ивуар", zh: "科特迪瓦", ja: "コートジボワール", ko: "코트디부아르" },
-            cm: { fr: "Kamerun", en: "Cameroon", es: "Camerún", ar: "الكاميرون", de: "Kamerun", pt: "Camarões", it: "Camerun", ru: "Камерун", zh: "喀麦隆", ja: "カメルーン", ko: "카메룬" },
-            be: { fr: "Belgien", en: "Belgium", es: "Bélgica", ar: "بلجيكا", de: "Belgien", pt: "Bélgica", it: "Belgio", ru: "Бельгия", zh: "比利时", ja: "ベルギー", ko: "벨기에" },
-            ch: { fr: "Schweiz", en: "Switzerland", es: "Suiza", ar: "سويسرا", de: "Schweiz", pt: "Suíça", it: "Svizzera", ru: "Швейцария", zh: "瑞士", ja: "スイス", ko: "스위스" },
-            de: { fr: "Deutschland", en: "Germany", es: "Alemania", ar: "ألمانيا", de: "Deutschland", pt: "Alemanha", it: "Germania", ru: "Германия", zh: "德国", ja: "ドイツ", ko: "독일" },
-            es: { fr: "Spanien", en: "Spain", es: "España", ar: "إسبانيا", de: "Spanien", pt: "Espanha", it: "Spagna", ru: "Испания", zh: "西班牙", ja: "スペイン", ko: "스페인" },
-            it: { fr: "Italien", en: "Italy", es: "Italia", ar: "إيطاليا", de: "Italien", pt: "Itália", it: "Italia", ru: "Италия", zh: "意大利", ja: "イタリア", ko: "이탈리아" },
-            pt: { fr: "Portugal", en: "Portugal", es: "Portugal", ar: "البرتغال", de: "Portugal", pt: "Portugal", it: "Portogallo", ru: "Португалия", zh: "葡萄牙", ja: "ポルトガル", ko: "포르투갈" },
-            gb: { fr: "Vereinigtes Königreich", en: "United Kingdom", es: "Reino Unido", ar: "المملكة المتحدة", de: "Vereinigtes Königreich", pt: "Reino Unido", it: "Regno Unito", ru: "Великобритания", zh: "英国", ja: "イギリス", ko: "영국" },
-            br: { fr: "Brasilien", en: "Brazil", es: "Brasil", ar: "البرازيل", de: "Brasilien", pt: "Brasil", it: "Brasile", ru: "Бразилия", zh: "巴西", ja: "ブラジル", ko: "브라질" },
-            mx: { fr: "Mexiko", en: "Mexico", es: "México", ar: "المكسيك", de: "Mexiko", pt: "México", it: "Messico", ru: "Мексика", zh: "墨西哥", ja: "メキシコ", ko: "멕시코" },
-            in: { fr: "Indien", en: "India", es: "India", ar: "الهند", de: "Indien", pt: "Índia", it: "India", ru: "Индия", zh: "印度", ja: "インド", ko: "인도" },
-            cn: { fr: "China", en: "China", es: "China", ar: "الصين", de: "China", pt: "China", it: "Cina", ru: "Китай", zh: "中国", ja: "中国", ko: "중국" },
-            jp: { fr: "Japan", en: "Japan", es: "Japón", ar: "اليابان", de: "Japan", pt: "Japão", it: "Giappone", ru: "Япония", zh: "日本", ja: "日本", ko: "일본" },
-            kr: { fr: "Südkorea", en: "South Korea", es: "Corea del Sur", ar: "كوريا الجنوبية", de: "Südkorea", pt: "Coreia do Sul", it: "Corea del Sud", ru: "Южная Корея", zh: "韩国", ja: "韓国", ko: "대한민국" },
-            ru: { fr: "Russland", en: "Russia", es: "Rusia", ar: "روسيا", de: "Russland", pt: "Rússia", it: "Russia", ru: "Россия", zh: "俄罗斯", ja: "ロシア", ko: "러시아" }
-        };
+       const countryNames = {
+    fr: { fr: "France", en: "France", es: "Francia", ar: "فرنسا", de: "Frankreich", pt: "França", it: "Francia", ru: "Франция", zh: "法国", ja: "フランス", ko: "프랑스" },
+    ca: { fr: "Canada", en: "Canada", es: "Canadá", ar: "كندا", de: "Kanada", pt: "Canadá", it: "Canada", ru: "Канада", zh: "加拿大", ja: "カナダ", ko: "캐나다" },
+    us: { fr: "États-Unis", en: "United States", es: "Estados Unidos", ar: "الولايات المتحدة", de: "Vereinigte Staaten", pt: "Estados Unidos", it: "Stati Uniti", ru: "США", zh: "美国", ja: "アメリカ", ko: "미국" },
+    ma: { fr: "Maroc", en: "Morocco", es: "Marruecos", ar: "المغرب", de: "Marokko", pt: "Marrocos", it: "Marocco", ru: "Марокко", zh: "摩洛哥", ja: "モロッコ", ko: "모로코" },
+    dz: { fr: "Algérie", en: "Algeria", es: "Argelia", ar: "الجزائر", de: "Algerien", pt: "Argélia", it: "Algeria", ru: "Алжир", zh: "阿尔及利亚", ja: "アルジェリア", ko: "알제리" },
+    tn: { fr: "Tunisie", en: "Tunisia", es: "Túnez", ar: "تونس", de: "Tunesien", pt: "Tunísia", it: "Tunisia", ru: "Тунис", zh: "突尼斯", ja: "チュニジア", ko: "튀니지" },
+    sn: { fr: "Sénégal", en: "Senegal", es: "Senegal", ar: "السنغال", de: "Senegal", pt: "Senegal", it: "Senegal", ru: "Сенегал", zh: "塞内加尔", ja: "セネガル", ko: "세네갈" },
+    ci: { fr: "Côte d'Ivoire", en: "Ivory Coast", es: "Costa de Marfil", ar: "ساحل العاج", de: "Elfenbeinküste", pt: "Costa do Marfim", it: "Costa d'Avorio", ru: "Кот-д'Ивуар", zh: "科特迪瓦", ja: "コートジボワール", ko: "코트디부아르" },
+    cm: { fr: "Cameroun", en: "Cameroon", es: "Camerún", ar: "الكاميرون", de: "Kamerun", pt: "Camarões", it: "Camerun", ru: "Камерун", zh: "喀麦隆", ja: "カメルーン", ko: "카메룬" },
+    be: { fr: "Belgique", en: "Belgium", es: "Bélgica", ar: "بلجيكا", de: "Belgien", pt: "Bélgica", it: "Belgio", ru: "Бельгия", zh: "比利时", ja: "ベルギー", ko: "벨기에" },
+    ch: { fr: "Suisse", en: "Switzerland", es: "Suiza", ar: "سويسرا", de: "Schweiz", pt: "Suíça", it: "Svizzera", ru: "Швейцария", zh: "瑞士", ja: "スイス", ko: "스위스" },
+    de: { fr: "Allemagne", en: "Germany", es: "Alemania", ar: "ألمانيا", de: "Deutschland", pt: "Alemanha", it: "Germania", ru: "Германия", zh: "德国", ja: "ドイツ", ko: "독일" },
+    es: { fr: "Espagne", en: "Spain", es: "España", ar: "إسبانيا", de: "Spanien", pt: "Espanha", it: "Spagna", ru: "Испания", zh: "西班牙", ja: "スペイン", ko: "스페인" },
+    it: { fr: "Italie", en: "Italy", es: "Italia", ar: "إيطاليا", de: "Italien", pt: "Itália", it: "Italia", ru: "Италия", zh: "意大利", ja: "イタリア", ko: "이탈리아" },
+    pt: { fr: "Portugal", en: "Portugal", es: "Portugal", ar: "البرتغال", de: "Portugal", pt: "Portugal", it: "Portogallo", ru: "Португалия", zh: "葡萄牙", ja: "ポルトガル", ko: "포르투갈" },
+    gb: { fr: "Royaume-Uni", en: "United Kingdom", es: "Reino Unido", ar: "المملكة المتحدة", de: "Vereinigtes Königreich", pt: "Reino Unido", it: "Regno Unito", ru: "Великобритания", zh: "英国", ja: "イギリス", ko: "영국" },
+    br: { fr: "Brésil", en: "Brazil", es: "Brasil", ar: "البرازيل", de: "Brasilien", pt: "Brasil", it: "Brasile", ru: "Бразилия", zh: "巴西", ja: "ブラジル", ko: "브라질" },
+    mx: { fr: "Mexique", en: "Mexico", es: "México", ar: "المكسيك", de: "Mexiko", pt: "México", it: "Messico", ru: "Мексика", zh: "墨西哥", ja: "メキシコ", ko: "멕시코" },
+    in: { fr: "Inde", en: "India", es: "India", ar: "الهند", de: "Indien", pt: "Índia", it: "India", ru: "Индия", zh: "印度", ja: "インド", ko: "인도" },
+    cn: { fr: "Chine", en: "China", es: "China", ar: "الصين", de: "China", pt: "China", it: "Cina", ru: "Китай", zh: "中国", ja: "中国", ko: "중국" },
+    jp: { fr: "Japon", en: "Japan", es: "Japón", ar: "اليابان", de: "Japan", pt: "Japão", it: "Giappone", ru: "Япония", zh: "日本", ja: "日本", ko: "일본" },
+    kr: { fr: "Corée du Sud", en: "South Korea", es: "Corea del Sur", ar: "كوريا الجنوبية", de: "Südkorea", pt: "Coreia do Sul", it: "Corea del Sud", ru: "Южная Корея", zh: "韩国", ja: "韓国", ko: "대한민국" },
+    ru: { fr: "Russie", en: "Russia", es: "Rusia", ar: "روسيا", de: "Russland", pt: "Rússia", it: "Russia", ru: "Россия", zh: "俄罗斯", ja: "ロシア", ko: "러시아" }
+};
 
         // ===== TRADUCTION DES TYPES DE SITUATION =====
         const caseTypes = {
