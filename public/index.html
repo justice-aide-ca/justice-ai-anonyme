@@ -132,12 +132,17 @@
         .peace-box a:hover {
             text-decoration: underline;
         }
+        .peace-box .separator {
+            color: #ccc;
+            margin: 0 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
 
+            <!-- Sélecteur de langues -->
             <div class="language-selector">
                 <label for="languageSelector" style="font-weight: bold; margin-right: 8px;">🌐</label>
                 <select id="languageSelector">
@@ -155,12 +160,14 @@
                 </select>
             </div>
 
+            <!-- En-tête -->
             <div class="header">
                 <div class="badge">🔒 100% ANONYME</div>
                 <h1>⚖️ Assistance Juridique</h1>
                 <div class="subtitle">Justice accessible à tous</div>
             </div>
 
+            <!-- Corps du formulaire -->
             <div class="form-body">
                 <div class="info-box">
                     <div>🔒</div>
@@ -191,19 +198,30 @@
 
                 <div id="result"></div>
 
+                <!-- Section liens vers les autres plateformes -->
                 <div class="peace-box">
-                    🙏 <strong>Un moment de paix intérieure ?</strong><br>
-                    Découvrez <a href="https://amour-et-verite-app.netlify.app/" target="_blank">
-                    ⛪ Amour et Vérité</a> – un espace de silence, de prière et d’examen de conscience.
+                    <p style="margin-bottom: 8px;">🙏 <strong>D'autres espaces pour trouver la paix, la justice et le discernement :</strong></p>
+                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <a href="https://amour-et-verite-app.netlify.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">
+                            ⛪ Amour & Vérité
+                        </a>
+                        <span style="color: #ccc;">|</span>
+                        <a href="https://bridge-your-project.lovable.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">
+                            🌍 ONBRIDGE AI
+                        </a>
+                    </div>
+                    <p style="font-size: 12px; margin-top: 8px; color: #888;">Confidentiel · Gratuit · Accessible à tous</p>
                 </div>
             </div>
 
+            <!-- Footer -->
             <div class="footer">
                 🔒 100% anonyme - Sans inscription &nbsp;|&nbsp;
                 <a href="/privacy">Confidentialité</a> &nbsp;|&nbsp;
                 <a href="/terms">Conditions</a> &nbsp;|&nbsp;
                 <a href="/contact">Contact</a> &nbsp;|&nbsp;
-                <a href="https://amour-et-verite-app.netlify.app/" target="_blank">🙏 Amour & Vérité</a>
+                <a href="https://amour-et-verite-app.netlify.app/" target="_blank">🙏 Amour & Vérité</a> &nbsp;|&nbsp;
+                <a href="https://bridge-your-project.lovable.app/" target="_blank">🌍 ONBRIDGE AI</a>
             </div>
 
         </div>
