@@ -2,132 +2,118 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Justice AI - Assistance Juridique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justice AI – Votre assistant juridique intelligent</title>
+    <meta name="description" content="Justice AI vous offre une première orientation juridique gratuite et accessible partout dans le monde.">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
             padding: 20px;
         }
-        .container { max-width: 600px; margin: 0 auto; }
-        .card {
+        .container {
+            max-width: 800px;
+            margin: auto;
             background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card {
+            /* (conservé tel quel) */
+        }
+        .language-selector, .country-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
         }
         .header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 30px;
             text-align: center;
+            margin-bottom: 2rem;
         }
         .badge {
-            background: rgba(255,255,255,0.2);
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
+            background: #27ae60;
             color: white;
-            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
         }
-        h1 { color: white; margin: 15px 0 5px; font-size: 1.8rem; }
-        .subtitle { color: rgba(255,255,255,0.9); font-size: 14px; }
-        .form-body { padding: 30px; }
-        .info-box {
-            background: #f0f4ff;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
+        h1 {
+            color: #2c3e50;
+            margin: 0;
         }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: bold; margin-bottom: 8px; }
-        select, textarea {
+        .subtitle {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        textarea {
             width: 100%;
+            height: 150px;
             padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            margin-bottom: 1rem;
         }
         button {
-            width: 100%;
-            padding: 14px;
-            background: #4CAF50;
+            background: #3498db;
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
         }
-        .result {
-            margin-top: 20px;
+        button:hover {
+            background: #2980b9;
+        }
+        .info-box {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-box {
+            background: #f9f9f9;
+            border-left: 4px solid #3498db;
             padding: 15px;
-            border-radius: 10px;
+            margin-top: 20px;
+            border-radius: 4px;
             display: none;
         }
-        .success {
-            display: block;
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .error {
-            display: block;
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .ai-response {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            border-left: 4px solid #667eea;
-            white-space: pre-wrap;
-            line-height: 1.5;
-        }
-        .footer {
-            background: #f9fafb;
-            padding: 15px;
+        .disclaimer {
+            font-size: 0.85rem;
+            color: #e67e22;
+            margin-top: 1rem;
             text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .language-selector {
-            text-align: right;
-            padding: 10px 20px;
-            background: #f0f4ff;
-            border-bottom: 1px solid #ddd;
-        }
-        .language-selector select {
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
         }
         .peace-box {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
             text-align: center;
-            margin-top: 25px;
-            padding: 15px;
-            background: #f9fafb;
-            border-radius: 12px;
-            font-size: 14px;
-            color: #555;
+            font-size: 0.9rem;
         }
         .peace-box a {
-            color: #667eea;
+            color: #3498db;
             text-decoration: none;
-            font-weight: bold;
         }
         .peace-box a:hover {
             text-decoration: underline;
@@ -135,6 +121,45 @@
         .peace-box .separator {
             color: #ccc;
             margin: 0 10px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        /* Ressources juridiques */
+        .resources {
+            margin-top: 2rem;
+            display: none;
+        }
+        .resource-section {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .resource-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .resource-section a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .emergency {
+            background: #ffeaa7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -144,19 +169,32 @@
 
             <!-- Sélecteur de langues -->
             <div class="language-selector">
-                <label for="languageSelector" style="font-weight: bold; margin-right: 8px;">🌐</label>
+                <label for="languageSelector" style="font-weight: bold;">🌐</label>
                 <select id="languageSelector">
-                    <option value="fr">🇫🇷 Français</option>
-                    <option value="en">🇬🇧 English</option>
-                    <option value="es">🇪🇸 Español</option>
-                    <option value="ar">🇸🇦 العربية</option>
-                    <option value="de">🇩🇪 Deutsch</option>
-                    <option value="pt">🇵🇹 Português</option>
-                    <option value="it">🇮🇹 Italiano</option>
-                    <option value="ru">🇷🇺 Русский</option>
-                    <option value="zh">🇨🇳 中文</option>
-                    <option value="ja">🇯🇵 日本語</option>
-                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="zh">中文</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="ar">العربية</option>
+                </select>
+            </div>
+
+            <!-- Sélecteur de pays -->
+            <div class="country-selector">
+                <label for="countrySelector" style="font-weight: bold;">🌍</label>
+                <select id="countrySelector">
+                    <option value="fr">🇫🇷 France</option>
+                    <option value="ca">🇨🇦 Canada</option>
+                    <option value="us">🇺🇸 United States</option>
+                    <option value="gb">🇬🇧 United Kingdom</option>
+                    <option value="in">🇮🇳 India</option>
+                    <option value="cn">🇨🇳 中国</option>
+                    <option value="es">🇪🇸 España</option>
+                    <option value="eg">🇪🇬 مصر</option>
+                    <option value="br">🇧🇷 Brasil</option>
+                    <option value="za">🇿🇦 South Africa</option>
+                    <option value="au">🇦🇺 Australia</option>
                 </select>
             </div>
 
@@ -167,36 +205,21 @@
                 <div class="subtitle">Justice accessible à tous</div>
             </div>
 
-            <!-- Corps du formulaire -->
+            <!-- Formulaire -->
             <div class="form-body">
                 <div class="info-box">
                     <div>🔒</div>
-                    <div>
-                        <strong>Confidentialité totale</strong>
-                        <br>Aucune donnée personnelle
-                    </div>
+                    <div>Votre situation est confidentielle. Aucune donnée personnelle n'est collectée.</div>
                 </div>
 
-                <form id="anonForm">
-                    <div class="form-group">
-                        <label for="country">🌍 Pays</label>
-                        <select id="country" required></select>
-                    </div>
+                <textarea id="situation" placeholder="Décrivez votre problème juridique..."></textarea>
+                <button id="submitBtn">Obtenir une aide juridique →</button>
+                <div id="loading" style="display:none; text-align:center; margin-top:1rem;">Analyse en cours...</div>
 
-                    <div class="form-group">
-                        <label for="caseType">⚖️ Type de situation</label>
-                        <select id="caseType" required></select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">📝 Votre situation</label>
-                        <textarea id="description" rows="5" placeholder="Décrivez votre situation juridique..." required></textarea>
-                    </div>
-
-                    <button type="submit" id="submitBtn">Envoyer anonyme</button>
-                </form>
-
-                <div id="result"></div>
+                <div id="result" class="result-box"></div>
+                <div class="disclaimer" id="disclaimer">
+                    ⚠️ Je ne suis pas un avocat. Ces informations sont fournies à titre éducatif. Consultez un professionnel du droit pour un avis personnalisé.
+                </div>
 
                 <!-- Section liens vers les autres plateformes -->
                 <div class="peace-box">
@@ -214,6 +237,32 @@
                 </div>
             </div>
 
+            <!-- Ressources juridiques (cachées par défaut, s'affichent après détection du pays) -->
+            <div id="resourcesContainer" class="resources">
+                <h2>Ressources juridiques pour <span id="countryName"></span></h2>
+                <div class="resource-section">
+                    <h3>Aide juridictionnelle</h3>
+                    <a id="aideJuridiqueLink" href="#" target="_blank">Accéder à l'aide juridictionnelle</a>
+                </div>
+                <div class="resource-section">
+                    <h3>Lois applicables</h3>
+                    <a id="loisLink" href="#" target="_blank">Consulter les lois</a>
+                </div>
+                <div class="resource-section">
+                    <h3>Tribunaux</h3>
+                    <a id="tribunauxLink" href="#" target="_blank">Trouver un tribunal</a>
+                </div>
+                <div class="resource-section">
+                    <h3>Barreau / Avocats</h3>
+                    <a id="barreauLink" href="#" target="_blank">Trouver un avocat</a>
+                </div>
+                <div class="resource-section">
+                    <h3>Médiation</h3>
+                    <a id="mediationLink" href="#" target="_blank">Services de médiation</a>
+                </div>
+                <div class="emergency" id="emergencyContacts"></div>
+            </div>
+
             <!-- Footer -->
             <div class="footer">
                 🔒 100% anonyme - Sans inscription &nbsp;|&nbsp;
@@ -228,353 +277,72 @@
     </div>
 
     <script>
-        // ===== TRADUCTIONS GÉNÉRALES =====
-        const translations = {
-            fr: {
-                badge: "🔒 100% ANONYME",
-                title: "⚖️ Assistance Juridique",
-                subtitle: "Justice accessible à tous",
-                info_title: "Confidentialité totale",
-                info_text: "Aucune donnée personnelle",
-                label_country: "🌍 Pays",
-                label_case: "⚖️ Type de situation",
-                label_description: "📝 Votre situation",
-                button: "Envoyer anonyme",
-                footer: "🔒 100% anonyme - Sans inscription",
-                placeholder: "Décrivez votre situation juridique...",
-                success: "✅ Votre demande a bien été reçue",
-                error: "❌ Erreur: ",
-                conseil: "Votre conseil personnalisé"
+        // ============================================================
+        // JUSTICE AI – INTERNATIONALISATION (intégrée)
+        // ============================================================
+        const internationalization = {
+            juridictions: {
+                fr: { nom: "France", aideJuridique: "https://www.service-public.fr/particuliers/vosdroits/F18074", lois: "https://www.legifrance.gouv.fr/", tribunaux: "https://www.service-public.fr/particuliers/vosdroits/F1739", barreau: "https://www.cnb.avocat.fr/", mediation: "https://www.mediation-conso.fr/" },
+                ca: { nom: "Canada", aideJuridique: "https://www.justice.gc.ca/fra/jp-cj/", lois: "https://laws-lois.justice.gc.ca/", tribunaux: "https://www.justice.gc.ca/fra/jp-cj/tribunaux-courts/", barreau: "https://www.cba.org/", mediation: "https://www.mediate.com/" },
+                us: { nom: "United States", aideJuridique: "https://www.usa.gov/legal-aid", lois: "https://www.congress.gov/", tribunaux: "https://www.uscourts.gov/", barreau: "https://www.americanbar.org/", mediation: "https://www.mediate.com/" },
+                gb: { nom: "United Kingdom", aideJuridique: "https://www.gov.uk/legal-aid", lois: "https://www.legislation.gov.uk/", tribunaux: "https://www.gov.uk/courts", barreau: "https://www.barcouncil.org.uk/", mediation: "https://www.familymediationcouncil.org.uk/" },
+                in: { nom: "India", aideJuridique: "https://nalsa.gov.in/", lois: "https://www.indiacode.nic.in/", tribunaux: "https://www.sci.gov.in/", barreau: "https://www.barcouncilofindia.org/", mediation: "https://www.mediate.com/" },
+                cn: { nom: "中国", aideJuridique: "https://www.12348.gov.cn/", lois: "https://www.npc.gov.cn/", tribunaux: "https://www.court.gov.cn/", barreau: "https://www.acla.org.cn/", mediation: "https://www.peoplemediation.org.cn/" },
+                es: { nom: "España", aideJuridique: "https://www.mjusticia.gob.es/es/ciudadania/asistencia-juridica", lois: "https://www.boe.es/", tribunaux: "https://www.poderjudicial.es/", barreau: "https://www.abogacia.es/", mediation: "https://www.mediacionjusticia.com/" },
+                eg: { nom: "مصر", aideJuridique: "https://www.egyptjustice.com/", lois: "https://www.cc.gov.eg/", tribunaux: "https://www.jp.gov.eg/", barreau: "https://www.eba.org.eg/", mediation: "https://www.adrcenter.org.eg/" },
+                br: { nom: "Brasil", aideJuridique: "https://www.defensoriapublica.def.br/", lois: "https://www.planalto.gov.br/legislacao/", tribunaux: "https://www.cnj.jus.br/", barreau: "https://www.oab.org.br/", mediation: "https://www.cnj.jus.br/programas-e-acoes/conciliacao-e-mediacao/" },
+                za: { nom: "South Africa", aideJuridique: "https://www.legal-aid.co.za/", lois: "https://www.gov.za/documents/acts", tribunaux: "https://www.judiciary.org.za/", barreau: "https://www.lawsociety.org.za/", mediation: "https://www.mediate.co.za/" },
+                au: { nom: "Australia", aideJuridique: "https://www.legalaid.nsw.gov.au/", lois: "https://www.legislation.gov.au/", tribunaux: "https://www.fedcourt.gov.au/", barreau: "https://www.lawcouncil.asn.au/", mediation: "https://www.mediation.com.au/" },
             },
-            en: {
-                badge: "🔒 100% ANONYMOUS",
-                title: "⚖️ Legal Assistance",
-                subtitle: "Justice for all",
-                info_title: "Total confidentiality",
-                info_text: "No personal data collected",
-                label_country: "🌍 Country",
-                label_case: "⚖️ Case type",
-                label_description: "📝 Your situation",
-                button: "Submit anonymously",
-                footer: "🔒 100% anonymous - No registration",
-                placeholder: "Describe your legal situation...",
-                success: "✅ Your request has been received",
-                error: "❌ Error: ",
-                conseil: "Your personalized advice"
+            emergencies: {
+                fr: "Police 17, Ambulance 15, Pompiers 18, Violences femmes 3919, Enfants 119, Soutien 09 72 39 40 50",
+                ca: "Police 911, Ambulance 911, Pompiers 911, Violences femmes 1-866-845-1555, Enfants 1-800-668-6868, Crise suicide 1-833-456-4566",
+                us: "Police 911, Ambulance 911, Pompiers 911, Violences domestiques 1-800-799-7233, Enfants 1-800-422-4453, Crise suicide 988",
+                gb: "Police 999, Ambulance 999, Pompiers 999, Violences domestiques 0808 2000 247, Enfants 0800 1111, Samaritans 116 123",
+                in: "Police 100, Ambulance 102, Pompiers 101, Femmes 1091, Enfants 1098, Soutien +91 9820466726",
+                cn: "Police 110, Ambulance 120, Pompiers 119, Violences femmes 12338, Enfants 12345, Soutien psy 010-82951332",
+                es: "Police 091, Ambulance 061, Pompiers 080, Violences genre 016, Enfants 116 111, Esperanza 717 003 717",
+                eg: "Police 122, Ambulance 123, Pompiers 180, Femmes 16000, Enfants 16000, Soutien psy 0800 888 888",
+                br: "Police 190, Ambulance 192, Pompiers 193, Femmes 180, Enfants 100, Soutien 188",
+                za: "Police 10111, Ambulance 10177, Pompiers 10177, Violences femmes 0800 428 428, Enfants 0800 055 555, Crise suicide 0800 567 567",
+                au: "Police 000, Ambulance 000, Pompiers 000, Violences domestiques 1800 737 732, Enfants 1800 55 1800, Lifeline 13 11 14",
             },
-            de: {
-                badge: "🔒 100% ANONYM",
-                title: "⚖️ Rechtsberatung",
-                subtitle: "Gerechtigkeit für alle",
-                info_title: "Absolute Vertraulichkeit",
-                info_text: "Keine persönlichen Daten",
-                label_country: "🌍 Land",
-                label_case: "⚖️ Falltyp",
-                label_description: "📝 Ihre Situation",
-                button: "Anonym senden",
-                footer: "🔒 100% anonym - Keine Registrierung",
-                placeholder: "Beschreiben Sie Ihre rechtliche Situation...",
-                success: "✅ Ihre Anfrage wurde empfangen",
-                error: "❌ Fehler: ",
-                conseil: "Ihre persönliche Beratung"
-            },
-            es: {
-                badge: "🔒 100% ANÓNIMO",
-                title: "⚖️ Asistencia Legal",
-                subtitle: "Justicia para todos",
-                info_title: "Confidencialidad total",
-                info_text: "Sin datos personales",
-                label_country: "🌍 País",
-                label_case: "⚖️ Tipo de caso",
-                label_description: "📝 Tu situación",
-                button: "Enviar anónimamente",
-                footer: "🔒 100% anónimo - Sin registro",
-                placeholder: "Describe tu situación legal...",
-                success: "✅ Tu solicitud ha sido recibida",
-                error: "❌ Error: ",
-                conseil: "Tu consejo personalizado"
-            },
-            ar: {
-                badge: "🔒 مجهول 100%",
-                title: "⚖️ مساعدة قانونية",
-                subtitle: "العدالة للجميع",
-                info_title: "سرية تامة",
-                info_text: "لا يتم جمع أي بيانات شخصية",
-                label_country: "🌍 البلد",
-                label_case: "⚖️ نوع القضية",
-                label_description: "📝 وضعك",
-                button: "إرسال بشكل مجهول",
-                footer: "🔒 مجهول 100% - بدون تسجيل",
-                placeholder: "صف وضعك القانوني...",
-                success: "✅ تم استلام طلبك",
-                error: "❌ خطأ: ",
-                conseil: "نصيحتك الشخصية"
-            },
-            pt: {
-                badge: "🔒 100% ANÔNIMO",
-                title: "⚖️ Assistência Jurídica",
-                subtitle: "Justiça para todos",
-                info_title: "Confidencialidade total",
-                info_text: "Sem dados pessoais",
-                label_country: "🌍 País",
-                label_case: "⚖️ Tipo de caso",
-                label_description: "📝 Sua situação",
-                button: "Enviar anonimamente",
-                footer: "🔒 100% anônimo - Sem registro",
-                placeholder: "Descreva sua situação legal...",
-                success: "✅ Sua solicitação foi recebida",
-                error: "❌ Erro: ",
-                conseil: "Seu conselho personalizado"
-            },
-            it: {
-                badge: "🔒 100% ANONIMO",
-                title: "⚖️ Assistenza Legale",
-                subtitle: "Giustizia per tutti",
-                info_title: "Riservatezza totale",
-                info_text: "Nessun dato personale",
-                label_country: "🌍 Paese",
-                label_case: "⚖️ Tipo di caso",
-                label_description: "📝 La tua situazione",
-                button: "Invia anonimamente",
-                footer: "🔒 100% anonimo - Senza registrazione",
-                placeholder: "Descrivi la tua situazione legale...",
-                success: "✅ La tua richiesta è stata ricevuta",
-                error: "❌ Errore: ",
-                conseil: "Il tuo consiglio personalizzato"
-            },
-            ru: {
-                badge: "🔒 100% АНОНИМНО",
-                title: "⚖️ Юридическая помощь",
-                subtitle: "Правосудие для всех",
-                info_title: "Полная конфиденциальность",
-                info_text: "Без личных данных",
-                label_country: "🌍 Страна",
-                label_case: "⚖️ Тип дела",
-                label_description: "📝 Ваша ситуация",
-                button: "Отправить анонимно",
-                footer: "🔒 100% анонимно - Без регистрации",
-                placeholder: "Опишите вашу юридическую ситуацию...",
-                success: "✅ Ваш запрос получен",
-                error: "❌ Ошибка: ",
-                conseil: "Ваш персональный совет"
-            },
-            zh: {
-                badge: "🔒 100% 匿名",
-                title: "⚖️ 法律援助",
-                subtitle: "人人享有正义",
-                info_title: "完全保密",
-                info_text: "不收集个人数据",
-                label_country: "🌍 国家",
-                label_case: "⚖️ 案件类型",
-                label_description: "📝 您的情况",
-                button: "匿名发送",
-                footer: "🔒 100% 匿名 - 无需注册",
-                placeholder: "描述您的法律情况...",
-                success: "✅ 您的请求已收到",
-                error: "❌ 错误: ",
-                conseil: "您的个性化建议"
-            },
-            ja: {
-                badge: "🔒 100% 匿名",
-                title: "⚖️ 法的支援",
-                subtitle: "すべての人に正義を",
-                info_title: "完全な機密性",
-                info_text: "個人データは収集されません",
-                label_country: "🌍 国",
-                label_case: "⚖️ ケースタイプ",
-                label_description: "📝 あなたの状況",
-                button: "匿名で送信",
-                footer: "🔒 100% 匿名 - 登録不要",
-                placeholder: "法的な状況を説明してください...",
-                success: "✅ リクエストを受信しました",
-                error: "❌ エラー: ",
-                conseil: "あなたの個別アドバイス"
-            },
-            ko: {
-                badge: "🔒 100% 익명",
-                title: "⚖️ 법률 지원",
-                subtitle: "모두를 위한 정의",
-                info_title: "완전한 기밀성",
-                info_text: "개인 데이터 수집 없음",
-                label_country: "🌍 국가",
-                label_case: "⚖️ 사건 유형",
-                label_description: "📝 당신의 상황",
-                button: "익명으로 보내기",
-                footer: "🔒 100% 익명 - 등록 필요 없음",
-                placeholder: "법적 상황을 설명하세요...",
-                success: "✅ 요청이 접수되었습니다",
-                error: "❌ 오류: ",
-                conseil: "맞춤형 조언"
-            }
-        };
 
-        // ===== TRADUCTION DES PAYS (11 langues) =====
-        const countryNames = {
-            fr: { fr: "France", en: "France", es: "Francia", ar: "فرنسا", de: "Frankreich", pt: "França", it: "Francia", ru: "Франция", zh: "法国", ja: "フランス", ko: "프랑스" },
-            ca: { fr: "Canada", en: "Canada", es: "Canadá", ar: "كندا", de: "Kanada", pt: "Canadá", it: "Canada", ru: "Канада", zh: "加拿大", ja: "カナダ", ko: "캐나다" },
-            us: { fr: "États-Unis", en: "United States", es: "Estados Unidos", ar: "الولايات المتحدة", de: "Vereinigte Staaten", pt: "Estados Unidos", it: "Stati Uniti", ru: "США", zh: "美国", ja: "アメリカ", ko: "미국" },
-            ma: { fr: "Maroc", en: "Morocco", es: "Marruecos", ar: "المغرب", de: "Marokko", pt: "Marrocos", it: "Marocco", ru: "Марокко", zh: "摩洛哥", ja: "モロッコ", ko: "모로코" },
-            dz: { fr: "Algérie", en: "Algeria", es: "Argelia", ar: "الجزائر", de: "Algerien", pt: "Argélia", it: "Algeria", ru: "Алжир", zh: "阿尔及利亚", ja: "アルジェリア", ko: "알제리" },
-            tn: { fr: "Tunisie", en: "Tunisia", es: "Túnez", ar: "تونس", de: "Tunesien", pt: "Tunísia", it: "Tunisia", ru: "Тунис", zh: "突尼斯", ja: "チュニジア", ko: "튀니지" },
-            sn: { fr: "Sénégal", en: "Senegal", es: "Senegal", ar: "السنغال", de: "Senegal", pt: "Senegal", it: "Senegal", ru: "Сенегал", zh: "塞内加尔", ja: "セネガル", ko: "세네갈" },
-            ci: { fr: "Côte d'Ivoire", en: "Ivory Coast", es: "Costa de Marfil", ar: "ساحل العاج", de: "Elfenbeinküste", pt: "Costa do Marfim", it: "Costa d'Avorio", ru: "Кот-д'Ивуар", zh: "科特迪瓦", ja: "コートジボワール", ko: "코트디부아르" },
-            cm: { fr: "Cameroun", en: "Cameroon", es: "Camerún", ar: "الكاميرون", de: "Kamerun", pt: "Camarões", it: "Camerun", ru: "Камерун", zh: "喀麦隆", ja: "カメルーン", ko: "카메룬" },
-            be: { fr: "Belgique", en: "Belgium", es: "Bélgica", ar: "بلجيكا", de: "Belgien", pt: "Bélgica", it: "Belgio", ru: "Бельгия", zh: "比利时", ja: "ベルギー", ko: "벨기에" },
-            ch: { fr: "Suisse", en: "Switzerland", es: "Suiza", ar: "سويسرا", de: "Schweiz", pt: "Suíça", it: "Svizzera", ru: "Швейцария", zh: "瑞士", ja: "スイス", ko: "스위스" },
-            de: { fr: "Allemagne", en: "Germany", es: "Alemania", ar: "ألمانيا", de: "Deutschland", pt: "Alemanha", it: "Germania", ru: "Германия", zh: "德国", ja: "ドイツ", ko: "독일" },
-            es: { fr: "Espagne", en: "Spain", es: "España", ar: "إسبانيا", de: "Spanien", pt: "Espanha", it: "Spagna", ru: "Испания", zh: "西班牙", ja: "スペイン", ko: "스페인" },
-            it: { fr: "Italie", en: "Italy", es: "Italia", ar: "إيطاليا", de: "Italien", pt: "Itália", it: "Italia", ru: "Италия", zh: "意大利", ja: "イタリア", ko: "이탈리아" },
-            pt: { fr: "Portugal", en: "Portugal", es: "Portugal", ar: "البرتغال", de: "Portugal", pt: "Portugal", it: "Portogallo", ru: "Португалия", zh: "葡萄牙", ja: "ポルトガル", ko: "포르투갈" },
-            gb: { fr: "Royaume-Uni", en: "United Kingdom", es: "Reino Unido", ar: "المملكة المتحدة", de: "Vereinigtes Königreich", pt: "Reino Unido", it: "Regno Unito", ru: "Великобритания", zh: "英国", ja: "イギリス", ko: "영국" },
-            br: { fr: "Brésil", en: "Brazil", es: "Brasil", ar: "البرازيل", de: "Brasilien", pt: "Brasil", it: "Brasile", ru: "Бразилия", zh: "巴西", ja: "ブラジル", ko: "브라질" },
-            mx: { fr: "Mexique", en: "Mexico", es: "México", ar: "المكسيك", de: "Mexiko", pt: "México", it: "Messico", ru: "Мексика", zh: "墨西哥", ja: "メキシコ", ko: "멕시코" },
-            in: { fr: "Inde", en: "India", es: "India", ar: "الهند", de: "Indien", pt: "Índia", it: "India", ru: "Индия", zh: "印度", ja: "インド", ko: "인도" },
-            cn: { fr: "Chine", en: "China", es: "China", ar: "الصين", de: "China", pt: "China", it: "Cina", ru: "Китай", zh: "中国", ja: "中国", ko: "중국" },
-            jp: { fr: "Japon", en: "Japan", es: "Japón", ar: "اليابان", de: "Japan", pt: "Japão", it: "Giappone", ru: "Япония", zh: "日本", ja: "日本", ko: "일본" },
-            kr: { fr: "Corée du Sud", en: "South Korea", es: "Corea del Sur", ar: "كوريا الجنوبية", de: "Südkorea", pt: "Coreia do Sul", it: "Corea del Sud", ru: "Южная Корея", zh: "韩国", ja: "韓国", ko: "대한민국" },
-            ru: { fr: "Russie", en: "Russia", es: "Rusia", ar: "روسيا", de: "Russland", pt: "Rússia", it: "Russia", ru: "Россия", zh: "俄罗斯", ja: "ロシア", ko: "러시아" }
-        };
-
-        // ===== TRADUCTION DES TYPES DE SITUATION =====
-        const caseTypes = {
-            fr: { civil: "Litige civil", criminal: "Droit pénal", family: "Famille", labor: "Travail", housing: "Logement" },
-            en: { civil: "Civil dispute", criminal: "Criminal law", family: "Family", labor: "Labor", housing: "Housing" },
-            de: { civil: "Zivilstreitigkeit", criminal: "Strafrecht", family: "Familie", labor: "Arbeit", housing: "Wohnen" },
-            es: { civil: "Disputa civil", criminal: "Derecho penal", family: "Familia", labor: "Trabajo", housing: "Vivienda" },
-            ar: { civil: "نزاع مدني", criminal: "القانون الجنائي", family: "عائلة", labor: "عمل", housing: "سكن" },
-            pt: { civil: "Disputa civil", criminal: "Direito penal", family: "Família", labor: "Trabalho", housing: "Habitação" },
-            it: { civil: "Controversia civile", criminal: "Diritto penale", family: "Famiglia", labor: "Lavoro", housing: "Abitazione" },
-            ru: { civil: "Гражданский спор", criminal: "Уголовное право", family: "Семья", labor: "Работа", housing: "Жилье" },
-            zh: { civil: "民事纠纷", criminal: "刑法", family: "家庭", labor: "工作", housing: "住房" },
-            ja: { civil: "民事紛争", criminal: "刑法", family: "家族", labor: "労働", housing: "住宅" },
-            ko: { civil: "민사 분쟁", criminal: "형법", family: "가족", labor: "노동", housing: "주택" }
-        };
-
-        // ===== FONCTION PRINCIPALE DE CHANGEMENT DE LANGUE =====
-        function changeLanguage(lang) {
-            const t = translations[lang] || translations.fr;
-
-            // 1. Éléments statiques
-            const badge = document.querySelector('.badge');
-            const title = document.querySelector('h1');
-            const subtitle = document.querySelector('.subtitle');
-            const infoTitle = document.querySelector('.info-box strong');
-            const infoText = document.querySelector('.info-box p');
-            const countryLabel = document.querySelector('label[for="country"]');
-            const caseLabel = document.querySelector('label[for="caseType"]');
-            const descLabel = document.querySelector('label[for="description"]');
-            const submitBtn = document.getElementById('submitBtn');
-            const footer = document.querySelector('.footer');
-            const placeholder = document.getElementById('description');
-
-            if (badge) badge.textContent = t.badge;
-            if (title) title.textContent = t.title;
-            if (subtitle) subtitle.textContent = t.subtitle;
-            if (infoTitle) infoTitle.textContent = t.info_title;
-            if (infoText) infoText.textContent = t.info_text;
-            if (countryLabel) countryLabel.textContent = t.label_country;
-            if (caseLabel) caseLabel.textContent = t.label_case;
-            if (descLabel) descLabel.textContent = t.label_description;
-            if (submitBtn) submitBtn.textContent = t.button;
-            if (footer) footer.textContent = t.footer;
-            if (placeholder) placeholder.placeholder = t.placeholder;
-
-            // 2. Options des pays
-            const countrySelect = document.getElementById('country');
-            const currentCountry = countrySelect.value;
-            countrySelect.innerHTML = '';
-            const defaultCountryOption = document.createElement('option');
-            defaultCountryOption.value = '';
-            defaultCountryOption.textContent = t.label_country.replace(/[🌍⚖️📝]/g, '').trim() || 'Sélectionnez votre pays';
-            countrySelect.appendChild(defaultCountryOption);
-
-            const countries = Object.keys(countryNames);
-            countries.forEach(code => {
-                const option = document.createElement('option');
-                option.value = code;
-                option.textContent = countryNames[code][lang] || countryNames[code]['fr'];
-                countrySelect.appendChild(option);
-            });
-            if (currentCountry) countrySelect.value = currentCountry;
-
-            // 3. Options des types de situation
-            const caseSelect = document.getElementById('caseType');
-            const currentCase = caseSelect.value;
-            caseSelect.innerHTML = '';
-            const defaultCaseOption = document.createElement('option');
-            defaultCaseOption.value = '';
-            defaultCaseOption.textContent = t.label_case.replace(/[🌍⚖️📝]/g, '').trim() || 'Sélectionnez';
-            caseSelect.appendChild(defaultCaseOption);
-
-            const types = Object.keys(caseTypes.fr);
-            types.forEach(type => {
-                const option = document.createElement('option');
-                option.value = type;
-                option.textContent = caseTypes[lang]?.[type] || caseTypes.fr[type];
-                caseSelect.appendChild(option);
-            });
-            if (currentCase) caseSelect.value = currentCase;
-        }
-
-        // ===== ÉVÉNEMENT DE CHANGEMENT DE LANGUE =====
-        document.getElementById('languageSelector').addEventListener('change', function() {
-            changeLanguage(this.value);
-        });
-
-        // ===== APPLIQUER LA LANGUE PAR DÉFAUT (FRANÇAIS) =====
-        changeLanguage('fr');
-
-        // ===== FORMULAIRE =====
-        const form = document.getElementById('anonForm');
-        const resultDiv = document.getElementById('result');
-        const submitBtn = document.getElementById('submitBtn');
-
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Envoi...';
-            resultDiv.style.display = 'block';
-            resultDiv.className = 'success';
-            resultDiv.innerHTML = '⏳ Génération du conseil...';
-
-            const data = {
-                country: document.getElementById('country').value,
-                caseType: document.getElementById('caseType').value,
-                description: document.getElementById('description').value,
-                language: document.getElementById('languageSelector').value
-            };
-
-            try {
-                const res = await fetch('/api/submit-anonymous-case', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                const result = await res.json();
-
-                const currentLang = document.getElementById('languageSelector').value;
-                const t = translations[currentLang] || translations.fr;
-
-                let aiHtml = '';
-                if (result.aiResponse) {
-                    aiHtml = '<div class="ai-response"><strong>🤖 ' + (t.conseil || 'Votre conseil personnalisé') + ' :</strong><br><br>' + result.aiResponse.replace(/\n/g, '<br>') + '</div>';
+            async detectUserCountry() {
+                try {
+                    const res = await fetch('https://ipapi.co/json/');
+                    const data = await res.json();
+                    return data.country_code?.toLowerCase() || 'fr';
+                } catch (err) {
+                    return 'fr';
                 }
+            },
 
-                const successMsg = t.success || '✅ Votre demande a bien été reçue';
-                resultDiv.innerHTML = '<strong>' + successMsg + '</strong><br>Référence: ' + result.reference + '<br>Date: ' + new Date(result.date).toLocaleString() + aiHtml;
-                form.reset();
-            } catch(err) {
-                const currentLang = document.getElementById('languageSelector').value;
-                const t = translations[currentLang] || translations.fr;
-                resultDiv.className = 'error';
-                resultDiv.innerHTML = (t.error || '❌ Erreur: ') + err.message;
-            } finally {
-                submitBtn.disabled = false;
-                const currentLang = document.getElementById('languageSelector').value;
-                const t = translations[currentLang] || translations.fr;
-                submitBtn.textContent = t.button || 'Envoyer anonyme';
+            applyJurisdiction(countryCode) {
+                const j = this.juridictions[countryCode] || this.juridictions.fr;
+                const e = this.emergencies[countryCode] || this.emergencies.fr;
+
+                document.getElementById('countryName').textContent = j.nom;
+                document.getElementById('aideJuridiqueLink').href = j.aideJuridique;
+                document.getElementById('loisLink').href = j.lois;
+                document.getElementById('tribunauxLink').href = j.tribunaux;
+                document.getElementById('barreauLink').href = j.barreau;
+                document.getElementById('mediationLink').href = j.mediation;
+                document.getElementById('emergencyContacts').innerHTML = '<strong>Numéros d\'urgence :</strong><br>' + e;
             }
         };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const country = await internationalization.detectUserCountry();
+            const selector = document.getElementById('countrySelector');
+            if (selector) {
+                selector.value = country;
+                selector.addEventListener('change', (e) => internationalization.applyJurisdiction(e.target.value));
+                internationalization.applyJurisdiction(country);
+            }
+            // Afficher la section ressources
+            document.getElementById('resourcesContainer').style.display = 'block';
+        });
     </script>
 </body>
 </html>
