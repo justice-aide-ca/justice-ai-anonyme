@@ -6,162 +6,35 @@
     <title>Justice AI – Votre assistant juridique intelligent</title>
     <meta name="description" content="Justice AI vous offre une première orientation juridique gratuite et accessible partout dans le monde.">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .language-selector, .country-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-            align-items: center;
-        }
-        select {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 0.9rem;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .badge {
-            display: inline-block;
-            background: #27ae60;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-        h1 {
-            color: #2c3e50;
-            margin: 0;
-        }
-        .subtitle {
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            resize: vertical;
-            font-family: inherit;
-            margin-bottom: 1rem;
-        }
-        button {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-        .info-box {
-            background: #f0f0f0;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .result-box {
-            background: #f9f9f9;
-            border-left: 4px solid #3498db;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 4px;
-            display: none;
-            white-space: pre-wrap;
-            line-height: 1.5;
-        }
-        .disclaimer {
-            font-size: 0.85rem;
-            color: #e67e22;
-            margin-top: 1rem;
-            text-align: center;
-        }
-        .peace-box {
-            background: #f0f0f0;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        .peace-box a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        .peace-box a:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 2rem;
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
-        }
-        .footer a {
-            color: #3498db;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-        /* Ressources juridiques */
-        .resources {
-            margin-top: 2rem;
-            display: none;
-        }
-        .resource-section {
-            background: #f0f0f0;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        .resource-section h3 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-        .resource-section a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        .emergency {
-            background: #ffeaa7;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .language-selector, .country-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 1rem; align-items: center; }
+        select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem; }
+        .header { text-align: center; margin-bottom: 2rem; }
+        .badge { display: inline-block; background: #27ae60; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; }
+        h1 { color: #2c3e50; margin: 0; }
+        .subtitle { color: #7f8c8d; margin-top: 5px; }
+        textarea { width: 100%; height: 150px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical; font-family: inherit; margin-bottom: 1rem; }
+        button { background: #3498db; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1rem; width: 100%; }
+        button:hover { background: #2980b9; }
+        .info-box { background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        .result-box { background: #f9f9f9; border-left: 4px solid #3498db; padding: 15px; margin-top: 20px; border-radius: 4px; display: none; white-space: pre-wrap; line-height: 1.5; }
+        .disclaimer { font-size: 0.85rem; color: #e67e22; margin-top: 1rem; text-align: center; }
+        .peace-box { background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-top: 2rem; text-align: center; font-size: 0.9rem; }
+        .peace-box a { color: #3498db; text-decoration: none; }
+        .peace-box a:hover { text-decoration: underline; }
+        .footer { text-align: center; font-size: 0.8rem; color: #888; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem; }
+        .footer a { color: #3498db; text-decoration: none; margin: 0 5px; }
+        .resources { margin-top: 2rem; display: none; }
+        .resource-section { background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        .resource-section h3 { margin-top: 0; color: #2c3e50; }
+        .resource-section a { color: #3498db; text-decoration: none; }
+        .emergency { background: #ffeaa7; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
-
-            <!-- Sélecteur de langues -->
             <div class="language-selector">
                 <label for="languageSelector" style="font-weight: bold;">🌐</label>
                 <select id="languageSelector">
@@ -173,55 +46,35 @@
                     <option value="ar">العربية</option>
                 </select>
             </div>
-
-            <!-- Sélecteur de pays -->
             <div class="country-selector">
                 <label for="countrySelector" style="font-weight: bold;">🌍</label>
-                <select id="countrySelector">
-                    <!-- Les options seront générées dynamiquement -->
-                </select>
+                <select id="countrySelector"></select>
             </div>
-
-            <!-- En-tête -->
             <div class="header">
                 <div class="badge">🔒 100% ANONYME</div>
                 <h1>⚖️ Assistance Juridique</h1>
                 <div class="subtitle">Justice accessible à tous</div>
             </div>
-
-            <!-- Formulaire -->
             <div class="form-body">
                 <div class="info-box">
                     <div>🔒</div>
                     <div>Votre situation est confidentielle. Aucune donnée personnelle n'est collectée.</div>
                 </div>
-
                 <textarea id="situation" placeholder="Décrivez votre problème juridique..."></textarea>
                 <button id="submitBtn">Obtenir une aide juridique →</button>
                 <div id="loading" style="display:none; text-align:center; margin-top:1rem;">Analyse en cours...</div>
-
                 <div id="result" class="result-box"></div>
-                <div class="disclaimer" id="disclaimer">
-                    ⚠️ Je ne suis pas un avocat. Ces informations sont fournies à titre éducatif. Consultez un professionnel du droit pour un avis personnalisé.
-                </div>
-
-                <!-- Section liens vers les autres plateformes -->
+                <div class="disclaimer" id="disclaimer">⚠️ Je ne suis pas un avocat. Ces informations sont fournies à titre éducatif. Consultez un professionnel du droit pour un avis personnalisé.</div>
                 <div class="peace-box">
                     <p style="margin-bottom: 8px;">🙏 <strong>D'autres espaces pour trouver la paix, la justice et le discernement :</strong></p>
                     <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                        <a href="https://amour-et-verite-app.netlify.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">
-                            ⛪ Amour & Vérité
-                        </a>
+                        <a href="https://amour-et-verite-app.netlify.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">⛪ Amour & Vérité</a>
                         <span style="color: #ccc;">|</span>
-                        <a href="https://bridge-your-project.lovable.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">
-                            🌍 ONBRIDGE AI
-                        </a>
+                        <a href="https://bridge-your-project.lovable.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">🌍 ONBRIDGE AI</a>
                     </div>
                     <p style="font-size: 12px; margin-top: 8px; color: #888;">Confidentiel · Gratuit · Accessible à tous</p>
                 </div>
             </div>
-
-            <!-- Ressources juridiques (cachées par défaut, s'affichent après détection du pays) -->
             <div id="resourcesContainer" class="resources">
                 <h2>Ressources juridiques pour <span id="countryName"></span></h2>
                 <div class="resource-section">
@@ -246,8 +99,6 @@
                 </div>
                 <div class="emergency" id="emergencyContacts"></div>
             </div>
-
-            <!-- Footer -->
             <div class="footer">
                 🔒 100% anonyme - Sans inscription &nbsp;|&nbsp;
                 <a href="/privacy">Confidentialité</a> &nbsp;|&nbsp;
@@ -256,205 +107,389 @@
                 <a href="https://amour-et-verite-app.netlify.app/" target="_blank">🙏 Amour & Vérité</a> &nbsp;|&nbsp;
                 <a href="https://bridge-your-project.lovable.app/" target="_blank">🌍 ONBRIDGE AI</a>
             </div>
-
         </div>
     </div>
 
     <script>
-        // ============================================================
-        // JUSTICE AI – INTERNATIONALISATION (50 pays) + APPEL API RÉEL
-        // ============================================================
         const internationalization = {
             juridictions: {
-                // 11 pays de base + 50 supplémentaires
-                fr: { nom: "France", aideJuridique: "https://www.service-public.fr/particuliers/vosdroits/F18074", lois: "https://www.legifrance.gouv.fr/", tribunaux: "https://www.service-public.fr/particuliers/vosdroits/F1739", barreau: "https://www.cnb.avocat.fr/", mediation: "https://www.mediation-conso.fr/" },
-                ca: { nom: "Canada", aideJuridique: "https://www.justice.gc.ca/fra/jp-cj/", lois: "https://laws-lois.justice.gc.ca/", tribunaux: "https://www.justice.gc.ca/fra/jp-cj/tribunaux-courts/", barreau: "https://www.cba.org/", mediation: "https://www.mediate.com/" },
-                us: { nom: "États-Unis", aideJuridique: "https://www.usa.gov/legal-aid", lois: "https://www.congress.gov/", tribunaux: "https://www.uscourts.gov/", barreau: "https://www.americanbar.org/", mediation: "https://www.mediate.com/" },
-                gb: { nom: "Royaume-Uni", aideJuridique: "https://www.gov.uk/legal-aid", lois: "https://www.legislation.gov.uk/", tribunaux: "https://www.gov.uk/courts", barreau: "https://www.barcouncil.org.uk/", mediation: "https://www.familymediationcouncil.org.uk/" },
-                in: { nom: "Inde", aideJuridique: "https://nalsa.gov.in/", lois: "https://www.indiacode.nic.in/", tribunaux: "https://www.sci.gov.in/", barreau: "https://www.barcouncilofindia.org/", mediation: "https://www.mediate.com/" },
-                cn: { nom: "Chine", aideJuridique: "https://www.12348.gov.cn/", lois: "https://www.npc.gov.cn/", tribunaux: "https://www.court.gov.cn/", barreau: "https://www.acla.org.cn/", mediation: "https://www.peoplemediation.org.cn/" },
-                es: { nom: "Espagne", aideJuridique: "https://www.mjusticia.gob.es/es/ciudadania/asistencia-juridica", lois: "https://www.boe.es/", tribunaux: "https://www.poderjudicial.es/", barreau: "https://www.abogacia.es/", mediation: "https://www.mediacionjusticia.com/" },
-                eg: { nom: "Égypte", aideJuridique: "https://www.egyptjustice.com/", lois: "https://www.cc.gov.eg/", tribunaux: "https://www.jp.gov.eg/", barreau: "https://www.eba.org.eg/", mediation: "https://www.adrcenter.org.eg/" },
-                br: { nom: "Brésil", aideJuridique: "https://www.defensoriapublica.def.br/", lois: "https://www.planalto.gov.br/legislacao/", tribunaux: "https://www.cnj.jus.br/", barreau: "https://www.oab.org.br/", mediation: "https://www.cnj.jus.br/programas-e-acoes/conciliacao-e-mediacao/" },
-                za: { nom: "Afrique du Sud", aideJuridique: "https://www.legal-aid.co.za/", lois: "https://www.gov.za/documents/acts", tribunaux: "https://www.judiciary.org.za/", barreau: "https://www.lawsociety.org.za/", mediation: "https://www.mediate.co.za/" },
-                au: { nom: "Australie", aideJuridique: "https://www.legalaid.nsw.gov.au/", lois: "https://www.legislation.gov.au/", tribunaux: "https://www.fedcourt.gov.au/", barreau: "https://www.lawcouncil.asn.au/", mediation: "https://www.mediation.com.au/" },
-                af: { nom: "Afghanistan", aideJuridique: "https://www.afghanistanjusticeproject.org/", lois: "https://www.afghan-web.com/law/", tribunaux: "https://www.afghanistanjusticeproject.org/", barreau: "https://www.afghanbar.org/", mediation: "https://www.mediation.org/" },
-                al: { nom: "Albanie", aideJuridique: "https://www.drejtesia.gov.al/", lois: "https://www.qbz.gov.al/", tribunaux: "https://www.gjykata.gov.al/", barreau: "https://www.dhka.gov.al/", mediation: "https://www.mediation.al/" },
+                // Afrique
                 dz: { nom: "Algérie", aideJuridique: "https://www.mjustice.dz/", lois: "https://www.joradp.dz/", tribunaux: "https://www.courdecassation.dz/", barreau: "https://www.avocat.dz/", mediation: "https://www.mediation.dz/" },
-                ar: { nom: "Argentine", aideJuridique: "https://www.argentina.gob.ar/justicia", lois: "https://www.infoleg.gob.ar/", tribunaux: "https://www.pjn.gov.ar/", barreau: "https://www.cpacf.org.ar/", mediation: "https://www.mediacion.gov.ar/" },
-                am: { nom: "Arménie", aideJuridique: "https://www.moj.am/", lois: "https://www.arlis.am/", tribunaux: "https://www.court.am/", barreau: "https://www.advocates.am/", mediation: "https://www.mediation.am/" },
-                at: { nom: "Autriche", aideJuridique: "https://www.justiz.gv.at/", lois: "https://www.ris.bka.gv.at/", tribunaux: "https://www.justiz.gv.at/gerichte/", barreau: "https://www.rechtsanwaelte.at/", mediation: "https://www.mediation.at/" },
-                bd: { nom: "Bangladesh", aideJuridique: "https://www.lawjusticediv.gov.bd/", lois: "https://bdlaws.minlaw.gov.bd/", tribunaux: "https://www.supremecourt.gov.bd/", barreau: "https://www.barcouncil.gov.bd/", mediation: "https://www.mediationbd.com/" },
-                be: { nom: "Belgique", aideJuridique: "https://www.avocats.be/fr/aide-juridique", lois: "https://www.ejustice.just.fgov.be/", tribunaux: "https://www.tribunaux-rechtbanken.be/", barreau: "https://www.avocats.be/", mediation: "https://www.mediation-justice.be/" },
-                bg: { nom: "Bulgarie", aideJuridique: "https://www.justice.government.bg/", lois: "https://www.lex.bg/", tribunaux: "https://www.vss.justice.bg/", barreau: "https://www.vas.bg/", mediation: "https://www.mediation.bg/" },
-                kh: { nom: "Cambodge", aideJuridique: "https://www.moj.gov.kh/", lois: "https://www.cambodianlaw.org/", tribunaux: "https://www.courts.gov.kh/", barreau: "https://www.barcambodia.org/", mediation: "https://www.mediationcambodia.org/" },
+                ao: { nom: "Angola", aideJuridique: "https://www.minjus.gov.ao/", lois: "https://www.legis-palop.org/", tribunaux: "https://www.tribunalconstitucional.ao/", barreau: "https://www.oaang.org/", mediation: "https://www.mediationangola.org/" },
+                bj: { nom: "Bénin", aideJuridique: "https://www.gouv.bj/ministere/justice/", lois: "https://www.legibenin.bj/", tribunaux: "https://www.courconstitutionnelle.bj/", barreau: "https://www.barreau.bj/", mediation: "https://www.mediation.bj/" },
+                bw: { nom: "Botswana", aideJuridique: "https://www.gov.bw/ministries/ministry-defence-justice-and-security", lois: "https://www.laws.gov.bw/", tribunaux: "https://www.judiciary.gov.bw/", barreau: "https://www.lawsociety.org.bw/", mediation: "https://www.mediationbotswana.org/" },
+                bf: { nom: "Burkina Faso", aideJuridique: "https://www.justice.gov.bf/", lois: "https://www.legiburkina.bf/", tribunaux: "https://www.courdecassation.bf/", barreau: "https://www.barreau.bf/", mediation: "https://www.mediation.bf/" },
+                bi: { nom: "Burundi", aideJuridique: "https://www.minjustice.gov.bi/", lois: "https://www.assemblee.bi/", tribunaux: "https://www.courconstitutionnelle.bi/", barreau: "https://www.barreau.bi/", mediation: "https://www.mediation.bi/" },
                 cm: { nom: "Cameroun", aideJuridique: "https://www.minjustice.gov.cm/", lois: "https://www.cameroonlaw.org/", tribunaux: "https://www.courdecassation.cm/", barreau: "https://www.barreau.cm/", mediation: "https://www.mediation.cm/" },
+                cv: { nom: "Cap-Vert", aideJuridique: "https://www.governo.cv/", lois: "https://www.legis-palop.org/", tribunaux: "https://www.stj.cv/", barreau: "https://www.oacv.cv/", mediation: "https://www.mediation.cv/" },
+                cf: { nom: "République centrafricaine", aideJuridique: "https://www.minjustice.cf/", lois: "https://www.legicentralafrique.cf/", tribunaux: "https://www.courdecassation.cf/", barreau: "https://www.barreau.cf/", mediation: "https://www.mediation.cf/" },
+                td: { nom: "Tchad", aideJuridique: "https://www.minjustice.td/", lois: "https://www.legitchad.td/", tribunaux: "https://www.courconstitutionnelle.td/", barreau: "https://www.barreau.td/", mediation: "https://www.mediation.td/" },
+                km: { nom: "Comores", aideJuridique: "https://www.beit-salam.km/", lois: "https://www.legicores.km/", tribunaux: "https://www.courconstitutionnelle.km/", barreau: "https://www.barreau.km/", mediation: "https://www.mediation.km/" },
+                cg: { nom: "Congo", aideJuridique: "https://www.minjustice.cg/", lois: "https://www.legicongo.cg/", tribunaux: "https://www.courconstitutionnelle.cg/", barreau: "https://www.barreau.cg/", mediation: "https://www.mediation.cg/" },
+                cd: { nom: "République démocratique du Congo", aideJuridique: "https://www.justice.gov.cd/", lois: "https://www.leganet.cd/", tribunaux: "https://www.courdecassation.cd/", barreau: "https://www.barreauderdc.org/", mediation: "https://www.mediation.cd/" },
+                dj: { nom: "Djibouti", aideJuridique: "https://www.minjustice.dj/", lois: "https://www.legidjibouti.dj/", tribunaux: "https://www.courconstitutionnelle.dj/", barreau: "https://www.barreau.dj/", mediation: "https://www.mediation.dj/" },
+                eg: { nom: "Égypte", aideJuridique: "https://www.egyptjustice.com/", lois: "https://www.cc.gov.eg/", tribunaux: "https://www.jp.gov.eg/", barreau: "https://www.eba.org.eg/", mediation: "https://www.adrcenter.org.eg/" },
+                gq: { nom: "Guinée équatoriale", aideJuridique: "https://www.guineaecuatorialpress.com/", lois: "https://www.legiguinee-equatoriale.com/", tribunaux: "https://www.courconstitutionnelle-gq.com/", barreau: "https://www.barreau-gq.com/", mediation: "https://www.mediation-gq.com/" },
+                er: { nom: "Érythrée", aideJuridique: "https://www.shabait.com/", lois: "https://www.eritreanlaw.org/", tribunaux: "https://www.courconstitutionnelle-er.com/", barreau: "https://www.barreau-er.com/", mediation: "https://www.mediation-er.com/" },
+                sz: { nom: "Eswatini", aideJuridique: "https://www.gov.sz/", lois: "https://www.legislation.gov.sz/", tribunaux: "https://www.judiciary.org.sz/", barreau: "https://www.lawsociety.org.sz/", mediation: "https://www.mediation.org.sz/" },
+                et: { nom: "Éthiopie", aideJuridique: "https://www.moj.gov.et/", lois: "https://www.ethiopianlaw.org/", tribunaux: "https://www.federalcourts.gov.et/", barreau: "https://www.ethiopianbar.org/", mediation: "https://www.mediationethiopia.org/" },
+                ga: { nom: "Gabon", aideJuridique: "https://www.minjustice.gabon.ga/", lois: "https://www.legigabon.ga/", tribunaux: "https://www.courconstitutionnelle.ga/", barreau: "https://www.barreau.ga/", mediation: "https://www.mediation.ga/" },
+                gm: { nom: "Gambie", aideJuridique: "https://www.moj.gm/", lois: "https://www.gambialaw.gm/", tribunaux: "https://www.judiciary.gm/", barreau: "https://www.gambianbar.org/", mediation: "https://www.mediation.gm/" },
+                gh: { nom: "Ghana", aideJuridique: "https://www.mojagd.gov.gh/", lois: "https://www.parliament.gh/", tribunaux: "https://www.judicial.gov.gh/", barreau: "https://www.ghanabar.org/", mediation: "https://www.mediationghana.org/" },
+                gn: { nom: "Guinée", aideJuridique: "https://www.minjustice.gov.gn/", lois: "https://www.legiguinee.gn/", tribunaux: "https://www.courconstitutionnelle.gn/", barreau: "https://www.barreau.gn/", mediation: "https://www.mediation.gn/" },
+                gw: { nom: "Guinée-Bissau", aideJuridique: "https://www.gov.gw/", lois: "https://www.legis-palop.org/", tribunaux: "https://www.tribunalconstitucional.gw/", barreau: "https://www.oagb.gw/", mediation: "https://www.mediation-gw.org/" },
+                ci: { nom: "Côte d'Ivoire", aideJuridique: "https://www.justice.gouv.ci/", lois: "https://www.legicoteivoire.ci/", tribunaux: "https://www.courconstitutionnelle.ci/", barreau: "https://www.barreau.ci/", mediation: "https://www.mediation.ci/" },
+                ke: { nom: "Kenya", aideJuridique: "https://www.judiciary.go.ke/", lois: "https://www.kenyalaw.org/", tribunaux: "https://www.judiciary.go.ke/", barreau: "https://www.lawsocietyofkenya.or.ke/", mediation: "https://www.mediationkenya.org/" },
+                ls: { nom: "Lesotho", aideJuridique: "https://www.gov.ls/", lois: "https://www.lesotholii.org/", tribunaux: "https://www.judiciary.org.ls/", barreau: "https://www.lawsociety.org.ls/", mediation: "https://www.mediation.org.ls/" },
+                lr: { nom: "Libéria", aideJuridique: "https://www.moj.gov.lr/", lois: "https://www.liberianlaw.org/", tribunaux: "https://www.judiciary.gov.lr/", barreau: "https://www.liberianbar.org/", mediation: "https://www.mediationlr.org/" },
+                ly: { nom: "Libye", aideJuridique: "https://www.justice.gov.ly/", lois: "https://www.aladel.gov.ly/", tribunaux: "https://www.courts.gov.ly/", barreau: "https://www.libyanbar.org/", mediation: "https://www.mediation.ly/" },
+                mg: { nom: "Madagascar", aideJuridique: "https://www.justice.gov.mg/", lois: "https://www.assemblee-nationale.mg/", tribunaux: "https://www.courdecassation.mg/", barreau: "https://www.barreau.mg/", mediation: "https://www.mediation.mg/" },
+                mw: { nom: "Malawi", aideJuridique: "https://www.justice.gov.mw/", lois: "https://www.malawilii.org/", tribunaux: "https://www.judiciary.mw/", barreau: "https://www.lawsociety.mw/", mediation: "https://www.mediation.mw/" },
+                ml: { nom: "Mali", aideJuridique: "https://www.justice.gouv.ml/", lois: "https://www.sgg-mali.ml/", tribunaux: "https://www.courdecassation.ml/", barreau: "https://www.barreaumali.org/", mediation: "https://www.mediation.ml/" },
+                mr: { nom: "Mauritanie", aideJuridique: "https://www.justice.gov.mr/", lois: "https://www.legimauritanie.mr/", tribunaux: "https://www.courconstitutionnelle.mr/", barreau: "https://www.barreau.mr/", mediation: "https://www.mediation.mr/" },
+                mu: { nom: "Maurice", aideJuridique: "https://www.govmu.org/", lois: "https://www.mauritiuslaw.govmu.org/", tribunaux: "https://www.supremecourt.govmu.org/", barreau: "https://www.barreau.mu/", mediation: "https://www.mediation.mu/" },
+                ma: { nom: "Maroc", aideJuridique: "https://www.justice.gov.ma/", lois: "https://www.sgg.gov.ma/", tribunaux: "https://www.cspj.ma/", barreau: "https://www.ohada.org/", mediation: "https://www.mediation.ma/" },
+                mz: { nom: "Mozambique", aideJuridique: "https://www.minjust.gov.mz/", lois: "https://www.legis-palop.org/", tribunaux: "https://www.ts.gov.mz/", barreau: "https://www.oam.org.mz/", mediation: "https://www.mediation.org.mz/" },
+                na: { nom: "Namibie", aideJuridique: "https://www.moj.gov.na/", lois: "https://www.namiblii.org/", tribunaux: "https://www.judiciary.gov.na/", barreau: "https://www.lawsociety.com.na/", mediation: "https://www.mediation.com.na/" },
+                ne: { nom: "Niger", aideJuridique: "https://www.justice.gouv.ne/", lois: "https://www.leginiger.ne/", tribunaux: "https://www.courconstitutionnelle.ne/", barreau: "https://www.barreau.ne/", mediation: "https://www.mediation.ne/" },
+                ng: { nom: "Nigeria", aideJuridique: "https://www.justice.gov.ng/", lois: "https://www.nigerialaw.org/", tribunaux: "https://www.courtofappeal.gov.ng/", barreau: "https://www.nigerianbar.org.ng/", mediation: "https://www.mediation.org.ng/" },
+                rw: { nom: "Rwanda", aideJuridique: "https://www.minijust.gov.rw/", lois: "https://www.rwandali.rw/", tribunaux: "https://www.judiciary.gov.rw/", barreau: "https://www.rwandabar.org.rw/", mediation: "https://www.mediation.rw/" },
+                st: { nom: "Sao Tomé-et-Principe", aideJuridique: "https://www.gov.st/", lois: "https://www.legis-palop.org/", tribunaux: "https://www.tribunalconstitucional.st/", barreau: "https://www.oastp.st/", mediation: "https://www.mediation.st/" },
+                sn: { nom: "Sénégal", aideJuridique: "https://www.justice.gouv.sn/", lois: "https://www.sec.gouv.sn/", tribunaux: "https://www.courdecassation.sn/", barreau: "https://www.barreau.sn/", mediation: "https://www.mediation.sn/" },
+                sc: { nom: "Seychelles", aideJuridique: "https://www.gov.sc/", lois: "https://www.seychelleslaw.sc/", tribunaux: "https://www.judiciary.sc/", barreau: "https://www.barreau.sc/", mediation: "https://www.mediation.sc/" },
+                sl: { nom: "Sierra Leone", aideJuridique: "https://www.mojsl.gov.sl/", lois: "https://www.sierralii.org/", tribunaux: "https://www.judiciary.gov.sl/", barreau: "https://www.sierraleonebar.org/", mediation: "https://www.mediation.sl/" },
+                so: { nom: "Somalie", aideJuridique: "https://www.moj.gov.so/", lois: "https://www.somalilandlaw.com/", tribunaux: "https://www.courts.gov.so/", barreau: "https://www.somalibar.org/", mediation: "https://www.mediation.so/" },
+                za: { nom: "Afrique du Sud", aideJuridique: "https://www.legal-aid.co.za/", lois: "https://www.gov.za/documents/acts", tribunaux: "https://www.judiciary.org.za/", barreau: "https://www.lawsociety.org.za/", mediation: "https://www.mediate.co.za/" },
+                ss: { nom: "Soudan du Sud", aideJuridique: "https://www.moj.gov.ss/", lois: "https://www.southsudanlaw.org/", tribunaux: "https://www.judiciary.gov.ss/", barreau: "https://www.southsudanbar.org/", mediation: "https://www.mediation.ss/" },
+                sd: { nom: "Soudan", aideJuridique: "https://www.moj.gov.sd/", lois: "https://www.sudanlaw.net/", tribunaux: "https://www.judiciary.gov.sd/", barreau: "https://www.sudanbar.org/", mediation: "https://www.mediation.sd/" },
+                tz: { nom: "Tanzanie", aideJuridique: "https://www.judiciary.go.tz/", lois: "https://www.parliament.go.tz/", tribunaux: "https://www.judiciary.go.tz/", barreau: "https://www.tls.or.tz/", mediation: "https://www.mediation.co.tz/" },
+                tg: { nom: "Togo", aideJuridique: "https://www.justice.gouv.tg/", lois: "https://www.legitogo.tg/", tribunaux: "https://www.courconstitutionnelle.tg/", barreau: "https://www.barreau.tg/", mediation: "https://www.mediation.tg/" },
+                tn: { nom: "Tunisie", aideJuridique: "https://www.justice.gov.tn/", lois: "https://www.iort.gov.tn/", tribunaux: "https://www.courdecassation.tn/", barreau: "https://www.avocat.org.tn/", mediation: "https://www.mediation.tn/" },
+                ug: { nom: "Ouganda", aideJuridique: "https://www.judiciary.go.ug/", lois: "https://www.ulii.org/", tribunaux: "https://www.judiciary.go.ug/", barreau: "https://www.uls.or.ug/", mediation: "https://www.mediation.ug/" },
+                zm: { nom: "Zambie", aideJuridique: "https://www.judiciary.gov.zm/", lois: "https://www.parliament.gov.zm/", tribunaux: "https://www.judiciary.gov.zm/", barreau: "https://www.lsz.org.zm/", mediation: "https://www.mediation.zm/" },
+                zw: { nom: "Zimbabwe", aideJuridique: "https://www.justice.gov.zw/", lois: "https://www.parlzim.gov.zw/", tribunaux: "https://www.judicial.gov.zw/", barreau: "https://www.lawsociety.co.zw/", mediation: "https://www.mediation.co.zw/" },
+                // Amériques
+                ar: { nom: "Argentine", aideJuridique: "https://www.argentina.gob.ar/justicia", lois: "https://www.infoleg.gob.ar/", tribunaux: "https://www.pjn.gov.ar/", barreau: "https://www.cpacf.org.ar/", mediation: "https://www.mediacion.gov.ar/" },
+                bo: { nom: "Bolivie", aideJuridique: "https://www.justicia.gob.bo/", lois: "https://www.lexivox.org/", tribunaux: "https://www.tsj.bo/", barreau: "https://www.colegioabogados.org.bo/", mediation: "https://www.mediation.bo/" },
+                br: { nom: "Brésil", aideJuridique: "https://www.defensoriapublica.def.br/", lois: "https://www.planalto.gov.br/legislacao/", tribunaux: "https://www.cnj.jus.br/", barreau: "https://www.oab.org.br/", mediation: "https://www.cnj.jus.br/programas-e-acoes/conciliacao-e-mediacao/" },
+                ca: { nom: "Canada", aideJuridique: "https://www.justice.gc.ca/fra/jp-cj/", lois: "https://laws-lois.justice.gc.ca/", tribunaux: "https://www.justice.gc.ca/fra/jp-cj/tribunaux-courts/", barreau: "https://www.cba.org/", mediation: "https://www.mediate.com/" },
                 cl: { nom: "Chili", aideJuridique: "https://www.minjusticia.gob.cl/", lois: "https://www.leychile.cl/", tribunaux: "https://www.pjud.cl/", barreau: "https://www.colegioabogados.cl/", mediation: "https://www.mediacion.cl/" },
                 co: { nom: "Colombie", aideJuridique: "https://www.minjusticia.gov.co/", lois: "https://www.secretariasenado.gov.co/", tribunaux: "https://www.ramajudicial.gov.co/", barreau: "https://www.colegioabogados.org.co/", mediation: "https://www.mediacion.gov.co/" },
-                cd: { nom: "République démocratique du Congo", aideJuridique: "https://www.justice.gov.cd/", lois: "https://www.leganet.cd/", tribunaux: "https://www.courdecassation.cd/", barreau: "https://www.barreauderdc.org/", mediation: "https://www.mediation.cd/" },
                 cr: { nom: "Costa Rica", aideJuridique: "https://www.mjp.go.cr/", lois: "https://www.pgrweb.go.cr/", tribunaux: "https://www.poder-judicial.go.cr/", barreau: "https://www.colegioabogados.cr/", mediation: "https://www.mediacion.go.cr/" },
-                hr: { nom: "Croatie", aideJuridique: "https://www.pravosudje.hr/", lois: "https://www.zakon.hr/", tribunaux: "https://www.vsrh.hr/", barreau: "https://www.hok-cba.hr/", mediation: "https://www.mediation.hr/" },
                 cu: { nom: "Cuba", aideJuridique: "https://www.minjus.gob.cu/", lois: "https://www.gacetaoficial.gob.cu/", tribunaux: "https://www.tsp.gob.cu/", barreau: "https://www.onbc.cu/", mediation: "https://www.mediation.cu/" },
-                cz: { nom: "République tchèque", aideJuridique: "https://www.justice.cz/", lois: "https://www.zakonyprolidi.cz/", tribunaux: "https://www.justice.cz/soudy", barreau: "https://www.cak.cz/", mediation: "https://www.mediator.cz/" },
-                dk: { nom: "Danemark", aideJuridique: "https://www.domstol.dk/", lois: "https://www.retsinformation.dk/", tribunaux: "https://www.domstol.dk/", barreau: "https://www.advokatsamfundet.dk/", mediation: "https://www.mediation.dk/" },
                 do: { nom: "République dominicaine", aideJuridique: "https://www.poderjudicial.gob.do/", lois: "https://www.consultoria.gov.do/", tribunaux: "https://www.poderjudicial.gob.do/", barreau: "https://www.colegioabogados.org.do/", mediation: "https://www.mediacion.gob.do/" },
                 ec: { nom: "Équateur", aideJuridique: "https://www.funcionjudicial.gob.ec/", lois: "https://www.lexis.com.ec/", tribunaux: "https://www.cortenacional.gob.ec/", barreau: "https://www.colegioabogados.org.ec/", mediation: "https://www.mediacion.gob.ec/" },
                 sv: { nom: "Salvador", aideJuridique: "https://www.csj.gob.sv/", lois: "https://www.asamblea.gob.sv/", tribunaux: "https://www.csj.gob.sv/", barreau: "https://www.colegioabogados.org.sv/", mediation: "https://www.mediacion.gob.sv/" },
-                ee: { nom: "Estonie", aideJuridique: "https://www.just.ee/", lois: "https://www.riigiteataja.ee/", tribunaux: "https://www.kohus.ee/", barreau: "https://www.advokatuur.ee/", mediation: "https://www.mediation.ee/" },
-                fi: { nom: "Finlande", aideJuridique: "https://www.oikeus.fi/", lois: "https://www.finlex.fi/", tribunaux: "https://www.oikeus.fi/tuomioistuimet/", barreau: "https://www.asianajajaliitto.fi/", mediation: "https://www.mediation.fi/" },
-                de: { nom: "Allemagne", aideJuridique: "https://www.bmj.de/", lois: "https://www.gesetze-im-internet.de/", tribunaux: "https://www.bundesgerichtshof.de/", barreau: "https://www.brak.de/", mediation: "https://www.mediation.de/" },
-                gh: { nom: "Ghana", aideJuridique: "https://www.mojagd.gov.gh/", lois: "https://www.parliament.gh/", tribunaux: "https://www.judicial.gov.gh/", barreau: "https://www.ghanabar.org/", mediation: "https://www.mediationghana.org/" },
-                gr: { nom: "Grèce", aideJuridique: "https://www.ministryofjustice.gr/", lois: "https://www.et.gr/", tribunaux: "https://www.areiospagos.gr/", barreau: "https://www.dsa.gr/", mediation: "https://www.mediation.gr/" },
                 gt: { nom: "Guatemala", aideJuridique: "https://www.oj.gob.gt/", lois: "https://www.congreso.gob.gt/", tribunaux: "https://www.oj.gob.gt/", barreau: "https://www.colegioabogados.org.gt/", mediation: "https://www.mediacion.gob.gt/" },
+                ht: { nom: "Haïti", aideJuridique: "https://www.mjdh.gouv.ht/", lois: "https://www.legihaiti.ht/", tribunaux: "https://www.courdecassation.ht/", barreau: "https://www.barreau.ht/", mediation: "https://www.mediation.ht/" },
                 hn: { nom: "Honduras", aideJuridique: "https://www.poderjudicial.gob.hn/", lois: "https://www.congresonacional.hn/", tribunaux: "https://www.poderjudicial.gob.hn/", barreau: "https://www.colegioabogados.hn/", mediation: "https://www.mediacion.hn/" },
-                hu: { nom: "Hongrie", aideJuridique: "https://www.birosag.hu/", lois: "https://www.njt.hu/", tribunaux: "https://www.birosag.hu/", barreau: "https://www.magyarugyvedikamara.hu/", mediation: "https://www.mediation.hu/" },
+                mx: { nom: "Mexique", aideJuridique: "https://www.gob.mx/justicia", lois: "https://www.diputados.gob.mx/LeyesBiblio/", tribunaux: "https://www.scjn.gob.mx/", barreau: "https://www.bma.org.mx/", mediation: "https://www.mediacion.mx/" },
+                ni: { nom: "Nicaragua", aideJuridique: "https://www.poderjudicial.gob.ni/", lois: "https://www.asamblea.gob.ni/", tribunaux: "https://www.poderjudicial.gob.ni/", barreau: "https://www.colegioabogados.org.ni/", mediation: "https://www.mediation.ni/" },
+                pa: { nom: "Panama", aideJuridique: "https://www.organojudicial.gob.pa/", lois: "https://www.asamblea.gob.pa/", tribunaux: "https://www.organojudicial.gob.pa/", barreau: "https://www.colegioabogados.org.pa/", mediation: "https://www.mediation.pa/" },
+                py: { nom: "Paraguay", aideJuridique: "https://www.pj.gov.py/", lois: "https://www.bacn.gov.py/", tribunaux: "https://www.pj.gov.py/", barreau: "https://www.colegioabogados.org.py/", mediation: "https://www.mediation.py/" },
+                pe: { nom: "Pérou", aideJuridique: "https://www.minjus.gob.pe/", lois: "https://www.congreso.gob.pe/", tribunaux: "https://www.pj.gob.pe/", barreau: "https://www.cal.org.pe/", mediation: "https://www.mediacion.pe/" },
+                us: { nom: "États-Unis", aideJuridique: "https://www.usa.gov/legal-aid", lois: "https://www.congress.gov/", tribunaux: "https://www.uscourts.gov/", barreau: "https://www.americanbar.org/", mediation: "https://www.mediate.com/" },
+                uy: { nom: "Uruguay", aideJuridique: "https://www.poderjudicial.gub.uy/", lois: "https://www.parlamento.gub.uy/", tribunaux: "https://www.poderjudicial.gub.uy/", barreau: "https://www.colegioabogados.org.uy/", mediation: "https://www.mediacion.gub.uy/" },
+                ve: { nom: "Venezuela", aideJuridique: "https://www.tsj.gob.ve/", lois: "https://www.asambleanacional.gob.ve/", tribunaux: "https://www.tsj.gob.ve/", barreau: "https://www.colegioabogados.org.ve/", mediation: "https://www.mediation.org.ve/" },
+                // Asie
+                af: { nom: "Afghanistan", aideJuridique: "https://www.afghanistanjusticeproject.org/", lois: "https://www.afghan-web.com/law/", tribunaux: "https://www.afghanistanjusticeproject.org/", barreau: "https://www.afghanbar.org/", mediation: "https://www.mediation.org/" },
+                am: { nom: "Arménie", aideJuridique: "https://www.moj.am/", lois: "https://www.arlis.am/", tribunaux: "https://www.court.am/", barreau: "https://www.advocates.am/", mediation: "https://www.mediation.am/" },
+                az: { nom: "Azerbaïdjan", aideJuridique: "https://www.justice.gov.az/", lois: "https://www.e-qanun.az/", tribunaux: "https://www.courts.gov.az/", barreau: "https://www.barassociation.az/", mediation: "https://www.mediation.az/" },
+                bh: { nom: "Bahreïn", aideJuridique: "https://www.moj.gov.bh/", lois: "https://www.legalaffairs.gov.bh/", tribunaux: "https://www.courts.gov.bh/", barreau: "https://www.bahrainbar.org/", mediation: "https://www.mediation.bh/" },
+                bd: { nom: "Bangladesh", aideJuridique: "https://www.lawjusticediv.gov.bd/", lois: "https://bdlaws.minlaw.gov.bd/", tribunaux: "https://www.supremecourt.gov.bd/", barreau: "https://www.barcouncil.gov.bd/", mediation: "https://www.mediationbd.com/" },
+                bt: { nom: "Bhoutan", aideJuridique: "https://www.judiciary.gov.bt/", lois: "https://www.nab.gov.bt/", tribunaux: "https://www.judiciary.gov.bt/", barreau: "https://www.bhutanbar.org/", mediation: "https://www.mediation.bt/" },
+                bn: { nom: "Brunei", aideJuridique: "https://www.judiciary.gov.bn/", lois: "https://www.agc.gov.bn/", tribunaux: "https://www.judiciary.gov.bn/", barreau: "https://www.bruneibar.org/", mediation: "https://www.mediation.bn/" },
+                kh: { nom: "Cambodge", aideJuridique: "https://www.moj.gov.kh/", lois: "https://www.cambodianlaw.org/", tribunaux: "https://www.courts.gov.kh/", barreau: "https://www.barcambodia.org/", mediation: "https://www.mediationcambodia.org/" },
+                cn: { nom: "Chine", aideJuridique: "https://www.12348.gov.cn/", lois: "https://www.npc.gov.cn/", tribunaux: "https://www.court.gov.cn/", barreau: "https://www.acla.org.cn/", mediation: "https://www.peoplemediation.org.cn/" },
+                cy: { nom: "Chypre", aideJuridique: "https://www.mjpo.gov.cy/", lois: "https://www.cylaw.org/", tribunaux: "https://www.supremecourt.gov.cy/", barreau: "https://www.cyprusbarassociation.org/", mediation: "https://www.mediation.com.cy/" },
+                ge: { nom: "Géorgie", aideJuridique: "https://www.justice.gov.ge/", lois: "https://www.matsne.gov.ge/", tribunaux: "https://www.supremecourt.ge/", barreau: "https://www.gba.ge/", mediation: "https://www.mediation.ge/" },
+                in: { nom: "Inde", aideJuridique: "https://nalsa.gov.in/", lois: "https://www.indiacode.nic.in/", tribunaux: "https://www.sci.gov.in/", barreau: "https://www.barcouncilofindia.org/", mediation: "https://www.mediate.com/" },
                 id: { nom: "Indonésie", aideJuridique: "https://www.mahkamahagung.go.id/", lois: "https://www.dpr.go.id/", tribunaux: "https://www.mahkamahagung.go.id/", barreau: "https://www.peradi.org/", mediation: "https://www.mediation.id/" },
                 ir: { nom: "Iran", aideJuridique: "https://www.iranjudiciary.ir/", lois: "https://www.rc.majlis.ir/", tribunaux: "https://www.iranjudiciary.ir/", barreau: "https://www.iranbar.org/", mediation: "https://www.mediation.ir/" },
                 iq: { nom: "Irak", aideJuridique: "https://www.moj.gov.iq/", lois: "https://www.iraqld.com/", tribunaux: "https://www.hjc.iq/", barreau: "https://www.iraqibarassociation.org/", mediation: "https://www.mediation.iq/" },
-                ie: { nom: "Irlande", aideJuridique: "https://www.legalaidboard.ie/", lois: "https://www.irishstatutebook.ie/", tribunaux: "https://www.courts.ie/", barreau: "https://www.lawsociety.ie/", mediation: "https://www.mediation.ie/" },
                 il: { nom: "Israël", aideJuridique: "https://www.justice.gov.il/", lois: "https://www.nevo.co.il/", tribunaux: "https://www.court.gov.il/", barreau: "https://www.israelbar.org.il/", mediation: "https://www.mediation.org.il/" },
-                it: { nom: "Italie", aideJuridique: "https://www.giustizia.it/", lois: "https://www.normattiva.it/", tribunaux: "https://www.cortedicassazione.it/", barreau: "https://www.consiglionazionaleforense.it/", mediation: "https://www.mediazioneitaliana.it/" },
                 jp: { nom: "Japon", aideJuridique: "https://www.courts.go.jp/", lois: "https://www.japaneselawtranslation.go.jp/", tribunaux: "https://www.courts.go.jp/", barreau: "https://www.nichibenren.or.jp/", mediation: "https://www.mediation.jp/" },
                 jo: { nom: "Jordanie", aideJuridique: "https://www.moj.gov.jo/", lois: "https://www.lob.gov.jo/", tribunaux: "https://www.jc.jo/", barreau: "https://www.jba.org.jo/", mediation: "https://www.mediation.jo/" },
                 kz: { nom: "Kazakhstan", aideJuridique: "https://www.adilet.gov.kz/", lois: "https://www.adilet.zan.kz/", tribunaux: "https://www.sud.gov.kz/", barreau: "https://www.bar.kz/", mediation: "https://www.mediation.kz/" },
-                ke: { nom: "Kenya", aideJuridique: "https://www.judiciary.go.ke/", lois: "https://www.kenyalaw.org/", tribunaux: "https://www.judiciary.go.ke/", barreau: "https://www.lawsocietyofkenya.or.ke/", mediation: "https://www.mediationkenya.org/" },
                 kw: { nom: "Koweït", aideJuridique: "https://www.moj.gov.kw/", lois: "https://www.kna.kw/", tribunaux: "https://www.courts.gov.kw/", barreau: "https://www.kuwaitbar.org/", mediation: "https://www.mediation.kw/" },
+                kg: { nom: "Kirghizistan", aideJuridique: "https://www.minjust.gov.kg/", lois: "https://www.cbd.minjust.gov.kg/", tribunaux: "https://www.sot.kg/", barreau: "https://www.advokatura.kg/", mediation: "https://www.mediation.kg/" },
+                la: { nom: "Laos", aideJuridique: "https://www.moj.gov.la/", lois: "https://www.laoofficialgazette.gov.la/", tribunaux: "https://www.courts.gov.la/", barreau: "https://www.laobar.org/", mediation: "https://www.mediation.la/" },
                 lb: { nom: "Liban", aideJuridique: "https://www.justice.gov.lb/", lois: "https://www.legislation.gov.lb/", tribunaux: "https://www.courdecassation.gov.lb/", barreau: "https://www.beirutbar.org/", mediation: "https://www.mediation.lb/" },
-                ly: { nom: "Libye", aideJuridique: "https://www.justice.gov.ly/", lois: "https://www.aladel.gov.ly/", tribunaux: "https://www.courts.gov.ly/", barreau: "https://www.libyanbar.org/", mediation: "https://www.mediation.ly/" },
-                lt: { nom: "Lituanie", aideJuridique: "https://www.teismai.lt/", lois: "https://www.e-tar.lt/", tribunaux: "https://www.teismai.lt/", barreau: "https://www.advokatura.lt/", mediation: "https://www.mediation.lt/" },
-                mg: { nom: "Madagascar", aideJuridique: "https://www.justice.gov.mg/", lois: "https://www.assemblee-nationale.mg/", tribunaux: "https://www.courdecassation.mg/", barreau: "https://www.barreau.mg/", mediation: "https://www.mediation.mg/" },
                 my: { nom: "Malaisie", aideJuridique: "https://www.kehakiman.gov.my/", lois: "https://www.cljlaw.com/", tribunaux: "https://www.kehakiman.gov.my/", barreau: "https://www.malaysianbar.org.my/", mediation: "https://www.mediation.my/" },
-                ml: { nom: "Mali", aideJuridique: "https://www.justice.gouv.ml/", lois: "https://www.sgg-mali.ml/", tribunaux: "https://www.courdecassation.ml/", barreau: "https://www.barreaumali.org/", mediation: "https://www.mediation.ml/" },
-                mx: { nom: "Mexique", aideJuridique: "https://www.gob.mx/justicia", lois: "https://www.diputados.gob.mx/LeyesBiblio/", tribunaux: "https://www.scjn.gob.mx/", barreau: "https://www.bma.org.mx/", mediation: "https://www.mediacion.mx/" },
-                ma: { nom: "Maroc", aideJuridique: "https://www.justice.gov.ma/", lois: "https://www.sgg.gov.ma/", tribunaux: "https://www.cspj.ma/", barreau: "https://www.ohada.org/", mediation: "https://www.mediation.ma/" },
-                nl: { nom: "Pays-Bas", aideJuridique: "https://www.rechtspraak.nl/", lois: "https://wetten.overheid.nl/", tribunaux: "https://www.rechtspraak.nl/", barreau: "https://www.advocatenorde.nl/", mediation: "https://www.mediation.nl/" },
-                nz: { nom: "Nouvelle-Zélande", aideJuridique: "https://www.justice.govt.nz/", lois: "https://www.legislation.govt.nz/", tribunaux: "https://www.courtsofnz.govt.nz/", barreau: "https://www.nzbar.org.nz/", mediation: "https://www.mediation.org.nz/" },
-                ng: { nom: "Nigeria", aideJuridique: "https://www.justice.gov.ng/", lois: "https://www.nigerialaw.org/", tribunaux: "https://www.courtofappeal.gov.ng/", barreau: "https://www.nigerianbar.org.ng/", mediation: "https://www.mediation.org.ng/" },
-                no: { nom: "Norvège", aideJuridique: "https://www.domstol.no/", lois: "https://lovdata.no/", tribunaux: "https://www.domstol.no/", barreau: "https://www.advokaten.no/", mediation: "https://www.mediation.no/" },
+                mv: { nom: "Maldives", aideJuridique: "https://www.judiciary.gov.mv/", lois: "https://www.mvlaw.gov.mv/", tribunaux: "https://www.judiciary.gov.mv/", barreau: "https://www.barmv.org/", mediation: "https://www.mediation.mv/" },
+                mn: { nom: "Mongolie", aideJuridique: "https://www.mojha.gov.mn/", lois: "https://www.legalinfo.mn/", tribunaux: "https://www.supremecourt.mn/", barreau: "https://www.mongolbar.mn/", mediation: "https://www.mediation.mn/" },
+                mm: { nom: "Myanmar", aideJuridique: "https://www.moj.gov.mm/", lois: "https://www.myanmar-law-library.org/", tribunaux: "https://www.unionsupremecourt.gov.mm/", barreau: "https://www.myanmarbar.org/", mediation: "https://www.mediation.mm/" },
+                np: { nom: "Népal", aideJuridique: "https://www.moj.gov.np/", lois: "https://www.lawcommission.gov.np/", tribunaux: "https://www.supremecourt.gov.np/", barreau: "https://www.nepalbar.org/", mediation: "https://www.mediation.np/" },
+                kp: { nom: "Corée du Nord", aideJuridique: "#", lois: "#", tribunaux: "#", barreau: "#", mediation: "#" },
+                om: { nom: "Oman", aideJuridique: "https://www.moj.gov.om/", lois: "https://www.omanlaw.net/", tribunaux: "https://www.courts.gov.om/", barreau: "https://www.omanbar.org/", mediation: "https://www.mediation.om/" },
                 pk: { nom: "Pakistan", aideJuridique: "https://www.molaw.gov.pk/", lois: "https://www.pakistancode.gov.pk/", tribunaux: "https://www.supremecourt.gov.pk/", barreau: "https://www.pakistanbar.org/", mediation: "https://www.mediation.org.pk/" },
-                pe: { nom: "Pérou", aideJuridique: "https://www.minjus.gob.pe/", lois: "https://www.congreso.gob.pe/", tribunaux: "https://www.pj.gob.pe/", barreau: "https://www.cal.org.pe/", mediation: "https://www.mediacion.pe/" },
                 ph: { nom: "Philippines", aideJuridique: "https://www.doj.gov.ph/", lois: "https://www.officialgazette.gov.ph/", tribunaux: "https://www.judiciary.gov.ph/", barreau: "https://www.ibp.ph/", mediation: "https://www.mediation.ph/" },
+                qa: { nom: "Qatar", aideJuridique: "https://www.moj.gov.qa/", lois: "https://www.almeezan.qa/", tribunaux: "https://www.courts.gov.qa/", barreau: "https://www.qatarbar.org/", mediation: "https://www.mediation.qa/" },
+                sa: { nom: "Arabie saoudite", aideJuridique: "https://www.moj.gov.sa/", lois: "https://www.boe.gov.sa/", tribunaux: "https://www.moj.gov.sa/", barreau: "https://www.sba.gov.sa/", mediation: "https://www.mediation.sa/" },
+                sg: { nom: "Singapour", aideJuridique: "https://www.lawsoc.org.sg/", lois: "https://sso.agc.gov.sg/", tribunaux: "https://www.supremecourt.gov.sg/", barreau: "https://www.lawsociety.org.sg/", mediation: "https://www.mediation.com.sg/" },
+                kr: { nom: "Corée du Sud", aideJuridique: "https://www.scourt.go.kr/", lois: "https://www.law.go.kr/", tribunaux: "https://www.scourt.go.kr/", barreau: "https://www.koreanbar.or.kr/", mediation: "https://www.mediation.or.kr/" },
+                lk: { nom: "Sri Lanka", aideJuridique: "https://www.justiceministry.gov.lk/", lois: "https://www.lawnet.gov.lk/", tribunaux: "https://www.supremecourt.lk/", barreau: "https://www.basl.lk/", mediation: "https://www.mediation.lk/" },
+                sy: { nom: "Syrie", aideJuridique: "https://www.moj.gov.sy/", lois: "https://www.syrianlaw.org/", tribunaux: "https://www.courts.gov.sy/", barreau: "https://www.syrianbar.org/", mediation: "https://www.mediation.sy/" },
+                tw: { nom: "Taïwan", aideJuridique: "https://www.judicial.gov.tw/", lois: "https://law.moj.gov.tw/", tribunaux: "https://www.judicial.gov.tw/", barreau: "https://www.twba.org.tw/", mediation: "https://www.mediation.org.tw/" },
+                tj: { nom: "Tadjikistan", aideJuridique: "https://www.minjust.tj/", lois: "https://www.adlia.tj/", tribunaux: "https://www.sud.tj/", barreau: "https://www.tjbar.org/", mediation: "https://www.mediation.tj/" },
+                th: { nom: "Thaïlande", aideJuridique: "https://www.coj.go.th/", lois: "https://www.krisdika.go.th/", tribunaux: "https://www.coj.go.th/", barreau: "https://www.lawyerscouncil.or.th/", mediation: "https://www.mediation.or.th/" },
+                tl: { nom: "Timor oriental", aideJuridique: "https://www.mj.gov.tl/", lois: "https://www.legislation.gov.tl/", tribunaux: "https://www.tribunais.gov.tl/", barreau: "https://www.timorbar.org/", mediation: "https://www.mediation.tl/" },
+                tr: { nom: "Turquie", aideJuridique: "https://www.adalet.gov.tr/", lois: "https://www.mevzuat.gov.tr/", tribunaux: "https://www.yargitay.gov.tr/", barreau: "https://www.barobirlik.org.tr/", mediation: "https://www.mediation.com.tr/" },
+                tm: { nom: "Turkménistan", aideJuridique: "https://www.minjust.gov.tm/", lois: "https://www.turkmenistanlaw.tm/", tribunaux: "https://www.courts.gov.tm/", barreau: "https://www.tmbar.org/", mediation: "https://www.mediation.tm/" },
+                ae: { nom: "Émirats arabes unis", aideJuridique: "https://www.moj.gov.ae/", lois: "https://www.elaws.gov.ae/", tribunaux: "https://www.adjd.gov.ae/", barreau: "https://www.uaelegal.com/", mediation: "https://www.mediation.ae/" },
+                uz: { nom: "Ouzbékistan", aideJuridique: "https://www.minjust.uz/", lois: "https://lex.uz/", tribunaux: "https://www.sud.uz/", barreau: "https://www.uzbar.org/", mediation: "https://www.mediation.uz/" },
+                vn: { nom: "Viêt Nam", aideJuridique: "https://www.moj.gov.vn/", lois: "https://vbpl.vn/", tribunaux: "https://www.toaan.gov.vn/", barreau: "https://www.luatsu.org.vn/", mediation: "https://www.mediation.vn/" },
+                ye: { nom: "Yémen", aideJuridique: "https://www.moj.gov.ye/", lois: "https://www.yemenlaw.org/", tribunaux: "https://www.courts.gov.ye/", barreau: "https://www.yemenbar.org/", mediation: "https://www.mediation.ye/" },
+                // Europe
+                al: { nom: "Albanie", aideJuridique: "https://www.drejtesia.gov.al/", lois: "https://www.qbz.gov.al/", tribunaux: "https://www.gjykata.gov.al/", barreau: "https://www.dhka.gov.al/", mediation: "https://www.mediation.al/" },
+                ad: { nom: "Andorre", aideJuridique: "https://www.justicia.ad/", lois: "https://www.bopa.ad/", tribunaux: "https://www.justicia.ad/", barreau: "https://www.col·legiadvocats.ad/", mediation: "https://www.mediation.ad/" },
+                at: { nom: "Autriche", aideJuridique: "https://www.justiz.gv.at/", lois: "https://www.ris.bka.gv.at/", tribunaux: "https://www.justiz.gv.at/gerichte/", barreau: "https://www.rechtsanwaelte.at/", mediation: "https://www.mediation.at/" },
+                by: { nom: "Biélorussie", aideJuridique: "https://www.minjust.gov.by/", lois: "https://pravo.by/", tribunaux: "https://www.court.gov.by/", barreau: "https://www.rka.by/", mediation: "https://www.mediation.by/" },
+                be: { nom: "Belgique", aideJuridique: "https://www.avocats.be/fr/aide-juridique", lois: "https://www.ejustice.just.fgov.be/", tribunaux: "https://www.tribunaux-rechtbanken.be/", barreau: "https://www.avocats.be/", mediation: "https://www.mediation-justice.be/" },
+                ba: { nom: "Bosnie-Herzégovine", aideJuridique: "https://www.pravosudje.ba/", lois: "https://www.sluzbenilist.ba/", tribunaux: "https://www.sudbih.gov.ba/", barreau: "https://www.advokatska-komora.ba/", mediation: "https://www.mediation.ba/" },
+                bg: { nom: "Bulgarie", aideJuridique: "https://www.justice.government.bg/", lois: "https://www.lex.bg/", tribunaux: "https://www.vss.justice.bg/", barreau: "https://www.vas.bg/", mediation: "https://www.mediation.bg/" },
+                hr: { nom: "Croatie", aideJuridique: "https://www.pravosudje.hr/", lois: "https://www.zakon.hr/", tribunaux: "https://www.vsrh.hr/", barreau: "https://www.hok-cba.hr/", mediation: "https://www.mediation.hr/" },
+                cz: { nom: "République tchèque", aideJuridique: "https://www.justice.cz/", lois: "https://www.zakonyprolidi.cz/", tribunaux: "https://www.justice.cz/soudy", barreau: "https://www.cak.cz/", mediation: "https://www.mediator.cz/" },
+                dk: { nom: "Danemark", aideJuridique: "https://www.domstol.dk/", lois: "https://www.retsinformation.dk/", tribunaux: "https://www.domstol.dk/", barreau: "https://www.advokatsamfundet.dk/", mediation: "https://www.mediation.dk/" },
+                ee: { nom: "Estonie", aideJuridique: "https://www.just.ee/", lois: "https://www.riigiteataja.ee/", tribunaux: "https://www.kohus.ee/", barreau: "https://www.advokatuur.ee/", mediation: "https://www.mediation.ee/" },
+                fi: { nom: "Finlande", aideJuridique: "https://www.oikeus.fi/", lois: "https://www.finlex.fi/", tribunaux: "https://www.oikeus.fi/tuomioistuimet/", barreau: "https://www.asianajajaliitto.fi/", mediation: "https://www.mediation.fi/" },
+                fr: { nom: "France", aideJuridique: "https://www.service-public.fr/particuliers/vosdroits/F18074", lois: "https://www.legifrance.gouv.fr/", tribunaux: "https://www.service-public.fr/particuliers/vosdroits/F1739", barreau: "https://www.cnb.avocat.fr/", mediation: "https://www.mediation-conso.fr/" },
+                de: { nom: "Allemagne", aideJuridique: "https://www.bmj.de/", lois: "https://www.gesetze-im-internet.de/", tribunaux: "https://www.bundesgerichtshof.de/", barreau: "https://www.brak.de/", mediation: "https://www.mediation.de/" },
+                gr: { nom: "Grèce", aideJuridique: "https://www.ministryofjustice.gr/", lois: "https://www.et.gr/", tribunaux: "https://www.areiospagos.gr/", barreau: "https://www.dsa.gr/", mediation: "https://www.mediation.gr/" },
+                hu: { nom: "Hongrie", aideJuridique: "https://www.birosag.hu/", lois: "https://www.njt.hu/", tribunaux: "https://www.birosag.hu/", barreau: "https://www.magyarugyvedikamara.hu/", mediation: "https://www.mediation.hu/" },
+                is: { nom: "Islande", aideJuridique: "https://www.domstolasysla.is/", lois: "https://www.althingi.is/lagasafn/", tribunaux: "https://www.domstolar.is/", barreau: "https://www.lmfi.is/", mediation: "https://www.mediation.is/" },
+                ie: { nom: "Irlande", aideJuridique: "https://www.legalaidboard.ie/", lois: "https://www.irishstatutebook.ie/", tribunaux: "https://www.courts.ie/", barreau: "https://www.lawsociety.ie/", mediation: "https://www.mediation.ie/" },
+                it: { nom: "Italie", aideJuridique: "https://www.giustizia.it/", lois: "https://www.normattiva.it/", tribunaux: "https://www.cortedicassazione.it/", barreau: "https://www.consiglionazionaleforense.it/", mediation: "https://www.mediazioneitaliana.it/" },
+                lv: { nom: "Lettonie", aideJuridique: "https://www.ta.gov.lv/", lois: "https://likumi.lv/", tribunaux: "https://www.tiesas.lv/", barreau: "https://www.advokatura.lv/", mediation: "https://www.mediation.lv/" },
+                li: { nom: "Liechtenstein", aideJuridique: "https://www.gerichte.li/", lois: "https://www.gesetze.li/", tribunaux: "https://www.gerichte.li/", barreau: "https://www.li-bar.li/", mediation: "https://www.mediation.li/" },
+                lt: { nom: "Lituanie", aideJuridique: "https://www.teismai.lt/", lois: "https://www.e-tar.lt/", tribunaux: "https://www.teismai.lt/", barreau: "https://www.advokatura.lt/", mediation: "https://www.mediation.lt/" },
+                lu: { nom: "Luxembourg", aideJuridique: "https://justice.public.lu/", lois: "https://legilux.public.lu/", tribunaux: "https://justice.public.lu/fr/organisation-justice/juridictions.html", barreau: "https://www.barreau.lu/", mediation: "https://www.mediation.lu/" },
+                mt: { nom: "Malte", aideJuridique: "https://www.justice.gov.mt/", lois: "https://www.justiceservices.gov.mt/LOM.aspx?pageid=27", tribunaux: "https://www.judiciarymalta.gov.mt/", barreau: "https://www.avukati.org/", mediation: "https://www.mediation.org.mt/" },
+                md: { nom: "Moldavie", aideJuridique: "https://www.justice.gov.md/", lois: "https://www.legis.md/", tribunaux: "https://www.csj.md/", barreau: "https://www.avocatul.md/", mediation: "https://www.mediation.md/" },
+                mc: { nom: "Monaco", aideJuridique: "https://www.gouv.mc/Gouvernement-et-Institutions/Le-Gouvernement/Departement-de-la-Justice", lois: "https://www.legimonaco.mc/", tribunaux: "https://www.tribunaux.mc/", barreau: "https://www.barreau.mc/", mediation: "https://www.mediation.mc/" },
+                me: { nom: "Monténégro", aideJuridique: "https://www.pravda.gov.me/", lois: "https://www.sluzbenilist.me/", tribunaux: "https://www.sudovi.me/", barreau: "https://www.advokatska-komora.me/", mediation: "https://www.mediation.me/" },
+                nl: { nom: "Pays-Bas", aideJuridique: "https://www.rechtspraak.nl/", lois: "https://wetten.overheid.nl/", tribunaux: "https://www.rechtspraak.nl/", barreau: "https://www.advocatenorde.nl/", mediation: "https://www.mediation.nl/" },
+                mk: { nom: "Macédoine du Nord", aideJuridique: "https://www.pravda.gov.mk/", lois: "https://www.slvesnik.com.mk/", tribunaux: "https://www.vsrm.mk/", barreau: "https://www.mba.org.mk/", mediation: "https://www.mediation.mk/" },
+                no: { nom: "Norvège", aideJuridique: "https://www.domstol.no/", lois: "https://lovdata.no/", tribunaux: "https://www.domstol.no/", barreau: "https://www.advokaten.no/", mediation: "https://www.mediation.no/" },
                 pl: { nom: "Pologne", aideJuridique: "https://www.ms.gov.pl/", lois: "https://isap.sejm.gov.pl/", tribunaux: "https://www.sn.pl/", barreau: "https://www.nra.pl/", mediation: "https://www.mediacja.gov.pl/" },
                 pt: { nom: "Portugal", aideJuridique: "https://www.dgpj.mj.pt/", lois: "https://dre.pt/", tribunaux: "https://www.citius.mj.pt/", barreau: "https://www.oa.pt/", mediation: "https://www.mediacao.pt/" },
                 ro: { nom: "Roumanie", aideJuridique: "https://www.just.ro/", lois: "https://legislatie.just.ro/", tribunaux: "https://www.csm1909.ro/", barreau: "https://www.unbr.ro/", mediation: "https://www.mediere.ro/" },
                 ru: { nom: "Russie", aideJuridique: "https://www.minjust.ru/", lois: "http://pravo.gov.ru/", tribunaux: "https://www.vsrf.ru/", barreau: "https://fparf.ru/", mediation: "https://www.mediation.ru/" },
-                sa: { nom: "Arabie saoudite", aideJuridique: "https://www.moj.gov.sa/", lois: "https://www.boe.gov.sa/", tribunaux: "https://www.moj.gov.sa/", barreau: "https://www.sba.gov.sa/", mediation: "https://www.mediation.sa/" },
-                sn: { nom: "Sénégal", aideJuridique: "https://www.justice.gouv.sn/", lois: "https://www.sec.gouv.sn/", tribunaux: "https://www.courdecassation.sn/", barreau: "https://www.barreau.sn/", mediation: "https://www.mediation.sn/" },
+                sm: { nom: "Saint-Marin", aideJuridique: "https://www.tribunale.sm/", lois: "https://www.consigliograndeegenerale.sm/", tribunaux: "https://www.tribunale.sm/", barreau: "https://www.avvocati.sm/", mediation: "https://www.mediation.sm/" },
                 rs: { nom: "Serbie", aideJuridique: "https://www.mpravde.gov.rs/", lois: "https://www.pravno-informacioni-sistem.rs/", tribunaux: "https://www.vk.sud.rs/", barreau: "https://www.advokatska-komora.rs/", mediation: "https://www.mediation.rs/" },
-                sg: { nom: "Singapour", aideJuridique: "https://www.lawsoc.org.sg/", lois: "https://sso.agc.gov.sg/", tribunaux: "https://www.supremecourt.gov.sg/", barreau: "https://www.lawsociety.org.sg/", mediation: "https://www.mediation.com.sg/" },
                 sk: { nom: "Slovaquie", aideJuridique: "https://www.justice.gov.sk/", lois: "https://www.slov-lex.sk/", tribunaux: "https://www.nssr.gov.sk/", barreau: "https://www.sak.sk/", mediation: "https://www.mediation.sk/" },
                 si: { nom: "Slovénie", aideJuridique: "https://www.sodisce.si/", lois: "https://www.pisrs.si/", tribunaux: "https://www.sodisce.si/", barreau: "https://www.odv-zb.si/", mediation: "https://www.mediation.si/" },
-                kr: { nom: "Corée du Sud", aideJuridique: "https://www.scourt.go.kr/", lois: "https://www.law.go.kr/", tribunaux: "https://www.scourt.go.kr/", barreau: "https://www.koreanbar.or.kr/", mediation: "https://www.mediation.or.kr/" },
+                es: { nom: "Espagne", aideJuridique: "https://www.mjusticia.gob.es/es/ciudadania/asistencia-juridica", lois: "https://www.boe.es/", tribunaux: "https://www.poderjudicial.es/", barreau: "https://www.abogacia.es/", mediation: "https://www.mediacionjusticia.com/" },
                 se: { nom: "Suède", aideJuridique: "https://www.domstol.se/", lois: "https://www.riksdagen.se/sv/dokument-lagar/", tribunaux: "https://www.domstol.se/", barreau: "https://www.advokatsamfundet.se/", mediation: "https://www.mediation.se/" },
                 ch: { nom: "Suisse", aideJuridique: "https://www.bj.admin.ch/", lois: "https://www.fedlex.admin.ch/", tribunaux: "https://www.bger.ch/", barreau: "https://www.sav-fsa.ch/", mediation: "https://www.mediation-schweiz.ch/" },
-                tw: { nom: "Taïwan", aideJuridique: "https://www.judicial.gov.tw/", lois: "https://law.moj.gov.tw/", tribunaux: "https://www.judicial.gov.tw/", barreau: "https://www.twba.org.tw/", mediation: "https://www.mediation.org.tw/" },
-                tz: { nom: "Tanzanie", aideJuridique: "https://www.judiciary.go.tz/", lois: "https://www.parliament.go.tz/", tribunaux: "https://www.judiciary.go.tz/", barreau: "https://www.tls.or.tz/", mediation: "https://www.mediation.co.tz/" },
-                th: { nom: "Thaïlande", aideJuridique: "https://www.coj.go.th/", lois: "https://www.krisdika.go.th/", tribunaux: "https://www.coj.go.th/", barreau: "https://www.lawyerscouncil.or.th/", mediation: "https://www.mediation.or.th/" },
-                tn: { nom: "Tunisie", aideJuridique: "https://www.justice.gov.tn/", lois: "https://www.iort.gov.tn/", tribunaux: "https://www.courdecassation.tn/", barreau: "https://www.avocat.org.tn/", mediation: "https://www.mediation.tn/" },
-                tr: { nom: "Turquie", aideJuridique: "https://www.adalet.gov.tr/", lois: "https://www.mevzuat.gov.tr/", tribunaux: "https://www.yargitay.gov.tr/", barreau: "https://www.barobirlik.org.tr/", mediation: "https://www.mediation.com.tr/" },
                 ua: { nom: "Ukraine", aideJuridique: "https://www.minjust.gov.ua/", lois: "https://zakon.rada.gov.ua/", tribunaux: "https://www.court.gov.ua/", barreau: "https://unba.org.ua/", mediation: "https://www.mediation.org.ua/" },
-                ae: { nom: "Émirats arabes unis", aideJuridique: "https://www.moj.gov.ae/", lois: "https://www.elaws.gov.ae/", tribunaux: "https://www.adjd.gov.ae/", barreau: "https://www.uaelegal.com/", mediation: "https://www.mediation.ae/" },
-                uy: { nom: "Uruguay", aideJuridique: "https://www.poderjudicial.gub.uy/", lois: "https://www.parlamento.gub.uy/", tribunaux: "https://www.poderjudicial.gub.uy/", barreau: "https://www.colegioabogados.org.uy/", mediation: "https://www.mediacion.gub.uy/" },
-                ve: { nom: "Venezuela", aideJuridique: "https://www.tsj.gob.ve/", lois: "https://www.asambleanacional.gob.ve/", tribunaux: "https://www.tsj.gob.ve/", barreau: "https://www.colegioabogados.org.ve/", mediation: "https://www.mediation.org.ve/" },
-                vn: { nom: "Viêt Nam", aideJuridique: "https://www.moj.gov.vn/", lois: "https://vbpl.vn/", tribunaux: "https://www.toaan.gov.vn/", barreau: "https://www.luatsu.org.vn/", mediation: "https://www.mediation.vn/" },
-                zm: { nom: "Zambie", aideJuridique: "https://www.judiciary.gov.zm/", lois: "https://www.parliament.gov.zm/", tribunaux: "https://www.judiciary.gov.zm/", barreau: "https://www.lsz.org.zm/", mediation: "https://www.mediation.zm/" },
-                zw: { nom: "Zimbabwe", aideJuridique: "https://www.justice.gov.zw/", lois: "https://www.parlzim.gov.zw/", tribunaux: "https://www.judicial.gov.zw/", barreau: "https://www.lawsociety.co.zw/", mediation: "https://www.mediation.co.zw/" }
+                gb: { nom: "Royaume-Uni", aideJuridique: "https://www.gov.uk/legal-aid", lois: "https://www.legislation.gov.uk/", tribunaux: "https://www.gov.uk/courts", barreau: "https://www.barcouncil.org.uk/", mediation: "https://www.familymediationcouncil.org.uk/" },
+                va: { nom: "Vatican", aideJuridique: "https://www.vaticanstate.va/", lois: "https://www.vatican.va/content/vatican/fr.html", tribunaux: "https://www.vaticanstate.va/it/servizi/tribunale.html", barreau: "#", mediation: "#" },
+                // Océanie
+                au: { nom: "Australie", aideJuridique: "https://www.legalaid.nsw.gov.au/", lois: "https://www.legislation.gov.au/", tribunaux: "https://www.fedcourt.gov.au/", barreau: "https://www.lawcouncil.asn.au/", mediation: "https://www.mediation.com.au/" },
+                fj: { nom: "Fidji", aideJuridique: "https://www.judiciary.gov.fj/", lois: "https://www.parliament.gov.fj/", tribunaux: "https://www.judiciary.gov.fj/", barreau: "https://www.fijilawsociety.com/", mediation: "https://www.mediation.org.fj/" },
+                ki: { nom: "Kiribati", aideJuridique: "https://www.president.gov.ki/", lois: "https://www.parliament.gov.ki/", tribunaux: "https://www.judiciary.gov.ki/", barreau: "https://www.kiribatilawsociety.org/", mediation: "https://www.mediation.ki/" },
+                mh: { nom: "Îles Marshall", aideJuridique: "https://www.rmiembassyus.org/", lois: "https://www.paclii.org/mh/", tribunaux: "https://www.rmicourts.org/", barreau: "https://www.marshallbar.org/", mediation: "https://www.mediation.mh/" },
+                fm: { nom: "Micronésie", aideJuridique: "https://www.fsmgov.org/", lois: "https://www.fsmlaw.org/", tribunaux: "https://www.fsmcourts.org/", barreau: "https://www.fsmbar.org/", mediation: "https://www.mediation.fm/" },
+                nr: { nom: "Nauru", aideJuridique: "https://www.naurugov.nr/", lois: "https://www.paclii.org/nr/", tribunaux: "https://www.naurucourts.gov.nr/", barreau: "https://www.naurubar.org/", mediation: "https://www.mediation.nr/" },
+                nz: { nom: "Nouvelle-Zélande", aideJuridique: "https://www.justice.govt.nz/", lois: "https://www.legislation.govt.nz/", tribunaux: "https://www.courtsofnz.govt.nz/", barreau: "https://www.nzbar.org.nz/", mediation: "https://www.mediation.org.nz/" },
+                pw: { nom: "Palaos", aideJuridique: "https://www.palaugov.pw/", lois: "https://www.paclii.org/pw/", tribunaux: "https://www.palaucourts.org/", barreau: "https://www.palaubar.org/", mediation: "https://www.mediation.pw/" },
+                pg: { nom: "Papouasie-Nouvelle-Guinée", aideJuridique: "https://www.justice.gov.pg/", lois: "https://www.paclii.org/pg/", tribunaux: "https://www.pngjudiciary.gov.pg/", barreau: "https://www.pnglawsociety.com/", mediation: "https://www.mediation.org.pg/" },
+                ws: { nom: "Samoa", aideJuridique: "https://www.justice.gov.ws/", lois: "https://www.paclii.org/ws/", tribunaux: "https://www.samoacourts.gov.ws/", barreau: "https://www.samoabar.org/", mediation: "https://www.mediation.ws/" },
+                sb: { nom: "Îles Salomon", aideJuridique: "https://www.justice.gov.sb/", lois: "https://www.paclii.org/sb/", tribunaux: "https://www.solomoncourts.gov.sb/", barreau: "https://www.solomonbar.org/", mediation: "https://www.mediation.sb/" },
+                to: { nom: "Tonga", aideJuridique: "https://www.justice.gov.to/", lois: "https://www.paclii.org/to/", tribunaux: "https://www.tongacourts.gov.to/", barreau: "https://www.tongabar.org/", mediation: "https://www.mediation.to/" },
+                tv: { nom: "Tuvalu", aideJuridique: "https://www.tuvaluislands.com/", lois: "https://www.paclii.org/tv/", tribunaux: "https://www.tuvalucourts.gov.tv/", barreau: "https://www.tuvalubar.org/", mediation: "https://www.mediation.tv/" },
+                vu: { nom: "Vanuatu", aideJuridique: "https://www.justice.gov.vu/", lois: "https://www.paclii.org/vu/", tribunaux: "https://www.vanuatucourts.gov.vu/", barreau: "https://www.vanuatubar.org/", mediation: "https://www.mediation.vu/" }
             },
             emergencies: {
-                fr: "Police 17, Ambulance 15, Pompiers 18, Violences femmes 3919, Enfants 119, Soutien 09 72 39 40 50",
-                ca: "Police 911, Ambulance 911, Pompiers 911, Violences femmes 1-866-845-1555, Enfants 1-800-668-6868, Crise suicide 1-833-456-4566",
-                us: "Police 911, Ambulance 911, Pompiers 911, Violences domestiques 1-800-799-7233, Enfants 1-800-422-4453, Crise suicide 988",
-                gb: "Police 999, Ambulance 999, Pompiers 999, Violences domestiques 0808 2000 247, Enfants 0800 1111, Samaritans 116 123",
-                in: "Police 100, Ambulance 102, Pompiers 101, Femmes 1091, Enfants 1098, Soutien +91 9820466726",
-                cn: "Police 110, Ambulance 120, Pompiers 119, Violences femmes 12338, Enfants 12345, Soutien psy 010-82951332",
-                es: "Police 091, Ambulance 061, Pompiers 080, Violences genre 016, Enfants 116 111, Esperanza 717 003 717",
-                eg: "Police 122, Ambulance 123, Pompiers 180, Femmes 16000, Enfants 16000, Soutien psy 0800 888 888",
-                br: "Police 190, Ambulance 192, Pompiers 193, Femmes 180, Enfants 100, Soutien 188",
-                za: "Police 10111, Ambulance 10177, Pompiers 10177, Violences femmes 0800 428 428, Enfants 0800 055 555, Crise suicide 0800 567 567",
-                au: "Police 000, Ambulance 000, Pompiers 000, Violences domestiques 1800 737 732, Enfants 1800 55 1800, Lifeline 13 11 14",
-                af: "Police 119, Ambulance 112, Pompiers 119",
-                al: "Police 129, Ambulance 127, Pompiers 128",
+                // Afrique
                 dz: "Police 17, Ambulance 14, Pompiers 14",
-                ar: "Police 101, Ambulance 107, Pompiers 100",
-                am: "Police 102, Ambulance 103, Pompiers 101",
-                at: "Police 133, Ambulance 144, Pompiers 122",
-                bd: "Police 999, Ambulance 199, Pompiers 199",
-                be: "Police 101, Ambulance 112, Pompiers 112",
-                bg: "Police 166, Ambulance 150, Pompiers 160",
-                kh: "Police 117, Ambulance 119, Pompiers 118",
+                ao: "Police 113, Ambulance 112, Pompiers 115",
+                bj: "Police 117, Ambulance 112, Pompiers 118",
+                bw: "Police 999, Ambulance 997, Pompiers 998",
+                bf: "Police 17, Ambulance 112, Pompiers 18",
+                bi: "Police 117, Ambulance 112, Pompiers 118",
                 cm: "Police 117, Ambulance 119, Pompiers 118",
+                cv: "Police 132, Ambulance 130, Pompiers 131",
+                cf: "Police 117, Ambulance 112, Pompiers 118",
+                td: "Police 17, Ambulance 15, Pompiers 18",
+                km: "Police 17, Ambulance 15, Pompiers 18",
+                cg: "Police 117, Ambulance 112, Pompiers 118",
+                cd: "Police 112, Ambulance 113, Pompiers 118",
+                dj: "Police 17, Ambulance 19, Pompiers 18",
+                eg: "Police 122, Ambulance 123, Pompiers 180",
+                gq: "Police 114, Ambulance 112, Pompiers 115",
+                er: "Police 113, Ambulance 114, Pompiers 116",
+                sz: "Police 999, Ambulance 977, Pompiers 933",
+                et: "Police 991, Ambulance 907, Pompiers 939",
+                ga: "Police 177, Ambulance 18, Pompiers 18",
+                gm: "Police 117, Ambulance 116, Pompiers 118",
+                gh: "Police 191, Ambulance 193, Pompiers 192",
+                gn: "Police 117, Ambulance 18, Pompiers 18",
+                gw: "Police 117, Ambulance 119, Pompiers 118",
+                ci: "Police 170, Ambulance 185, Pompiers 180",
+                ke: "Police 999, Ambulance 999, Pompiers 999",
+                ls: "Police 123, Ambulance 121, Pompiers 122",
+                lr: "Police 911, Ambulance 911, Pompiers 911",
+                ly: "Police 1515, Ambulance 191, Pompiers 193",
+                mg: "Police 117, Ambulance 124, Pompiers 118",
+                mw: "Police 997, Ambulance 998, Pompiers 999",
+                ml: "Police 17, Ambulance 15, Pompiers 18",
+                mr: "Police 117, Ambulance 101, Pompiers 118",
+                mu: "Police 999, Ambulance 114, Pompiers 995",
+                ma: "Police 19, Ambulance 15, Pompiers 15",
+                mz: "Police 119, Ambulance 117, Pompiers 198",
+                na: "Police 10111, Ambulance 10177, Pompiers 10177",
+                ne: "Police 17, Ambulance 15, Pompiers 18",
+                ng: "Police 112, Ambulance 112, Pompiers 112",
+                rw: "Police 112, Ambulance 912, Pompiers 111",
+                st: "Police 112, Ambulance 112, Pompiers 112",
+                sn: "Police 17, Ambulance 15, Pompiers 18",
+                sc: "Police 999, Ambulance 999, Pompiers 999",
+                sl: "Police 999, Ambulance 999, Pompiers 999",
+                so: "Police 888, Ambulance 999, Pompiers 555",
+                za: "Police 10111, Ambulance 10177, Pompiers 10177",
+                ss: "Police 777, Ambulance 999, Pompiers 666",
+                sd: "Police 999, Ambulance 999, Pompiers 999",
+                tz: "Police 112, Ambulance 114, Pompiers 111",
+                tg: "Police 117, Ambulance 820, Pompiers 118",
+                tn: "Police 197, Ambulance 190, Pompiers 198",
+                ug: "Police 999, Ambulance 999, Pompiers 999",
+                zm: "Police 999, Ambulance 992, Pompiers 993",
+                zw: "Police 999, Ambulance 994, Pompiers 993",
+                // Amériques
+                ar: "Police 101, Ambulance 107, Pompiers 100",
+                bo: "Police 110, Ambulance 118, Pompiers 119",
+                br: "Police 190, Ambulance 192, Pompiers 193",
+                ca: "Police 911, Ambulance 911, Pompiers 911",
                 cl: "Police 133, Ambulance 131, Pompiers 132",
                 co: "Police 123, Ambulance 125, Pompiers 119",
-                cd: "Police 112, Ambulance 113, Pompiers 118",
                 cr: "Police 911, Ambulance 911, Pompiers 911",
-                hr: "Police 192, Ambulance 194, Pompiers 193",
                 cu: "Police 106, Ambulance 104, Pompiers 105",
-                cz: "Police 158, Ambulance 155, Pompiers 150",
-                dk: "Police 112, Ambulance 112, Pompiers 112",
                 do: "Police 911, Ambulance 911, Pompiers 911",
                 ec: "Police 911, Ambulance 911, Pompiers 911",
                 sv: "Police 911, Ambulance 132, Pompiers 913",
-                ee: "Police 112, Ambulance 112, Pompiers 112",
-                fi: "Police 112, Ambulance 112, Pompiers 112",
-                de: "Police 110, Ambulance 112, Pompiers 112",
-                gh: "Police 191, Ambulance 193, Pompiers 192",
-                gr: "Police 100, Ambulance 166, Pompiers 199",
                 gt: "Police 110, Ambulance 122, Pompiers 123",
+                ht: "Police 114, Ambulance 116, Pompiers 115",
                 hn: "Police 911, Ambulance 195, Pompiers 198",
-                hu: "Police 107, Ambulance 104, Pompiers 105",
+                mx: "Police 911, Ambulance 911, Pompiers 911",
+                ni: "Police 118, Ambulance 128, Pompiers 115",
+                pa: "Police 104, Ambulance 911, Pompiers 103",
+                py: "Police 911, Ambulance 141, Pompiers 132",
+                pe: "Police 105, Ambulance 106, Pompiers 116",
+                us: "Police 911, Ambulance 911, Pompiers 911",
+                uy: "Police 911, Ambulance 105, Pompiers 104",
+                ve: "Police 911, Ambulance 171, Pompiers 911",
+                // Asie
+                af: "Police 119, Ambulance 112, Pompiers 119",
+                am: "Police 102, Ambulance 103, Pompiers 101",
+                az: "Police 102, Ambulance 103, Pompiers 101",
+                bh: "Police 999, Ambulance 999, Pompiers 999",
+                bd: "Police 999, Ambulance 199, Pompiers 199",
+                bt: "Police 113, Ambulance 112, Pompiers 110",
+                bn: "Police 993, Ambulance 991, Pompiers 995",
+                kh: "Police 117, Ambulance 119, Pompiers 118",
+                cn: "Police 110, Ambulance 120, Pompiers 119",
+                cy: "Police 112, Ambulance 112, Pompiers 112",
+                ge: "Police 112, Ambulance 112, Pompiers 112",
+                in: "Police 100, Ambulance 102, Pompiers 101",
                 id: "Police 110, Ambulance 118, Pompiers 113",
                 ir: "Police 110, Ambulance 115, Pompiers 125",
                 iq: "Police 104, Ambulance 122, Pompiers 115",
-                ie: "Police 112, Ambulance 112, Pompiers 112",
                 il: "Police 100, Ambulance 101, Pompiers 102",
-                it: "Police 112, Ambulance 118, Pompiers 115",
                 jp: "Police 110, Ambulance 119, Pompiers 119",
                 jo: "Police 911, Ambulance 911, Pompiers 911",
                 kz: "Police 102, Ambulance 103, Pompiers 101",
-                ke: "Police 999, Ambulance 999, Pompiers 999",
                 kw: "Police 112, Ambulance 112, Pompiers 112",
+                kg: "Police 102, Ambulance 103, Pompiers 101",
+                la: "Police 1191, Ambulance 1195, Pompiers 1190",
                 lb: "Police 112, Ambulance 140, Pompiers 175",
-                ly: "Police 1515, Ambulance 191, Pompiers 193",
-                lt: "Police 112, Ambulance 112, Pompiers 112",
-                mg: "Police 117, Ambulance 124, Pompiers 118",
                 my: "Police 999, Ambulance 999, Pompiers 999",
-                ml: "Police 17, Ambulance 15, Pompiers 18",
-                mx: "Police 911, Ambulance 911, Pompiers 911",
-                ma: "Police 19, Ambulance 15, Pompiers 15, Violences femmes 0800 00 25 25",
-                nl: "Police 112, Ambulance 112, Pompiers 112",
-                nz: "Police 111, Ambulance 111, Pompiers 111",
-                ng: "Police 112, Ambulance 112, Pompiers 112",
-                no: "Police 112, Ambulance 113, Pompiers 110",
+                mv: "Police 119, Ambulance 102, Pompiers 118",
+                mn: "Police 102, Ambulance 103, Pompiers 101",
+                mm: "Police 199, Ambulance 192, Pompiers 191",
+                np: "Police 100, Ambulance 102, Pompiers 101",
+                kp: "Police 119, Ambulance 119, Pompiers 119",
+                om: "Police 999, Ambulance 999, Pompiers 999",
                 pk: "Police 15, Ambulance 115, Pompiers 16",
-                pe: "Police 105, Ambulance 106, Pompiers 116",
                 ph: "Police 911, Ambulance 911, Pompiers 911",
+                qa: "Police 999, Ambulance 999, Pompiers 999",
+                sa: "Police 999, Ambulance 997, Pompiers 998",
+                sg: "Police 999, Ambulance 995, Pompiers 995",
+                kr: "Police 112, Ambulance 119, Pompiers 119",
+                lk: "Police 119, Ambulance 110, Pompiers 111",
+                sy: "Police 112, Ambulance 110, Pompiers 113",
+                tw: "Police 110, Ambulance 119, Pompiers 119",
+                tj: "Police 102, Ambulance 103, Pompiers 101",
+                th: "Police 191, Ambulance 1669, Pompiers 199",
+                tl: "Police 112, Ambulance 112, Pompiers 112",
+                tr: "Police 155, Ambulance 112, Pompiers 110",
+                tm: "Police 102, Ambulance 103, Pompiers 101",
+                ae: "Police 999, Ambulance 998, Pompiers 997",
+                uz: "Police 102, Ambulance 103, Pompiers 101",
+                vn: "Police 113, Ambulance 115, Pompiers 114",
+                ye: "Police 199, Ambulance 191, Pompiers 191",
+                // Europe
+                al: "Police 129, Ambulance 127, Pompiers 128",
+                ad: "Police 110, Ambulance 116, Pompiers 118",
+                at: "Police 133, Ambulance 144, Pompiers 122",
+                by: "Police 102, Ambulance 103, Pompiers 101",
+                be: "Police 101, Ambulance 112, Pompiers 112",
+                ba: "Police 122, Ambulance 124, Pompiers 123",
+                bg: "Police 166, Ambulance 150, Pompiers 160",
+                hr: "Police 192, Ambulance 194, Pompiers 193",
+                cz: "Police 158, Ambulance 155, Pompiers 150",
+                dk: "Police 112, Ambulance 112, Pompiers 112",
+                ee: "Police 112, Ambulance 112, Pompiers 112",
+                fi: "Police 112, Ambulance 112, Pompiers 112",
+                fr: "Police 17, Ambulance 15, Pompiers 18",
+                de: "Police 110, Ambulance 112, Pompiers 112",
+                gr: "Police 100, Ambulance 166, Pompiers 199",
+                hu: "Police 107, Ambulance 104, Pompiers 105",
+                is: "Police 112, Ambulance 112, Pompiers 112",
+                ie: "Police 112, Ambulance 112, Pompiers 112",
+                it: "Police 112, Ambulance 118, Pompiers 115",
+                lv: "Police 112, Ambulance 113, Pompiers 112",
+                li: "Police 117, Ambulance 144, Pompiers 118",
+                lt: "Police 112, Ambulance 112, Pompiers 112",
+                lu: "Police 113, Ambulance 112, Pompiers 112",
+                mt: "Police 112, Ambulance 112, Pompiers 112",
+                md: "Police 112, Ambulance 112, Pompiers 112",
+                mc: "Police 17, Ambulance 15, Pompiers 18",
+                me: "Police 122, Ambulance 124, Pompiers 123",
+                nl: "Police 112, Ambulance 112, Pompiers 112",
+                mk: "Police 192, Ambulance 194, Pompiers 193",
+                no: "Police 112, Ambulance 113, Pompiers 110",
                 pl: "Police 997, Ambulance 999, Pompiers 998",
                 pt: "Police 112, Ambulance 112, Pompiers 112",
                 ro: "Police 112, Ambulance 112, Pompiers 112",
                 ru: "Police 102, Ambulance 103, Pompiers 101",
-                sa: "Police 999, Ambulance 997, Pompiers 998",
-                sn: "Police 17, Ambulance 15, Pompiers 18",
+                sm: "Police 113, Ambulance 118, Pompiers 115",
                 rs: "Police 192, Ambulance 194, Pompiers 193",
-                sg: "Police 999, Ambulance 995, Pompiers 995",
                 sk: "Police 158, Ambulance 155, Pompiers 150",
                 si: "Police 113, Ambulance 112, Pompiers 112",
-                kr: "Police 112, Ambulance 119, Pompiers 119",
+                es: "Police 091, Ambulance 061, Pompiers 080",
                 se: "Police 112, Ambulance 112, Pompiers 112",
                 ch: "Police 117, Ambulance 144, Pompiers 118",
-                tw: "Police 110, Ambulance 119, Pompiers 119",
-                tz: "Police 112, Ambulance 114, Pompiers 111",
-                th: "Police 191, Ambulance 1669, Pompiers 199",
-                tn: "Police 197, Ambulance 190, Pompiers 198",
-                tr: "Police 155, Ambulance 112, Pompiers 110",
                 ua: "Police 102, Ambulance 103, Pompiers 101",
-                ae: "Police 999, Ambulance 998, Pompiers 997",
-                uy: "Police 911, Ambulance 105, Pompiers 104",
-                ve: "Police 911, Ambulance 171, Pompiers 911",
-                vn: "Police 113, Ambulance 115, Pompiers 114",
-                zm: "Police 999, Ambulance 992, Pompiers 993",
-                zw: "Police 999, Ambulance 994, Pompiers 993"
+                gb: "Police 999, Ambulance 999, Pompiers 999",
+                va: "Police 112, Ambulance 118, Pompiers 115",
+                // Océanie
+                au: "Police 000, Ambulance 000, Pompiers 000",
+                fj: "Police 917, Ambulance 911, Pompiers 910",
+                ki: "Police 999, Ambulance 999, Pompiers 999",
+                mh: "Police 911, Ambulance 911, Pompiers 911",
+                fm: "Police 911, Ambulance 911, Pompiers 911",
+                nr: "Police 110, Ambulance 111, Pompiers 112",
+                nz: "Police 111, Ambulance 111, Pompiers 111",
+                pw: "Police 911, Ambulance 911, Pompiers 911",
+                pg: "Police 112, Ambulance 111, Pompiers 110",
+                ws: "Police 995, Ambulance 996, Pompiers 994",
+                sb: "Police 999, Ambulance 999, Pompiers 999",
+                to: "Police 922, Ambulance 933, Pompiers 999",
+                tv: "Police 911, Ambulance 911, Pompiers 911",
+                vu: "Police 111, Ambulance 112, Pompiers 113"
             },
-
             async detectUserCountry() {
                 try {
                     const res = await fetch('https://ipapi.co/json/');
@@ -464,11 +499,9 @@
                     return 'fr';
                 }
             },
-
             applyJurisdiction(countryCode) {
                 const j = this.juridictions[countryCode] || this.juridictions.fr;
                 const e = this.emergencies[countryCode] || this.emergencies.fr;
-
                 document.getElementById('countryName').textContent = j.nom;
                 document.getElementById('aideJuridiqueLink').href = j.aideJuridique;
                 document.getElementById('loisLink').href = j.lois;
@@ -479,7 +512,6 @@
             }
         };
 
-        // Génération dynamique des options du sélecteur de pays
         function populateCountrySelector() {
             const select = document.getElementById('countrySelector');
             select.innerHTML = '';
@@ -496,21 +528,15 @@
             });
         }
 
-        // ============================================================
-        // GESTION DE LA SOUMISSION (appel API réel)
-        // ============================================================
+        // Soumission du formulaire
         document.getElementById('submitBtn').addEventListener('click', async () => {
             const situation = document.getElementById('situation').value.trim();
             if (!situation) return alert('Veuillez décrire votre situation.');
-
             const lang = document.getElementById('languageSelector').value || 'fr';
             const country = document.getElementById('countrySelector').value || 'fr';
-
             document.getElementById('loading').style.display = 'block';
             document.getElementById('result').style.display = 'none';
-
             try {
-                // REMPLACEZ "/api/conseil" par la vraie route de votre backend si nécessaire
                 const response = await fetch('/api/conseil', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -518,7 +544,6 @@
                 });
                 if (!response.ok) throw new Error(`Erreur serveur (${response.status})`);
                 const data = await response.json();
-
                 document.getElementById('result').innerHTML = data.conseil || data.response || 'Aucune réponse reçue.';
                 document.getElementById('result').style.display = 'block';
             } catch (error) {
