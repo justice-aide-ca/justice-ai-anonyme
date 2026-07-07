@@ -7,18 +7,22 @@
     <meta name="description" content="Justice AI vous offre une première orientation juridique gratuite et accessible partout dans le monde.">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .container { max-width: 900px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .language-selector, .country-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 1rem; align-items: center; }
         select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem; }
         .header { text-align: center; margin-bottom: 2rem; }
         .badge { display: inline-block; background: #27ae60; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; }
         h1 { color: #2c3e50; margin: 0; }
         .subtitle { color: #7f8c8d; margin-top: 5px; }
-        textarea { width: 100%; height: 150px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical; font-family: inherit; margin-bottom: 1rem; }
+        textarea { width: 100%; height: 150px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical; font-family: inherit; margin-bottom: 1rem; box-sizing: border-box; }
         button { background: #3498db; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1rem; width: 100%; }
         button:hover { background: #2980b9; }
         .info-box { background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
-        .result-box { background: #f9f9f9; border-left: 4px solid #3498db; padding: 15px; margin-top: 20px; border-radius: 4px; display: none; white-space: pre-wrap; line-height: 1.5; }
+        .result-box { background: #f9f9f9; border-left: 4px solid #3498db; padding: 20px; margin-top: 20px; border-radius: 4px; display: none; line-height: 1.6; }
+        .result-box h3 { color: #2c3e50; margin-top: 0; }
+        .result-box p { margin: 0.5rem 0; }
+        .result-box ul { margin: 0.5rem 0; padding-left: 20px; }
+        .result-box li { margin: 0.25rem 0; }
         .disclaimer { font-size: 0.85rem; color: #e67e22; margin-top: 1rem; text-align: center; }
         .peace-box { background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-top: 2rem; text-align: center; font-size: 0.9rem; }
         .peace-box a { color: #3498db; text-decoration: none; }
@@ -28,15 +32,19 @@
         .resources { margin-top: 2rem; display: none; }
         .resource-section { background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
         .resource-section h3 { margin-top: 0; color: #2c3e50; }
-        .resource-section a { color: #3498db; text-decoration: none; }
+        .resource-section a { color: #3498db; text-decoration: none; display: block; margin: 0.25rem 0; }
+        .resource-section a:hover { text-decoration: underline; }
         .emergency { background: #ffeaa7; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        .category-selector { display: flex; justify-content: center; gap: 10px; margin: 1rem 0; flex-wrap: wrap; }
+        .category-btn { background: #ecf0f1; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; }
+        .category-btn.active { background: #3498db; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <div class="language-selector">
-                <label for="languageSelector" style="font-weight: bold;">🌐</label>
+                <label for="languageSelector" style="font-weight: bold;" id="langLabel">🌐</label>
                 <select id="languageSelector">
                     <option value="fr">Français</option>
                     <option value="en">English</option>
@@ -47,63 +55,64 @@
                 </select>
             </div>
             <div class="country-selector">
-                <label for="countrySelector" style="font-weight: bold;">🌍</label>
+                <label for="countrySelector" style="font-weight: bold;" id="countryLabel">🌍</label>
                 <select id="countrySelector"></select>
             </div>
             <div class="header">
-                <div class="badge">🔒 100% ANONYME</div>
-                <h1>⚖️ Assistance Juridique</h1>
-                <div class="subtitle">Justice accessible à tous</div>
+                <div class="badge" id="badgeText">🔒 100% ANONYME</div>
+                <h1 id="mainTitle">⚖️ Assistance Juridique</h1>
+                <div class="subtitle" id="mainSubtitle">Justice accessible à tous</div>
             </div>
             <div class="form-body">
                 <div class="info-box">
                     <div>🔒</div>
-                    <div>Votre situation est confidentielle. Aucune donnée personnelle n'est collectée.</div>
+                    <div id="infoText">Votre situation est confidentielle. Aucune donnée personnelle n'est collectée.</div>
                 </div>
                 <textarea id="situation" placeholder="Décrivez votre problème juridique..."></textarea>
+                <div class="category-selector" id="categorySelector">
+                    <button class="category-btn active" data-category="general" id="catGeneral">Général</button>
+                    <button class="category-btn" data-category="famille" id="catFamille">Famille</button>
+                    <button class="category-btn" data-category="travail" id="catTravail">Travail</button>
+                    <button class="category-btn" data-category="logement" id="catLogement">Logement</button>
+                    <button class="category-btn" data-category="consommation" id="catConsommation">Consommation</button>
+                    <button class="category-btn" data-category="penal" id="catPenal">Pénal</button>
+                    <button class="category-btn" data-category="etrangers" id="catEtrangers">Étrangers</button>
+                </div>
                 <button id="submitBtn">Obtenir une aide juridique →</button>
-                <div id="loading" style="display:none; text-align:center; margin-top:1rem;">Analyse en cours...</div>
+                <div id="loading" style="display:none; text-align:center; margin-top:1rem;" id="loadingText">Analyse en cours...</div>
                 <div id="result" class="result-box"></div>
-                <div class="disclaimer" id="disclaimer">⚠️ Je ne suis pas un avocat. Ces informations sont fournies à titre éducatif. Consultez un professionnel du droit pour un avis personnalisé.</div>
+                <div class="disclaimer" id="disclaimerText">⚠️ Je ne suis pas un avocat. Ces informations sont fournies à titre éducatif. Consultez un professionnel du droit pour un avis personnalisé.</div>
                 <div class="peace-box">
-                    <p style="margin-bottom: 8px;">🙏 <strong>D'autres espaces pour trouver la paix, la justice et le discernement :</strong></p>
+                    <p style="margin-bottom: 8px;" id="peaceText">🙏 <strong>D'autres espaces pour trouver la paix, la justice et le discernement :</strong></p>
                     <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                         <a href="https://amour-et-verite-app.netlify.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">⛪ Amour & Vérité</a>
                         <span style="color: #ccc;">|</span>
                         <a href="https://bridge-your-project.lovable.app/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">🌍 ONBRIDGE AI</a>
                     </div>
-                    <p style="font-size: 12px; margin-top: 8px; color: #888;">Confidentiel · Gratuit · Accessible à tous</p>
+                    <p style="font-size: 12px; margin-top: 8px; color: #888;" id="peaceSubText">Confidentiel · Gratuit · Accessible à tous</p>
                 </div>
             </div>
             <div id="resourcesContainer" class="resources">
-                <h2>Ressources juridiques pour <span id="countryName"></span></h2>
-                <div class="resource-section">
-                    <h3>Aide juridictionnelle</h3>
-                    <a id="aideJuridiqueLink" href="#" target="_blank">Accéder à l'aide juridictionnelle</a>
+                <h2 id="resourcesTitle">Ressources juridiques pour <span id="countryName"></span></h2>
+                <div class="resource-section" id="generalResources">
+                    <h3 id="generalTitle">Aide générale</h3>
+                    <a id="aideJuridiqueLink" href="#" target="_blank">Aide juridictionnelle</a>
+                    <a id="loisLink" href="#" target="_blank">Lois applicables</a>
+                    <a id="tribunauxLink" href="#" target="_blank">Tribunaux</a>
+                    <a id="barreauLink" href="#" target="_blank">Barreau / Avocats</a>
+                    <a id="mediationLink" href="#" target="_blank">Médiation</a>
                 </div>
-                <div class="resource-section">
-                    <h3>Lois applicables</h3>
-                    <a id="loisLink" href="#" target="_blank">Consulter les lois</a>
-                </div>
-                <div class="resource-section">
-                    <h3>Tribunaux</h3>
-                    <a id="tribunauxLink" href="#" target="_blank">Trouver un tribunal</a>
-                </div>
-                <div class="resource-section">
-                    <h3>Barreau / Avocats</h3>
-                    <a id="barreauLink" href="#" target="_blank">Trouver un avocat</a>
-                </div>
-                <div class="resource-section">
-                    <h3>Médiation</h3>
-                    <a id="mediationLink" href="#" target="_blank">Services de médiation</a>
+                <div class="resource-section" id="categoryResources" style="display:none;">
+                    <h3 id="categoryTitle">Ressources spécifiques</h3>
+                    <div id="categoryLinks"></div>
                 </div>
                 <div class="emergency" id="emergencyContacts"></div>
             </div>
             <div class="footer">
-                🔒 100% anonyme - Sans inscription &nbsp;|&nbsp;
-                <a href="/privacy">Confidentialité</a> &nbsp;|&nbsp;
-                <a href="/terms">Conditions</a> &nbsp;|&nbsp;
-                <a href="/contact">Contact</a> &nbsp;|&nbsp;
+                <span id="footerAnonyme">🔒 100% anonyme - Sans inscription</span> &nbsp;|&nbsp;
+                <a href="/privacy" id="footerPrivacy">Confidentialité</a> &nbsp;|&nbsp;
+                <a href="/terms" id="footerTerms">Conditions</a> &nbsp;|&nbsp;
+                <a href="/contact" id="footerContact">Contact</a> &nbsp;|&nbsp;
                 <a href="https://amour-et-verite-app.netlify.app/" target="_blank">🙏 Amour & Vérité</a> &nbsp;|&nbsp;
                 <a href="https://bridge-your-project.lovable.app/" target="_blank">🌍 ONBRIDGE AI</a>
             </div>
@@ -111,6 +120,275 @@
     </div>
 
     <script>
+        // ============================================================
+        // TRADUCTIONS MULTILINGUES (6 langues)
+        // ============================================================
+        const translations = {
+            fr: {
+                badge: "🔒 100% ANONYME",
+                mainTitle: "⚖️ Assistance Juridique",
+                mainSubtitle: "Justice accessible à tous",
+                infoText: "Votre situation est confidentielle. Aucune donnée personnelle n'est collectée.",
+                placeholder: "Décrivez votre problème juridique...",
+                catGeneral: "Général",
+                catFamille: "Famille",
+                catTravail: "Travail",
+                catLogement: "Logement",
+                catConsommation: "Consommation",
+                catPenal: "Pénal",
+                catEtrangers: "Étrangers",
+                submitBtn: "Obtenir une aide juridique →",
+                loadingText: "Analyse en cours...",
+                disclaimerText: "⚠️ Je ne suis pas un avocat. Ces informations sont fournies à titre éducatif. Consultez un professionnel du droit pour un avis personnalisé.",
+                peaceText: "🙏 <strong>D'autres espaces pour trouver la paix, la justice et le discernement :</strong>",
+                peaceSubText: "Confidentiel · Gratuit · Accessible à tous",
+                resourcesTitle: "Ressources juridiques pour",
+                generalTitle: "Aide générale",
+                aideJuridique: "Aide juridictionnelle",
+                lois: "Lois applicables",
+                tribunaux: "Tribunaux",
+                barreau: "Barreau / Avocats",
+                mediation: "Médiation",
+                categoryTitle: "Ressources spécifiques",
+                footerAnonyme: "🔒 100% anonyme - Sans inscription",
+                footerPrivacy: "Confidentialité",
+                footerTerms: "Conditions",
+                footerContact: "Contact",
+                emergencyLabel: "Numéros d'urgence",
+                resultTitle: "Votre conseil juridique",
+                errorFetch: "Erreur lors de la récupération du conseil.",
+            },
+            en: {
+                badge: "🔒 100% ANONYMOUS",
+                mainTitle: "⚖️ Legal Assistance",
+                mainSubtitle: "Justice accessible to all",
+                infoText: "Your situation is confidential. No personal data is collected.",
+                placeholder: "Describe your legal issue...",
+                catGeneral: "General",
+                catFamille: "Family",
+                catTravail: "Work",
+                catLogement: "Housing",
+                catConsommation: "Consumer",
+                catPenal: "Criminal",
+                catEtrangers: "Immigration",
+                submitBtn: "Get legal help →",
+                loadingText: "Analyzing...",
+                disclaimerText: "⚠️ I am not a lawyer. This information is for educational purposes only. Consult a legal professional for personalized advice.",
+                peaceText: "🙏 <strong>Other spaces to find peace, justice and discernment:</strong>",
+                peaceSubText: "Confidential · Free · Accessible to all",
+                resourcesTitle: "Legal resources for",
+                generalTitle: "General Help",
+                aideJuridique: "Legal Aid",
+                lois: "Applicable Laws",
+                tribunaux: "Courts",
+                barreau: "Bar / Lawyers",
+                mediation: "Mediation",
+                categoryTitle: "Specific Resources",
+                footerAnonyme: "🔒 100% anonymous - No registration",
+                footerPrivacy: "Privacy",
+                footerTerms: "Terms",
+                footerContact: "Contact",
+                emergencyLabel: "Emergency Numbers",
+                resultTitle: "Your legal advice",
+                errorFetch: "Error retrieving advice.",
+            },
+            es: {
+                badge: "🔒 100% ANÓNIMO",
+                mainTitle: "⚖️ Asistencia Jurídica",
+                mainSubtitle: "Justicia accesible para todos",
+                infoText: "Su situación es confidencial. No se recopilan datos personales.",
+                placeholder: "Describa su problema legal...",
+                catGeneral: "General",
+                catFamille: "Familia",
+                catTravail: "Trabajo",
+                catLogement: "Vivienda",
+                catConsommation: "Consumo",
+                catPenal: "Penal",
+                catEtrangers: "Extranjería",
+                submitBtn: "Obtener ayuda legal →",
+                loadingText: "Analizando...",
+                disclaimerText: "⚠️ No soy abogado. Esta información es solo con fines educativos. Consulte a un profesional legal para asesoramiento personalizado.",
+                peaceText: "🙏 <strong>Otros espacios para encontrar paz, justicia y discernimiento:</strong>",
+                peaceSubText: "Confidencial · Gratuito · Accesible para todos",
+                resourcesTitle: "Recursos legales para",
+                generalTitle: "Ayuda General",
+                aideJuridique: "Asistencia Jurídica",
+                lois: "Leyes Aplicables",
+                tribunaux: "Tribunales",
+                barreau: "Colegio de Abogados",
+                mediation: "Mediación",
+                categoryTitle: "Recursos Específicos",
+                footerAnonyme: "🔒 100% anónimo - Sin registro",
+                footerPrivacy: "Privacidad",
+                footerTerms: "Términos",
+                footerContact: "Contacto",
+                emergencyLabel: "Números de Emergencia",
+                resultTitle: "Su consejo legal",
+                errorFetch: "Error al obtener el consejo.",
+            },
+            zh: {
+                badge: "🔒 100% 匿名",
+                mainTitle: "⚖️ 法律援助",
+                mainSubtitle: "人人可及的正义",
+                infoText: "您的情况是保密的。不会收集任何个人数据。",
+                placeholder: "描述您的法律问题...",
+                catGeneral: "一般",
+                catFamille: "家庭",
+                catTravail: "工作",
+                catLogement: "住房",
+                catConsommation: "消费",
+                catPenal: "刑事",
+                catEtrangers: "移民",
+                submitBtn: "获取法律帮助 →",
+                loadingText: "分析中...",
+                disclaimerText: "⚠️ 我不是律师。此信息仅供教育目的。请咨询法律专业人士获取个性化建议。",
+                peaceText: "🙏 <strong>其他寻找和平、正义和辨别的空间：</strong>",
+                peaceSubText: "保密 · 免费 · 人人可及",
+                resourcesTitle: "法律资源 -",
+                generalTitle: "一般帮助",
+                aideJuridique: "法律援助",
+                lois: "适用法律",
+                tribunaux: "法院",
+                barreau: "律师协会",
+                mediation: "调解",
+                categoryTitle: "特定资源",
+                footerAnonyme: "🔒 100% 匿名 - 无需注册",
+                footerPrivacy: "隐私",
+                footerTerms: "条款",
+                footerContact: "联系",
+                emergencyLabel: "紧急号码",
+                resultTitle: "您的法律建议",
+                errorFetch: "获取建议时出错。",
+            },
+            hi: {
+                badge: "🔒 100% गुमनाम",
+                mainTitle: "⚖️ कानूनी सहायता",
+                mainSubtitle: "सभी के लिए न्याय सुलभ",
+                infoText: "आपकी स्थिति गोपनीय है। कोई व्यक्तिगत डेटा एकत्र नहीं किया जाता है।",
+                placeholder: "अपनी कानूनी समस्या का वर्णन करें...",
+                catGeneral: "सामान्य",
+                catFamille: "परिवार",
+                catTravail: "काम",
+                catLogement: "आवास",
+                catConsommation: "उपभोक्ता",
+                catPenal: "आपराधिक",
+                catEtrangers: "आप्रवासन",
+                submitBtn: "कानूनी सहायता प्राप्त करें →",
+                loadingText: "विश्लेषण हो रहा है...",
+                disclaimerText: "⚠️ मैं वकील नहीं हूं। यह जानकारी केवल शैक्षिक उद्देश्यों के लिए है। व्यक्तिगत सलाह के लिए कानूनी पेशेवर से परामर्श करें।",
+                peaceText: "🙏 <strong>शांति, न्याय और विवेक पाने के अन्य स्थान:</strong>",
+                peaceSubText: "गोपनीय · मुफ्त · सभी के लिए सुलभ",
+                resourcesTitle: "कानूनी संसाधन -",
+                generalTitle: "सामान्य सहायता",
+                aideJuridique: "कानूनी सहायता",
+                lois: "लागू कानून",
+                tribunaux: "न्यायालय",
+                barreau: "बार / वकील",
+                mediation: "मध्यस्थता",
+                categoryTitle: "विशिष्ट संसाधन",
+                footerAnonyme: "🔒 100% गुमनाम - कोई पंजीकरण नहीं",
+                footerPrivacy: "गोपनीयता",
+                footerTerms: "शर्तें",
+                footerContact: "संपर्क",
+                emergencyLabel: "आपातकालीन नंबर",
+                resultTitle: "आपकी कानूनी सलाह",
+                errorFetch: "सलाह प्राप्त करने में त्रुटि।",
+            },
+            ar: {
+                badge: "🔒 100% مجهول",
+                mainTitle: "⚖️ المساعدة القانونية",
+                mainSubtitle: "العدالة في متناول الجميع",
+                infoText: "وضعك سري. لا يتم جمع أي بيانات شخصية.",
+                placeholder: "صف مشكلتك القانونية...",
+                catGeneral: "عام",
+                catFamille: "الأسرة",
+                catTravail: "العمل",
+                catLogement: "السكن",
+                catConsommation: "الاستهلاك",
+                catPenal: "الجنائي",
+                catEtrangers: "الهجرة",
+                submitBtn: "احصل على مساعدة قانونية →",
+                loadingText: "جارٍ التحليل...",
+                disclaimerText: "⚠️ أنا لست محامياً. هذه المعلومات للأغراض التعليمية فقط. استشر محامياً للحصول على مشورة شخصية.",
+                peaceText: "🙏 <strong>مساحات أخرى لإيجاد السلام والعدالة والتمييز:</strong>",
+                peaceSubText: "سري · مجاني · في متناول الجميع",
+                resourcesTitle: "الموارد القانونية لـ",
+                generalTitle: "مساعدة عامة",
+                aideJuridique: "المساعدة القانونية",
+                lois: "القوانين المطبقة",
+                tribunaux: "المحاكم",
+                barreau: "نقابة المحامين",
+                mediation: "الوساطة",
+                categoryTitle: "موارد محددة",
+                footerAnonyme: "🔒 100% مجهول - بدون تسجيل",
+                footerPrivacy: "الخصوصية",
+                footerTerms: "الشروط",
+                footerContact: "اتصل",
+                emergencyLabel: "أرقام الطوارئ",
+                resultTitle: "نصيحتك القانونية",
+                errorFetch: "خطأ في جلب النصيحة.",
+            }
+        };
+
+        // ============================================================
+        // RESSOURCES JURIDIQUES PAR CATÉGORIE (par pays, quelques exemples)
+        // ============================================================
+        const categoryResources = {
+            fr: {
+                famille: { title: "Droit de la famille", links: [
+                    { text: "Divorce et séparation", url: "https://www.service-public.fr/particuliers/vosdroits/N173" },
+                    { text: "Garde d'enfants", url: "https://www.service-public.fr/particuliers/vosdroits/F3130" },
+                    { text: "Adoption", url: "https://www.service-public.fr/particuliers/vosdroits/F1524" }
+                ]},
+                travail: { title: "Droit du travail", links: [
+                    { text: "Contrat de travail", url: "https://www.service-public.fr/particuliers/vosdroits/N19806" },
+                    { text: "Licenciement", url: "https://www.service-public.fr/particuliers/vosdroits/N178" },
+                    { text: "Harcèlement au travail", url: "https://www.service-public.fr/particuliers/vosdroits/F2354" }
+                ]},
+                logement: { title: "Droit du logement", links: [
+                    { text: "Bail et loyer", url: "https://www.service-public.fr/particuliers/vosdroits/N258" },
+                    { text: "Expulsion", url: "https://www.service-public.fr/particuliers/vosdroits/F3128" }
+                ]},
+                consommation: { title: "Droit de la consommation", links: [
+                    { text: "Litiges et médiation", url: "https://www.service-public.fr/particuliers/vosdroits/N311" }
+                ]},
+                penal: { title: "Droit pénal", links: [
+                    { text: "Dépôt de plainte", url: "https://www.service-public.fr/particuliers/vosdroits/F1435" }
+                ]},
+                etrangers: { title: "Droit des étrangers", links: [
+                    { text: "Titre de séjour", url: "https://www.service-public.fr/particuliers/vosdroits/N110" }
+                ]}
+            },
+            ca: {
+                famille: { title: "Family Law", links: [
+                    { text: "Divorce and separation", url: "https://www.justice.gc.ca/eng/fl-df/divorce/index.html" },
+                    { text: "Child custody", url: "https://www.justice.gc.ca/eng/fl-df/parent.html" }
+                ]},
+                travail: { title: "Employment Law", links: [
+                    { text: "Employment standards", url: "https://www.canada.ca/en/employment-social-development/programs/employment-standards.html" }
+                ]}
+            },
+            us: {
+                famille: { title: "Family Law", links: [
+                    { text: "Divorce", url: "https://www.usa.gov/divorce" },
+                    { text: "Child custody", url: "https://www.usa.gov/child-custody" }
+                ]},
+                travail: { title: "Employment Law", links: [
+                    { text: "Workplace rights", url: "https://www.usa.gov/labor-laws" }
+                ]}
+            },
+            gb: {
+                famille: { title: "Family Law", links: [
+                    { text: "Divorce", url: "https://www.gov.uk/divorce" },
+                    { text: "Child custody", url: "https://www.gov.uk/looking-after-children-divorce" }
+                ]}
+            }
+            // Ajoutez d'autres pays selon vos besoins
+        };
+
+        // ============================================================
+        // JURIDICTIONS ET URGENCES (tous les pays - identiques à la version précédente)
+        // ============================================================
         const internationalization = {
             juridictions: {
                 // Afrique
@@ -303,192 +581,15 @@
             },
             emergencies: {
                 // Afrique
-                dz: "Police 17, Ambulance 14, Pompiers 14",
-                ao: "Police 113, Ambulance 112, Pompiers 115",
-                bj: "Police 117, Ambulance 112, Pompiers 118",
-                bw: "Police 999, Ambulance 997, Pompiers 998",
-                bf: "Police 17, Ambulance 112, Pompiers 18",
-                bi: "Police 117, Ambulance 112, Pompiers 118",
-                cm: "Police 117, Ambulance 119, Pompiers 118",
-                cv: "Police 132, Ambulance 130, Pompiers 131",
-                cf: "Police 117, Ambulance 112, Pompiers 118",
-                td: "Police 17, Ambulance 15, Pompiers 18",
-                km: "Police 17, Ambulance 15, Pompiers 18",
-                cg: "Police 117, Ambulance 112, Pompiers 118",
-                cd: "Police 112, Ambulance 113, Pompiers 118",
-                dj: "Police 17, Ambulance 19, Pompiers 18",
-                eg: "Police 122, Ambulance 123, Pompiers 180",
-                gq: "Police 114, Ambulance 112, Pompiers 115",
-                er: "Police 113, Ambulance 114, Pompiers 116",
-                sz: "Police 999, Ambulance 977, Pompiers 933",
-                et: "Police 991, Ambulance 907, Pompiers 939",
-                ga: "Police 177, Ambulance 18, Pompiers 18",
-                gm: "Police 117, Ambulance 116, Pompiers 118",
-                gh: "Police 191, Ambulance 193, Pompiers 192",
-                gn: "Police 117, Ambulance 18, Pompiers 18",
-                gw: "Police 117, Ambulance 119, Pompiers 118",
-                ci: "Police 170, Ambulance 185, Pompiers 180",
-                ke: "Police 999, Ambulance 999, Pompiers 999",
-                ls: "Police 123, Ambulance 121, Pompiers 122",
-                lr: "Police 911, Ambulance 911, Pompiers 911",
-                ly: "Police 1515, Ambulance 191, Pompiers 193",
-                mg: "Police 117, Ambulance 124, Pompiers 118",
-                mw: "Police 997, Ambulance 998, Pompiers 999",
-                ml: "Police 17, Ambulance 15, Pompiers 18",
-                mr: "Police 117, Ambulance 101, Pompiers 118",
-                mu: "Police 999, Ambulance 114, Pompiers 995",
-                ma: "Police 19, Ambulance 15, Pompiers 15",
-                mz: "Police 119, Ambulance 117, Pompiers 198",
-                na: "Police 10111, Ambulance 10177, Pompiers 10177",
-                ne: "Police 17, Ambulance 15, Pompiers 18",
-                ng: "Police 112, Ambulance 112, Pompiers 112",
-                rw: "Police 112, Ambulance 912, Pompiers 111",
-                st: "Police 112, Ambulance 112, Pompiers 112",
-                sn: "Police 17, Ambulance 15, Pompiers 18",
-                sc: "Police 999, Ambulance 999, Pompiers 999",
-                sl: "Police 999, Ambulance 999, Pompiers 999",
-                so: "Police 888, Ambulance 999, Pompiers 555",
-                za: "Police 10111, Ambulance 10177, Pompiers 10177",
-                ss: "Police 777, Ambulance 999, Pompiers 666",
-                sd: "Police 999, Ambulance 999, Pompiers 999",
-                tz: "Police 112, Ambulance 114, Pompiers 111",
-                tg: "Police 117, Ambulance 820, Pompiers 118",
-                tn: "Police 197, Ambulance 190, Pompiers 198",
-                ug: "Police 999, Ambulance 999, Pompiers 999",
-                zm: "Police 999, Ambulance 992, Pompiers 993",
-                zw: "Police 999, Ambulance 994, Pompiers 993",
+                dz: "Police 17, Ambulance 14, Pompiers 14", ao: "Police 113, Ambulance 112, Pompiers 115", bj: "Police 117, Ambulance 112, Pompiers 118", bw: "Police 999, Ambulance 997, Pompiers 998", bf: "Police 17, Ambulance 112, Pompiers 18", bi: "Police 117, Ambulance 112, Pompiers 118", cm: "Police 117, Ambulance 119, Pompiers 118", cv: "Police 132, Ambulance 130, Pompiers 131", cf: "Police 117, Ambulance 112, Pompiers 118", td: "Police 17, Ambulance 15, Pompiers 18", km: "Police 17, Ambulance 15, Pompiers 18", cg: "Police 117, Ambulance 112, Pompiers 118", cd: "Police 112, Ambulance 113, Pompiers 118", dj: "Police 17, Ambulance 19, Pompiers 18", eg: "Police 122, Ambulance 123, Pompiers 180", gq: "Police 114, Ambulance 112, Pompiers 115", er: "Police 113, Ambulance 114, Pompiers 116", sz: "Police 999, Ambulance 977, Pompiers 933", et: "Police 991, Ambulance 907, Pompiers 939", ga: "Police 177, Ambulance 18, Pompiers 18", gm: "Police 117, Ambulance 116, Pompiers 118", gh: "Police 191, Ambulance 193, Pompiers 192", gn: "Police 117, Ambulance 18, Pompiers 18", gw: "Police 117, Ambulance 119, Pompiers 118", ci: "Police 170, Ambulance 185, Pompiers 180", ke: "Police 999, Ambulance 999, Pompiers 999", ls: "Police 123, Ambulance 121, Pompiers 122", lr: "Police 911, Ambulance 911, Pompiers 911", ly: "Police 1515, Ambulance 191, Pompiers 193", mg: "Police 117, Ambulance 124, Pompiers 118", mw: "Police 997, Ambulance 998, Pompiers 999", ml: "Police 17, Ambulance 15, Pompiers 18", mr: "Police 117, Ambulance 101, Pompiers 118", mu: "Police 999, Ambulance 114, Pompiers 995", ma: "Police 19, Ambulance 15, Pompiers 15", mz: "Police 119, Ambulance 117, Pompiers 198", na: "Police 10111, Ambulance 10177, Pompiers 10177", ne: "Police 17, Ambulance 15, Pompiers 18", ng: "Police 112, Ambulance 112, Pompiers 112", rw: "Police 112, Ambulance 912, Pompiers 111", st: "Police 112, Ambulance 112, Pompiers 112", sn: "Police 17, Ambulance 15, Pompiers 18", sc: "Police 999, Ambulance 999, Pompiers 999", sl: "Police 999, Ambulance 999, Pompiers 999", so: "Police 888, Ambulance 999, Pompiers 555", za: "Police 10111, Ambulance 10177, Pompiers 10177", ss: "Police 777, Ambulance 999, Pompiers 666", sd: "Police 999, Ambulance 999, Pompiers 999", tz: "Police 112, Ambulance 114, Pompiers 111", tg: "Police 117, Ambulance 820, Pompiers 118", tn: "Police 197, Ambulance 190, Pompiers 198", ug: "Police 999, Ambulance 999, Pompiers 999", zm: "Police 999, Ambulance 992, Pompiers 993", zw: "Police 999, Ambulance 994, Pompiers 993",
                 // Amériques
-                ar: "Police 101, Ambulance 107, Pompiers 100",
-                bo: "Police 110, Ambulance 118, Pompiers 119",
-                br: "Police 190, Ambulance 192, Pompiers 193",
-                ca: "Police 911, Ambulance 911, Pompiers 911",
-                cl: "Police 133, Ambulance 131, Pompiers 132",
-                co: "Police 123, Ambulance 125, Pompiers 119",
-                cr: "Police 911, Ambulance 911, Pompiers 911",
-                cu: "Police 106, Ambulance 104, Pompiers 105",
-                do: "Police 911, Ambulance 911, Pompiers 911",
-                ec: "Police 911, Ambulance 911, Pompiers 911",
-                sv: "Police 911, Ambulance 132, Pompiers 913",
-                gt: "Police 110, Ambulance 122, Pompiers 123",
-                ht: "Police 114, Ambulance 116, Pompiers 115",
-                hn: "Police 911, Ambulance 195, Pompiers 198",
-                mx: "Police 911, Ambulance 911, Pompiers 911",
-                ni: "Police 118, Ambulance 128, Pompiers 115",
-                pa: "Police 104, Ambulance 911, Pompiers 103",
-                py: "Police 911, Ambulance 141, Pompiers 132",
-                pe: "Police 105, Ambulance 106, Pompiers 116",
-                us: "Police 911, Ambulance 911, Pompiers 911",
-                uy: "Police 911, Ambulance 105, Pompiers 104",
-                ve: "Police 911, Ambulance 171, Pompiers 911",
+                ar: "Police 101, Ambulance 107, Pompiers 100", bo: "Police 110, Ambulance 118, Pompiers 119", br: "Police 190, Ambulance 192, Pompiers 193", ca: "Police 911, Ambulance 911, Pompiers 911", cl: "Police 133, Ambulance 131, Pompiers 132", co: "Police 123, Ambulance 125, Pompiers 119", cr: "Police 911, Ambulance 911, Pompiers 911", cu: "Police 106, Ambulance 104, Pompiers 105", do: "Police 911, Ambulance 911, Pompiers 911", ec: "Police 911, Ambulance 911, Pompiers 911", sv: "Police 911, Ambulance 132, Pompiers 913", gt: "Police 110, Ambulance 122, Pompiers 123", ht: "Police 114, Ambulance 116, Pompiers 115", hn: "Police 911, Ambulance 195, Pompiers 198", mx: "Police 911, Ambulance 911, Pompiers 911", ni: "Police 118, Ambulance 128, Pompiers 115", pa: "Police 104, Ambulance 911, Pompiers 103", py: "Police 911, Ambulance 141, Pompiers 132", pe: "Police 105, Ambulance 106, Pompiers 116", us: "Police 911, Ambulance 911, Pompiers 911", uy: "Police 911, Ambulance 105, Pompiers 104", ve: "Police 911, Ambulance 171, Pompiers 911",
                 // Asie
-                af: "Police 119, Ambulance 112, Pompiers 119",
-                am: "Police 102, Ambulance 103, Pompiers 101",
-                az: "Police 102, Ambulance 103, Pompiers 101",
-                bh: "Police 999, Ambulance 999, Pompiers 999",
-                bd: "Police 999, Ambulance 199, Pompiers 199",
-                bt: "Police 113, Ambulance 112, Pompiers 110",
-                bn: "Police 993, Ambulance 991, Pompiers 995",
-                kh: "Police 117, Ambulance 119, Pompiers 118",
-                cn: "Police 110, Ambulance 120, Pompiers 119",
-                cy: "Police 112, Ambulance 112, Pompiers 112",
-                ge: "Police 112, Ambulance 112, Pompiers 112",
-                in: "Police 100, Ambulance 102, Pompiers 101",
-                id: "Police 110, Ambulance 118, Pompiers 113",
-                ir: "Police 110, Ambulance 115, Pompiers 125",
-                iq: "Police 104, Ambulance 122, Pompiers 115",
-                il: "Police 100, Ambulance 101, Pompiers 102",
-                jp: "Police 110, Ambulance 119, Pompiers 119",
-                jo: "Police 911, Ambulance 911, Pompiers 911",
-                kz: "Police 102, Ambulance 103, Pompiers 101",
-                kw: "Police 112, Ambulance 112, Pompiers 112",
-                kg: "Police 102, Ambulance 103, Pompiers 101",
-                la: "Police 1191, Ambulance 1195, Pompiers 1190",
-                lb: "Police 112, Ambulance 140, Pompiers 175",
-                my: "Police 999, Ambulance 999, Pompiers 999",
-                mv: "Police 119, Ambulance 102, Pompiers 118",
-                mn: "Police 102, Ambulance 103, Pompiers 101",
-                mm: "Police 199, Ambulance 192, Pompiers 191",
-                np: "Police 100, Ambulance 102, Pompiers 101",
-                kp: "Police 119, Ambulance 119, Pompiers 119",
-                om: "Police 999, Ambulance 999, Pompiers 999",
-                pk: "Police 15, Ambulance 115, Pompiers 16",
-                ph: "Police 911, Ambulance 911, Pompiers 911",
-                qa: "Police 999, Ambulance 999, Pompiers 999",
-                sa: "Police 999, Ambulance 997, Pompiers 998",
-                sg: "Police 999, Ambulance 995, Pompiers 995",
-                kr: "Police 112, Ambulance 119, Pompiers 119",
-                lk: "Police 119, Ambulance 110, Pompiers 111",
-                sy: "Police 112, Ambulance 110, Pompiers 113",
-                tw: "Police 110, Ambulance 119, Pompiers 119",
-                tj: "Police 102, Ambulance 103, Pompiers 101",
-                th: "Police 191, Ambulance 1669, Pompiers 199",
-                tl: "Police 112, Ambulance 112, Pompiers 112",
-                tr: "Police 155, Ambulance 112, Pompiers 110",
-                tm: "Police 102, Ambulance 103, Pompiers 101",
-                ae: "Police 999, Ambulance 998, Pompiers 997",
-                uz: "Police 102, Ambulance 103, Pompiers 101",
-                vn: "Police 113, Ambulance 115, Pompiers 114",
-                ye: "Police 199, Ambulance 191, Pompiers 191",
+                af: "Police 119, Ambulance 112, Pompiers 119", am: "Police 102, Ambulance 103, Pompiers 101", az: "Police 102, Ambulance 103, Pompiers 101", bh: "Police 999, Ambulance 999, Pompiers 999", bd: "Police 999, Ambulance 199, Pompiers 199", bt: "Police 113, Ambulance 112, Pompiers 110", bn: "Police 993, Ambulance 991, Pompiers 995", kh: "Police 117, Ambulance 119, Pompiers 118", cn: "Police 110, Ambulance 120, Pompiers 119", cy: "Police 112, Ambulance 112, Pompiers 112", ge: "Police 112, Ambulance 112, Pompiers 112", in: "Police 100, Ambulance 102, Pompiers 101", id: "Police 110, Ambulance 118, Pompiers 113", ir: "Police 110, Ambulance 115, Pompiers 125", iq: "Police 104, Ambulance 122, Pompiers 115", il: "Police 100, Ambulance 101, Pompiers 102", jp: "Police 110, Ambulance 119, Pompiers 119", jo: "Police 911, Ambulance 911, Pompiers 911", kz: "Police 102, Ambulance 103, Pompiers 101", kw: "Police 112, Ambulance 112, Pompiers 112", kg: "Police 102, Ambulance 103, Pompiers 101", la: "Police 1191, Ambulance 1195, Pompiers 1190", lb: "Police 112, Ambulance 140, Pompiers 175", my: "Police 999, Ambulance 999, Pompiers 999", mv: "Police 119, Ambulance 102, Pompiers 118", mn: "Police 102, Ambulance 103, Pompiers 101", mm: "Police 199, Ambulance 192, Pompiers 191", np: "Police 100, Ambulance 102, Pompiers 101", kp: "Police 119, Ambulance 119, Pompiers 119", om: "Police 999, Ambulance 999, Pompiers 999", pk: "Police 15, Ambulance 115, Pompiers 16", ph: "Police 911, Ambulance 911, Pompiers 911", qa: "Police 999, Ambulance 999, Pompiers 999", sa: "Police 999, Ambulance 997, Pompiers 998", sg: "Police 999, Ambulance 995, Pompiers 995", kr: "Police 112, Ambulance 119, Pompiers 119", lk: "Police 119, Ambulance 110, Pompiers 111", sy: "Police 112, Ambulance 110, Pompiers 113", tw: "Police 110, Ambulance 119, Pompiers 119", tj: "Police 102, Ambulance 103, Pompiers 101", th: "Police 191, Ambulance 1669, Pompiers 199", tl: "Police 112, Ambulance 112, Pompiers 112", tr: "Police 155, Ambulance 112, Pompiers 110", tm: "Police 102, Ambulance 103, Pompiers 101", ae: "Police 999, Ambulance 998, Pompiers 997", uz: "Police 102, Ambulance 103, Pompiers 101", vn: "Police 113, Ambulance 115, Pompiers 114", ye: "Police 199, Ambulance 191, Pompiers 191",
                 // Europe
-                al: "Police 129, Ambulance 127, Pompiers 128",
-                ad: "Police 110, Ambulance 116, Pompiers 118",
-                at: "Police 133, Ambulance 144, Pompiers 122",
-                by: "Police 102, Ambulance 103, Pompiers 101",
-                be: "Police 101, Ambulance 112, Pompiers 112",
-                ba: "Police 122, Ambulance 124, Pompiers 123",
-                bg: "Police 166, Ambulance 150, Pompiers 160",
-                hr: "Police 192, Ambulance 194, Pompiers 193",
-                cz: "Police 158, Ambulance 155, Pompiers 150",
-                dk: "Police 112, Ambulance 112, Pompiers 112",
-                ee: "Police 112, Ambulance 112, Pompiers 112",
-                fi: "Police 112, Ambulance 112, Pompiers 112",
-                fr: "Police 17, Ambulance 15, Pompiers 18",
-                de: "Police 110, Ambulance 112, Pompiers 112",
-                gr: "Police 100, Ambulance 166, Pompiers 199",
-                hu: "Police 107, Ambulance 104, Pompiers 105",
-                is: "Police 112, Ambulance 112, Pompiers 112",
-                ie: "Police 112, Ambulance 112, Pompiers 112",
-                it: "Police 112, Ambulance 118, Pompiers 115",
-                lv: "Police 112, Ambulance 113, Pompiers 112",
-                li: "Police 117, Ambulance 144, Pompiers 118",
-                lt: "Police 112, Ambulance 112, Pompiers 112",
-                lu: "Police 113, Ambulance 112, Pompiers 112",
-                mt: "Police 112, Ambulance 112, Pompiers 112",
-                md: "Police 112, Ambulance 112, Pompiers 112",
-                mc: "Police 17, Ambulance 15, Pompiers 18",
-                me: "Police 122, Ambulance 124, Pompiers 123",
-                nl: "Police 112, Ambulance 112, Pompiers 112",
-                mk: "Police 192, Ambulance 194, Pompiers 193",
-                no: "Police 112, Ambulance 113, Pompiers 110",
-                pl: "Police 997, Ambulance 999, Pompiers 998",
-                pt: "Police 112, Ambulance 112, Pompiers 112",
-                ro: "Police 112, Ambulance 112, Pompiers 112",
-                ru: "Police 102, Ambulance 103, Pompiers 101",
-                sm: "Police 113, Ambulance 118, Pompiers 115",
-                rs: "Police 192, Ambulance 194, Pompiers 193",
-                sk: "Police 158, Ambulance 155, Pompiers 150",
-                si: "Police 113, Ambulance 112, Pompiers 112",
-                es: "Police 091, Ambulance 061, Pompiers 080",
-                se: "Police 112, Ambulance 112, Pompiers 112",
-                ch: "Police 117, Ambulance 144, Pompiers 118",
-                ua: "Police 102, Ambulance 103, Pompiers 101",
-                gb: "Police 999, Ambulance 999, Pompiers 999",
-                va: "Police 112, Ambulance 118, Pompiers 115",
+                al: "Police 129, Ambulance 127, Pompiers 128", ad: "Police 110, Ambulance 116, Pompiers 118", at: "Police 133, Ambulance 144, Pompiers 122", by: "Police 102, Ambulance 103, Pompiers 101", be: "Police 101, Ambulance 112, Pompiers 112", ba: "Police 122, Ambulance 124, Pompiers 123", bg: "Police 166, Ambulance 150, Pompiers 160", hr: "Police 192, Ambulance 194, Pompiers 193", cz: "Police 158, Ambulance 155, Pompiers 150", dk: "Police 112, Ambulance 112, Pompiers 112", ee: "Police 112, Ambulance 112, Pompiers 112", fi: "Police 112, Ambulance 112, Pompiers 112", fr: "Police 17, Ambulance 15, Pompiers 18", de: "Police 110, Ambulance 112, Pompiers 112", gr: "Police 100, Ambulance 166, Pompiers 199", hu: "Police 107, Ambulance 104, Pompiers 105", is: "Police 112, Ambulance 112, Pompiers 112", ie: "Police 112, Ambulance 112, Pompiers 112", it: "Police 112, Ambulance 118, Pompiers 115", lv: "Police 112, Ambulance 113, Pompiers 112", li: "Police 117, Ambulance 144, Pompiers 118", lt: "Police 112, Ambulance 112, Pompiers 112", lu: "Police 113, Ambulance 112, Pompiers 112", mt: "Police 112, Ambulance 112, Pompiers 112", md: "Police 112, Ambulance 112, Pompiers 112", mc: "Police 17, Ambulance 15, Pompiers 18", me: "Police 122, Ambulance 124, Pompiers 123", nl: "Police 112, Ambulance 112, Pompiers 112", mk: "Police 192, Ambulance 194, Pompiers 193", no: "Police 112, Ambulance 113, Pompiers 110", pl: "Police 997, Ambulance 999, Pompiers 998", pt: "Police 112, Ambulance 112, Pompiers 112", ro: "Police 112, Ambulance 112, Pompiers 112", ru: "Police 102, Ambulance 103, Pompiers 101", sm: "Police 113, Ambulance 118, Pompiers 115", rs: "Police 192, Ambulance 194, Pompiers 193", sk: "Police 158, Ambulance 155, Pompiers 150", si: "Police 113, Ambulance 112, Pompiers 112", es: "Police 091, Ambulance 061, Pompiers 080", se: "Police 112, Ambulance 112, Pompiers 112", ch: "Police 117, Ambulance 144, Pompiers 118", ua: "Police 102, Ambulance 103, Pompiers 101", gb: "Police 999, Ambulance 999, Pompiers 999", va: "Police 112, Ambulance 118, Pompiers 115",
                 // Océanie
-                au: "Police 000, Ambulance 000, Pompiers 000",
-                fj: "Police 917, Ambulance 911, Pompiers 910",
-                ki: "Police 999, Ambulance 999, Pompiers 999",
-                mh: "Police 911, Ambulance 911, Pompiers 911",
-                fm: "Police 911, Ambulance 911, Pompiers 911",
-                nr: "Police 110, Ambulance 111, Pompiers 112",
-                nz: "Police 111, Ambulance 111, Pompiers 111",
-                pw: "Police 911, Ambulance 911, Pompiers 911",
-                pg: "Police 112, Ambulance 111, Pompiers 110",
-                ws: "Police 995, Ambulance 996, Pompiers 994",
-                sb: "Police 999, Ambulance 999, Pompiers 999",
-                to: "Police 922, Ambulance 933, Pompiers 999",
-                tv: "Police 911, Ambulance 911, Pompiers 911",
-                vu: "Police 111, Ambulance 112, Pompiers 113"
+                au: "Police 000, Ambulance 000, Pompiers 000", fj: "Police 917, Ambulance 911, Pompiers 910", ki: "Police 999, Ambulance 999, Pompiers 999", mh: "Police 911, Ambulance 911, Pompiers 911", fm: "Police 911, Ambulance 911, Pompiers 911", nr: "Police 110, Ambulance 111, Pompiers 112", nz: "Police 111, Ambulance 111, Pompiers 111", pw: "Police 911, Ambulance 911, Pompiers 911", pg: "Police 112, Ambulance 111, Pompiers 110", ws: "Police 995, Ambulance 996, Pompiers 994", sb: "Police 999, Ambulance 999, Pompiers 999", to: "Police 922, Ambulance 933, Pompiers 999", tv: "Police 911, Ambulance 911, Pompiers 911", vu: "Police 111, Ambulance 112, Pompiers 113"
             },
             async detectUserCountry() {
                 try {
@@ -508,10 +609,94 @@
                 document.getElementById('tribunauxLink').href = j.tribunaux;
                 document.getElementById('barreauLink').href = j.barreau;
                 document.getElementById('mediationLink').href = j.mediation;
-                document.getElementById('emergencyContacts').innerHTML = '<strong>Numéros d\'urgence :</strong><br>' + e;
+                document.getElementById('emergencyContacts').innerHTML = '<strong>' + (translations[currentLang]?.emergencyLabel || 'Numéros d\'urgence') + ' :</strong><br>' + e;
             }
         };
 
+        // ============================================================
+        // ÉTAT GLOBAL
+        // ============================================================
+        let currentLang = 'fr';
+        let currentCategory = 'general';
+
+        // ============================================================
+        // FONCTIONS DE TRADUCTION
+        // ============================================================
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang] || translations.fr;
+            document.getElementById('badgeText').textContent = t.badge;
+            document.getElementById('mainTitle').textContent = t.mainTitle;
+            document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+            document.getElementById('infoText').textContent = t.infoText;
+            document.getElementById('situation').placeholder = t.placeholder;
+            document.getElementById('catGeneral').textContent = t.catGeneral;
+            document.getElementById('catFamille').textContent = t.catFamille;
+            document.getElementById('catTravail').textContent = t.catTravail;
+            document.getElementById('catLogement').textContent = t.catLogement;
+            document.getElementById('catConsommation').textContent = t.catConsommation;
+            document.getElementById('catPenal').textContent = t.catPenal;
+            document.getElementById('catEtrangers').textContent = t.catEtrangers;
+            document.getElementById('submitBtn').textContent = t.submitBtn;
+            document.getElementById('loadingText').textContent = t.loadingText;
+            document.getElementById('disclaimerText').textContent = t.disclaimerText;
+            document.getElementById('resourcesTitle').innerHTML = t.resourcesTitle + ' <span id="countryName"></span>';
+            document.getElementById('generalTitle').textContent = t.generalTitle;
+            document.getElementById('categoryTitle').textContent = t.categoryTitle;
+            document.getElementById('footerAnonyme').textContent = t.footerAnonyme;
+            document.getElementById('footerPrivacy').textContent = t.footerPrivacy;
+            document.getElementById('footerTerms').textContent = t.footerTerms;
+            document.getElementById('footerContact').textContent = t.footerContact;
+            document.getElementById('aideJuridiqueLink').textContent = t.aideJuridique;
+            document.getElementById('loisLink').textContent = t.lois;
+            document.getElementById('tribunauxLink').textContent = t.tribunaux;
+            document.getElementById('barreauLink').textContent = t.barreau;
+            document.getElementById('mediationLink').textContent = t.mediation;
+            // Mettre à jour les urls d'urgence
+            const countryCode = document.getElementById('countrySelector').value;
+            internationalization.applyJurisdiction(countryCode);
+        }
+
+        // ============================================================
+        // CATÉGORIES
+        // ============================================================
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                updateCategoryResources();
+            });
+        });
+
+        function updateCategoryResources() {
+            const country = document.getElementById('countrySelector').value;
+            const catData = categoryResources[country]?.[currentCategory];
+            const categoryDiv = document.getElementById('categoryResources');
+            const generalDiv = document.getElementById('generalResources');
+            const linksDiv = document.getElementById('categoryLinks');
+
+            if (catData && catData.links.length > 0) {
+                generalDiv.style.display = 'none';
+                categoryDiv.style.display = 'block';
+                document.getElementById('categoryTitle').textContent = catData.title;
+                linksDiv.innerHTML = '';
+                catData.links.forEach(link => {
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.target = '_blank';
+                    a.textContent = link.text;
+                    linksDiv.appendChild(a);
+                });
+            } else {
+                generalDiv.style.display = 'block';
+                categoryDiv.style.display = 'none';
+            }
+        }
+
+        // ============================================================
+        // SÉLECTEUR DE PAYS
+        // ============================================================
         function populateCountrySelector() {
             const select = document.getElementById('countrySelector');
             select.innerHTML = '';
@@ -528,7 +713,9 @@
             });
         }
 
-        // Soumission du formulaire
+        // ============================================================
+        // SOUMISSION DU FORMULAIRE (avec mise en forme améliorée)
+        // ============================================================
         document.getElementById('submitBtn').addEventListener('click', async () => {
             const situation = document.getElementById('situation').value.trim();
             if (!situation) return alert('Veuillez décrire votre situation.');
@@ -540,32 +727,58 @@
                 const response = await fetch('/api/conseil', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ situation, lang, country })
+                    body: JSON.stringify({ situation, lang, country, category: currentCategory })
                 });
                 if (!response.ok) throw new Error(`Erreur serveur (${response.status})`);
                 const data = await response.json();
-                document.getElementById('result').innerHTML = data.conseil || data.response || 'Aucune réponse reçue.';
+                const conseil = data.conseil || data.response || 'Aucune réponse reçue.';
+                // Mise en forme améliorée
+                const formatted = conseil
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                    .replace(/\n- (.*)/g, '\n<li>$1</li>')
+                    .replace(/(\n<li>.*<\/li>)/g, '<ul>$1</ul>')
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/^/, '<p>')
+                    .replace(/$/, '</p>');
+                document.getElementById('result').innerHTML = '<h3>' + (translations[currentLang]?.resultTitle || 'Votre conseil juridique') + '</h3>' + formatted;
                 document.getElementById('result').style.display = 'block';
             } catch (error) {
                 console.error(error);
-                document.getElementById('result').innerHTML = `❌ Erreur : ${error.message}`;
+                document.getElementById('result').innerHTML = '<h3>' + (translations[currentLang]?.resultTitle || 'Votre conseil juridique') + '</h3><p>❌ ' + (translations[currentLang]?.errorFetch || 'Erreur lors de la récupération du conseil.') + ' ' + error.message + '</p>';
                 document.getElementById('result').style.display = 'block';
             } finally {
                 document.getElementById('loading').style.display = 'none';
             }
         });
 
-        // Initialisation
+        // ============================================================
+        // INITIALISATION
+        // ============================================================
         document.addEventListener('DOMContentLoaded', async () => {
             const country = await internationalization.detectUserCountry();
             populateCountrySelector();
             const selector = document.getElementById('countrySelector');
             if (selector) {
                 selector.value = country;
-                selector.addEventListener('change', (e) => internationalization.applyJurisdiction(e.target.value));
+                selector.addEventListener('change', (e) => {
+                    internationalization.applyJurisdiction(e.target.value);
+                    updateCategoryResources();
+                });
                 internationalization.applyJurisdiction(country);
             }
             document.getElementById('resourcesContainer').style.display = 'block';
+            // Appliquer la langue détectée
+            const browserLang = (navigator.language || 'fr').split('-')[0];
+            if (translations[browserLang]) {
+                document.getElementById('languageSelector').value = browserLang;
+                applyLanguage(browserLang);
+            }
+            document.getElementById('languageSelector').addEventListener('change', function() {
+                applyLanguage(this.value);
+            });
         });
     </script>
 </body>
