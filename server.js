@@ -16,25 +16,67 @@ app.use(express.json());
 app.use(express.static('public'));// Route pour le conseil juridique
 app.post('/api/conseil', async (req, res) => {
   try {
-    const { situation, lang, country } = req.body;
+    const { situation, lang, country, category } = req.body;
     if (!situation) {
       return res.status(400).json({ error: 'Le champ "situation" est requis.' });
     }
 
     const langue = lang || 'fr';
     const juridiction = country || 'fr';
+    const categorie = category || 'general';
 
-    const prompt = `Tu es un assistant juridique. La personne se trouve dans la juridiction "${juridiction}" et parle "${langue}".
-Donne une première orientation claire et empathique sur la situation suivante. Rappelle que tu n’es pas un avocat et que ces informations sont à titre éducatif.
-Situation : ${situation}`;
+    // Mapping des catégories en termes compréhensibles
+    const categoriesNoms = {
+      general: 'général',
+      famille: 'droit de la famille',
+      travail: 'droit du travail',
+      logement: 'droit du logement',
+      consommation: 'droit de la consommation',
+      penal: 'droit pénal',
+      etrangers: 'droit des étrangers',
+      affaires: 'droit des affaires',
+      fiscalite: 'fiscalité',
+      propriete: 'propriété intellectuelle',
+      sante: 'droit de la santé',
+      environnement: 'droit de l\'environnement',
+      successions: 'successions et héritage'
+    };
+    const categorieNom = categoriesNoms[categorie] || 'général';
+
+    const systemPrompt = `Tu es un assistant juridique virtuel empathique et précis.
+La personne qui s'adresse à toi se trouve dans la juridiction "${juridiction}" et parle la langue "${langue}".
+La catégorie juridique concernée est : "${categorieNom}".
+
+Ta mission est de fournir une **première orientation juridique** structurée, utile et rassurante.
+Respecte scrupuleusement les règles suivantes :
+
+1. **Structure de la réponse** :
+   - Commence par un **résumé** en une phrase qui reformule la situation et identifie le problème juridique principal.
+   - Ensuite, sous le titre "🔍 Éléments clés", liste les points juridiques importants (3 à 5 maximum).
+   - Sous le titre "📋 Démarches possibles", décris les étapes concrètes que la personne peut entreprendre (2 à 4 démarches).
+   - Sous le titre "⚠️ Points de vigilance", mentionne les pièges à éviter ou les délais à respecter.
+   - Termine par une **phrase d'espoir** et le rappel que tu n'es pas un avocat.
+
+2. **Ton et style** :
+   - Empathique, clair, sans jargon inutile.
+   - Utilise des **émojis** pour rendre la lecture plus agréable.
+   - Écris en **français** si la langue est "fr", sinon dans la langue correspondante.
+
+3. **Limites** :
+   - Ne donne pas de conseil définitif, mais des pistes.
+   - Rappelle toujours de consulter un professionnel du droit local.
+
+Voici la situation de la personne : "${situation}".
+
+Réponds en suivant strictement cette structure.`;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',   // ou 'gpt-3.5-turbo'
+      model: 'gpt-4o-mini',
       messages: [
-        { role: 'system', content: prompt }
+        { role: 'system', content: systemPrompt }
       ],
-      temperature: 0.7,
-      max_tokens: 500
+      temperature: 0.5, // Plus faible pour plus de cohérence
+      max_tokens: 800   // Augmenté pour des réponses plus détaillées
     });
 
     const reponse = completion.choices[0].message.content;
@@ -44,7 +86,6 @@ Situation : ${situation}`;
     res.status(500).json({ error: 'Erreur lors de la génération du conseil.' });
   }
 });
-
 // Route pays
 app.get('/api/countries', (req, res) => {
     res.json([
