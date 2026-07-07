@@ -20,9 +20,6 @@
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .card {
-            /* (conservé tel quel) */
-        }
         .language-selector, .country-selector {
             display: flex;
             justify-content: center;
@@ -96,6 +93,8 @@
             margin-top: 20px;
             border-radius: 4px;
             display: none;
+            white-space: pre-wrap;
+            line-height: 1.5;
         }
         .disclaimer {
             font-size: 0.85rem;
@@ -118,10 +117,6 @@
         .peace-box a:hover {
             text-decoration: underline;
         }
-        .peace-box .separator {
-            color: #ccc;
-            margin: 0 10px;
-        }
         .footer {
             text-align: center;
             font-size: 0.8rem;
@@ -135,7 +130,6 @@
             text-decoration: none;
             margin: 0 5px;
         }
-
         /* Ressources juridiques */
         .resources {
             margin-top: 2rem;
@@ -268,11 +262,11 @@
 
     <script>
         // ============================================================
-        // JUSTICE AI – INTERNATIONALISATION (50 pays intégrés)
+        // JUSTICE AI – INTERNATIONALISATION (50 pays) + APPEL API RÉEL
         // ============================================================
         const internationalization = {
             juridictions: {
-                // Les 11 pays existants (inchangés)
+                // 11 pays de base + 50 supplémentaires
                 fr: { nom: "France", aideJuridique: "https://www.service-public.fr/particuliers/vosdroits/F18074", lois: "https://www.legifrance.gouv.fr/", tribunaux: "https://www.service-public.fr/particuliers/vosdroits/F1739", barreau: "https://www.cnb.avocat.fr/", mediation: "https://www.mediation-conso.fr/" },
                 ca: { nom: "Canada", aideJuridique: "https://www.justice.gc.ca/fra/jp-cj/", lois: "https://laws-lois.justice.gc.ca/", tribunaux: "https://www.justice.gc.ca/fra/jp-cj/tribunaux-courts/", barreau: "https://www.cba.org/", mediation: "https://www.mediate.com/" },
                 us: { nom: "États-Unis", aideJuridique: "https://www.usa.gov/legal-aid", lois: "https://www.congress.gov/", tribunaux: "https://www.uscourts.gov/", barreau: "https://www.americanbar.org/", mediation: "https://www.mediate.com/" },
@@ -284,8 +278,6 @@
                 br: { nom: "Brésil", aideJuridique: "https://www.defensoriapublica.def.br/", lois: "https://www.planalto.gov.br/legislacao/", tribunaux: "https://www.cnj.jus.br/", barreau: "https://www.oab.org.br/", mediation: "https://www.cnj.jus.br/programas-e-acoes/conciliacao-e-mediacao/" },
                 za: { nom: "Afrique du Sud", aideJuridique: "https://www.legal-aid.co.za/", lois: "https://www.gov.za/documents/acts", tribunaux: "https://www.judiciary.org.za/", barreau: "https://www.lawsociety.org.za/", mediation: "https://www.mediate.co.za/" },
                 au: { nom: "Australie", aideJuridique: "https://www.legalaid.nsw.gov.au/", lois: "https://www.legislation.gov.au/", tribunaux: "https://www.fedcourt.gov.au/", barreau: "https://www.lawcouncil.asn.au/", mediation: "https://www.mediation.com.au/" },
-
-                // 50 pays supplémentaires
                 af: { nom: "Afghanistan", aideJuridique: "https://www.afghanistanjusticeproject.org/", lois: "https://www.afghan-web.com/law/", tribunaux: "https://www.afghanistanjusticeproject.org/", barreau: "https://www.afghanbar.org/", mediation: "https://www.mediation.org/" },
                 al: { nom: "Albanie", aideJuridique: "https://www.drejtesia.gov.al/", lois: "https://www.qbz.gov.al/", tribunaux: "https://www.gjykata.gov.al/", barreau: "https://www.dhka.gov.al/", mediation: "https://www.mediation.al/" },
                 dz: { nom: "Algérie", aideJuridique: "https://www.mjustice.dz/", lois: "https://www.joradp.dz/", tribunaux: "https://www.courdecassation.dz/", barreau: "https://www.avocat.dz/", mediation: "https://www.mediation.dz/" },
@@ -368,7 +360,6 @@
                 zm: { nom: "Zambie", aideJuridique: "https://www.judiciary.gov.zm/", lois: "https://www.parliament.gov.zm/", tribunaux: "https://www.judiciary.gov.zm/", barreau: "https://www.lsz.org.zm/", mediation: "https://www.mediation.zm/" },
                 zw: { nom: "Zimbabwe", aideJuridique: "https://www.justice.gov.zw/", lois: "https://www.parlzim.gov.zw/", tribunaux: "https://www.judicial.gov.zw/", barreau: "https://www.lawsociety.co.zw/", mediation: "https://www.mediation.co.zw/" }
             },
-
             emergencies: {
                 fr: "Police 17, Ambulance 15, Pompiers 18, Violences femmes 3919, Enfants 119, Soutien 09 72 39 40 50",
                 ca: "Police 911, Ambulance 911, Pompiers 911, Violences femmes 1-866-845-1555, Enfants 1-800-668-6868, Crise suicide 1-833-456-4566",
@@ -381,8 +372,6 @@
                 br: "Police 190, Ambulance 192, Pompiers 193, Femmes 180, Enfants 100, Soutien 188",
                 za: "Police 10111, Ambulance 10177, Pompiers 10177, Violences femmes 0800 428 428, Enfants 0800 055 555, Crise suicide 0800 567 567",
                 au: "Police 000, Ambulance 000, Pompiers 000, Violences domestiques 1800 737 732, Enfants 1800 55 1800, Lifeline 13 11 14",
-
-                // 50 pays supplémentaires
                 af: "Police 119, Ambulance 112, Pompiers 119",
                 al: "Police 129, Ambulance 127, Pompiers 128",
                 dz: "Police 17, Ambulance 14, Pompiers 14",
@@ -507,6 +496,41 @@
             });
         }
 
+        // ============================================================
+        // GESTION DE LA SOUMISSION (appel API réel)
+        // ============================================================
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const situation = document.getElementById('situation').value.trim();
+            if (!situation) return alert('Veuillez décrire votre situation.');
+
+            const lang = document.getElementById('languageSelector').value || 'fr';
+            const country = document.getElementById('countrySelector').value || 'fr';
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+
+            try {
+                // REMPLACEZ "/api/conseil" par la vraie route de votre backend si nécessaire
+                const response = await fetch('/api/conseil', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ situation, lang, country })
+                });
+                if (!response.ok) throw new Error(`Erreur serveur (${response.status})`);
+                const data = await response.json();
+
+                document.getElementById('result').innerHTML = data.conseil || data.response || 'Aucune réponse reçue.';
+                document.getElementById('result').style.display = 'block';
+            } catch (error) {
+                console.error(error);
+                document.getElementById('result').innerHTML = `❌ Erreur : ${error.message}`;
+                document.getElementById('result').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+
+        // Initialisation
         document.addEventListener('DOMContentLoaded', async () => {
             const country = await internationalization.detectUserCountry();
             populateCountrySelector();
