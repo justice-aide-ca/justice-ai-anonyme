@@ -13,7 +13,37 @@ const openai = new OpenAI({
 });
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('public'));// Route pour le conseil juridique
+app.post('/api/conseil', async (req, res) => {
+  try {
+    const { situation, lang, country } = req.body;
+    if (!situation) {
+      return res.status(400).json({ error: 'Le champ "situation" est requis.' });
+    }
+
+    const langue = lang || 'fr';
+    const juridiction = country || 'fr';
+
+    const prompt = `Tu es un assistant juridique. La personne se trouve dans la juridiction "${juridiction}" et parle "${langue}".
+Donne une première orientation claire et empathique sur la situation suivante. Rappelle que tu n’es pas un avocat et que ces informations sont à titre éducatif.
+Situation : ${situation}`;
+
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',   // ou 'gpt-3.5-turbo'
+      messages: [
+        { role: 'system', content: prompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 500
+    });
+
+    const reponse = completion.choices[0].message.content;
+    res.json({ conseil: reponse });
+  } catch (error) {
+    console.error('Erreur OpenAI :', error);
+    res.status(500).json({ error: 'Erreur lors de la génération du conseil.' });
+  }
+});
 
 // Route pays
 app.get('/api/countries', (req, res) => {
