@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact – Justice AI</title>
+    <meta name="description" content="Comment contacter Justice AI en préservant votre anonymat.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1.5rem; }
+        .brand { font-weight: bold; color: #2c3e50; font-size: 1.1rem; }
+        .brand a { color: #2c3e50; text-decoration: none; }
+        select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem; }
+        h1 { color: #2c3e50; font-size: 1.6rem; margin-bottom: 0.2rem; }
+        .updated { color: #7f8c8d; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        h2 { color: #2c3e50; font-size: 1.15rem; margin-top: 1.6rem; margin-bottom: 0.4rem; }
+        p, li { color: #444; line-height: 1.65; }
+        ul { padding-left: 22px; }
+        [dir="rtl"] ul { padding-left: 0; padding-right: 22px; }
+        .note { background: #e8f4fd; border-left: 4px solid #3498db; padding: 12px 16px; border-radius: 6px; margin-top: 1.5rem; }
+        [dir="rtl"] .note { border-left: none; border-right: 4px solid #3498db; }
+        .footer { text-align: center; font-size: 0.8rem; color: #888; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem; }
+        .footer a { color: #3498db; text-decoration: none; margin: 0 5px; }
+        .back { display: inline-block; margin-top: 1.5rem; color: #3498db; text-decoration: none; font-weight: 600; }
+        .back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <span class="brand"><a href="/">⚖️ Justice AI</a></span>
+            <select id="langSelect" aria-label="Langue / Language">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+                <option value="hi">हिन्दी</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
+        <h1 id="pageTitle"></h1>
+        <div class="updated" id="updated"></div>
+        <div id="content"></div>
+        <a href="/" class="back" id="backLink"></a>
+        <div class="footer">
+            <span>🔒 100% anonyme · Justice AI</span><br>
+            <a href="/privacy" id="fPrivacy">Confidentialité</a> |
+            <a href="/terms" id="fTerms">Conditions</a> |
+            <a href="/contact" id="fContact">Contact</a><br>
+            <div style="margin-top: 8px;">
+                <a href="https://amour-et-verite-app.netlify.app/" target="_blank">🙏 Amour &amp; Vérité</a> |
+                <a href="https://lebon-juste-alignement.netlify.app/" target="_blank">🎯 Le Bon Alignement</a> |
+                <a href="https://bridge-your-project.lovable.app/" target="_blank">🌍 ONBRIDGE AI</a> |
+                <a href="https://cartepastorale-v5.onrender.com/" target="_blank">📜 Carta Pastorale</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const translations = {
+        "fr": {
+                "updated": "Dernière mise à jour : juillet 2026",
+                "back": "← Retour à l'accueil",
+                "fPrivacy": "Confidentialité",
+                "fTerms": "Conditions",
+                "fContact": "Contact",
+                "pageTitle": "Contact",
+                "sections": [
+                        {
+                                "p": "Pour préserver votre anonymat, Justice AI ne propose ni formulaire ni adresse courriel à remplir. Le moyen de nous joindre est la page de signalement du projet, publique et accessible sans compte personnel."
+                        },
+                        {
+                                "h": "Signaler un problème ou proposer une idée",
+                                "p": "Ouvrez une « issue » sur la page du projet. N'inscrivez jamais d'informations personnelles (nom, adresse, numéro de dossier) dans votre message : ces pages sont publiques."
+                        },
+                        {
+                                "h": "Demander la suppression d'un dossier anonyme",
+                                "p": "Si vous avez utilisé le formulaire de dossier anonyme et souhaitez sa suppression, indiquez uniquement la référence (REF_...) reçue lors de l'envoi. Sans cette référence, nous ne pouvons pas retrouver votre dossier — c'est le prix de l'anonymat."
+                        },
+                        {
+                                "h": "En cas d'urgence",
+                                "p": "Justice AI n'est pas un service d'urgence. Contactez les services d'urgence de votre pays ; les numéros sont affichés sur la page d'accueil selon votre pays."
+                        }
+                ],
+                "contactLink": {
+                        "label": "Ouvrir la page de contact du projet (GitHub)",
+                        "url": "https://github.com/justice-aide-ca/justice-ai-anonyme/issues"
+                },
+                "note": "Nous lisons chaque message et répondons dès que possible. Merci de votre confiance."
+        },
+        "en": {
+                "updated": "Last updated: July 2026",
+                "back": "← Back to home",
+                "fPrivacy": "Privacy",
+                "fTerms": "Terms",
+                "fContact": "Contact",
+                "pageTitle": "Contact",
+                "sections": [
+                        {
+                                "p": "To protect your anonymity, Justice AI offers neither a form nor an email address to fill in. The way to reach us is the project's public issue page, accessible without a personal account."
+                        },
+                        {
+                                "h": "Report a problem or suggest an idea",
+                                "p": "Open an \"issue\" on the project page. Never include personal information (name, address, case number) in your message: these pages are public."
+                        },
+                        {
+                                "h": "Request deletion of an anonymous case",
+                                "p": "If you used the anonymous case form and want it deleted, provide only the reference (REF_...) received at submission. Without this reference, we cannot locate your case — that is the price of anonymity."
+                        },
+                        {
+                                "h": "Emergencies",
+                                "p": "Justice AI is not an emergency service. Contact your country's emergency services; the numbers are shown on the home page according to your country."
+                        }
+                ],
+                "contactLink": {
+                        "label": "Open the project contact page (GitHub)",
+                        "url": "https://github.com/justice-aide-ca/justice-ai-anonyme/issues"
+                },
+                "note": "We read every message and reply as soon as possible. Thank you for your trust."
+        },
+        "es": {
+                "updated": "Última actualización: julio de 2026",
+                "back": "← Volver al inicio",
+                "fPrivacy": "Privacidad",
+                "fTerms": "Términos",
+                "fContact": "Contacto",
+                "pageTitle": "Contacto",
+                "sections": [
+                        {
+                                "p": "Para proteger su anonimato, Justice AI no ofrece formulario ni dirección de correo. La vía para contactarnos es la página pública de incidencias del proyecto, accesible sin cuenta personal."
+                        },
+                        {
+                                "h": "Informar de un problema o proponer una idea",
+                                "p": "Abra una «issue» en la página del proyecto. Nunca incluya información personal (nombre, dirección, número de expediente) en su mensaje: estas páginas son públicas."
+                        },
+                        {
+                                "h": "Solicitar la eliminación de un caso anónimo",
+                                "p": "Si utilizó el formulario de caso anónimo y desea eliminarlo, indique únicamente la referencia (REF_...) recibida al enviarlo. Sin esa referencia no podemos localizar su caso: es el precio del anonimato."
+                        },
+                        {
+                                "h": "Emergencias",
+                                "p": "Justice AI no es un servicio de emergencias. Contacte con los servicios de emergencia de su país; los números se muestran en la página principal según su país."
+                        }
+                ],
+                "contactLink": {
+                        "label": "Abrir la página de contacto del proyecto (GitHub)",
+                        "url": "https://github.com/justice-aide-ca/justice-ai-anonyme/issues"
+                },
+                "note": "Leemos cada mensaje y respondemos lo antes posible. Gracias por su confianza."
+        },
+        "zh": {
+                "updated": "最后更新：2026年7月",
+                "back": "← 返回首页",
+                "fPrivacy": "隐私",
+                "fTerms": "条款",
+                "fContact": "联系",
+                "pageTitle": "联系我们",
+                "sections": [
+                        {
+                                "p": "为保护您的匿名性，Justice AI 不提供表单或电子邮件地址。联系我们的方式是通过项目的公开问题页面，无需个人账户即可访问。"
+                        },
+                        {
+                                "h": "报告问题或提出建议",
+                                "p": "在项目页面上提交一个「issue」。请勿在留言中包含任何个人信息（姓名、地址、案件编号）：这些页面是公开的。"
+                        },
+                        {
+                                "h": "请求删除匿名案件",
+                                "p": "如果您使用了匿名案件表单并希望删除，请仅提供提交时收到的参考编号（REF_...）。没有该编号，我们将无法找到您的案件——这就是匿名的代价。"
+                        },
+                        {
+                                "h": "紧急情况",
+                                "p": "Justice AI 不是紧急服务。请联系您所在国家的紧急服务部门；首页会根据您的国家显示相应号码。"
+                        }
+                ],
+                "contactLink": {
+                        "label": "打开项目联系页面（GitHub）",
+                        "url": "https://github.com/justice-aide-ca/justice-ai-anonyme/issues"
+                },
+                "note": "我们会阅读每一条留言并尽快回复。感谢您的信任。"
+        },
+        "hi": {
+                "updated": "अंतिम अद्यतन: जुलाई 2026",
+                "back": "← मुखपृष्ठ पर लौटें",
+                "fPrivacy": "गोपनीयता",
+                "fTerms": "शर्तें",
+                "fContact": "संपर्क",
+                "pageTitle": "संपर्क",
+                "sections": [
+                        {
+                                "p": "आपकी गुमनामी बनाए रखने के लिए, Justice AI न तो कोई फ़ॉर्म देता है और न ही कोई ईमेल पता। हमसे संपर्क करने का तरीका प्रोजेक्ट का सार्वजनिक इश्यू पेज है, जिसे बिना व्यक्तिगत खाते के भी खोला जा सकता है।"
+                        },
+                        {
+                                "h": "समस्या बताएं या सुझाव दें",
+                                "p": "प्रोजेक्ट पेज पर एक \"issue\" खोलें। अपने संदेश में कभी भी व्यक्तिगत जानकारी (नाम, पता, केस नंबर) न लिखें: ये पेज सार्वजनिक हैं।"
+                        },
+                        {
+                                "h": "गुमनाम केस हटाने का अनुरोध",
+                                "p": "यदि आपने गुमनाम केस फ़ॉर्म का उपयोग किया है और उसे हटवाना चाहते हैं, तो केवल सबमिट करते समय मिला संदर्भ (REF_...) बताएं। इस संदर्भ के बिना हम आपका केस नहीं ढूंढ सकते — यही गुमनामी की कीमत है।"
+                        },
+                        {
+                                "h": "आपात स्थिति",
+                                "p": "Justice AI कोई आपातकालीन सेवा नहीं है। अपने देश की आपातकालीन सेवाओं से संपर्क करें; मुखपृष्ठ पर आपके देश के अनुसार नंबर दिखाए जाते हैं।"
+                        }
+                ],
+                "contactLink": {
+                        "label": "प्रोजेक्ट संपर्क पेज खोलें (GitHub)",
+                        "url": "https://github.com/justice-aide-ca/justice-ai-anonyme/issues"
+                },
+                "note": "हम हर संदेश पढ़ते हैं और जल्द से जल्द उत्तर देते हैं। आपके विश्वास के लिए धन्यवाद।"
+        },
+        "ar": {
+                "updated": "آخر تحديث: يوليو 2026",
+                "back": "← العودة إلى الصفحة الرئيسية",
+                "fPrivacy": "الخصوصية",
+                "fTerms": "الشروط",
+                "fContact": "اتصل",
+                "pageTitle": "اتصل بنا",
+                "sections": [
+                        {
+                                "p": "لحماية خصوصيتك، لا توفر Justice AI نموذجًا ولا عنوان بريد إلكتروني. وسيلة التواصل معنا هي صفحة المشكلات العامة الخاصة بالمشروع، ويمكن الوصول إليها دون حساب شخصي."
+                        },
+                        {
+                                "h": "الإبلاغ عن مشكلة أو اقتراح فكرة",
+                                "p": "افتح «issue» في صفحة المشروع. لا تُدرج أبدًا معلومات شخصية (اسم، عنوان، رقم ملف) في رسالتك: هذه الصفحات عامة."
+                        },
+                        {
+                                "h": "طلب حذف قضية مجهولة",
+                                "p": "إذا استخدمت نموذج القضية المجهولة وترغب في حذفها، فاذكر فقط الرقم المرجعي (REF_...) الذي تلقيته عند الإرسال. بدون هذا الرقم، لا يمكننا العثور على قضيتك — وهذا ثمن الخصوصية."
+                        },
+                        {
+                                "h": "حالات الطوارئ",
+                                "p": "Justice AI ليست خدمة طوارئ. اتصل بخدمات الطوارئ في بلدك؛ تظهر الأرقام في الصفحة الرئيسية حسب بلدك."
+                        }
+                ],
+                "contactLink": {
+                        "label": "فتح صفحة اتصال المشروع (GitHub)",
+                        "url": "https://github.com/justice-aide-ca/justice-ai-anonyme/issues"
+                },
+                "note": "نقرأ كل رسالة ونرد في أقرب وقت ممكن. شكرًا لثقتك."
+        }
+};
+        const LANGS = ['fr','en','es','zh','hi','ar'];
+        function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function render(lang) {
+            const t = translations[lang] || translations.fr;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.title = t.pageTitle + ' – Justice AI';
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('updated').textContent = t.updated;
+            document.getElementById('backLink').textContent = t.back;
+            document.getElementById('fPrivacy').textContent = t.fPrivacy;
+            document.getElementById('fTerms').textContent = t.fTerms;
+            document.getElementById('fContact').textContent = t.fContact;
+            let html = '';
+            t.sections.forEach(function(sec) {
+                if (sec.h) html += '<h2>' + esc(sec.h) + '</h2>';
+                if (sec.p) html += '<p>' + esc(sec.p) + '</p>';
+                if (sec.list) html += '<ul>' + sec.list.map(function(li){ return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
+            });
+            if (t.note) html += '<div class="note">' + esc(t.note) + '</div>';
+            if (t.contactLink) html += '<p style="margin-top:1rem;"><a href="' + t.contactLink.url + '" target="_blank" style="color:#3498db;font-weight:600;">' + esc(t.contactLink.label) + '</a></p>';
+            document.getElementById('content').innerHTML = html;
+        }
+        let lang = 'fr';
+        try { lang = localStorage.getItem('justice_lang') || ''; } catch(e) {}
+        if (!LANGS.includes(lang)) {
+            const nav = (navigator.language || '').slice(0,2).toLowerCase();
+            lang = LANGS.includes(nav) ? nav : 'fr';
+        }
+        const sel = document.getElementById('langSelect');
+        sel.value = lang;
+        sel.addEventListener('change', function() {
+            try { localStorage.setItem('justice_lang', sel.value); } catch(e) {}
+            render(sel.value);
+        });
+        render(lang);
+    </script>
+</body>
+</html>

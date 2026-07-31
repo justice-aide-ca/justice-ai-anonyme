@@ -7,9 +7,11 @@ const OpenAI = require('openai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    // Si la clé est absente, le site reste en ligne et seules les réponses IA échouent proprement.
+    apiKey: process.env.OPENAI_API_KEY || 'cle-non-configuree'
 });
 
 app.use(express.json());
@@ -212,8 +214,11 @@ Sois clair, structuré, empathique et pratique.
     });
 });
 
-// ===== ROUTE ADMIN : RÉCUPÉRER TOUTES LES DEMANDES =====
+// ===== ROUTE ADMIN : RÉCUPÉRER TOUTES LES DEMANDES (protégée) =====
 app.get('/api/admin/demandes', (req, res) => {
+    if (!ADMIN_PASSWORD || req.query.password !== ADMIN_PASSWORD) {
+        return res.status(401).json({ error: 'Accès refusé.' });
+    }
     try {
         const data = fs.readFileSync('./data/demandes.json', 'utf8');
         const demandes = JSON.parse(data);
@@ -224,10 +229,17 @@ app.get('/api/admin/demandes', (req, res) => {
     }
 });
 
-// ===== PAGE ADMIN (avec mot de passe) =====
+// ===== PAGE ADMIN (mot de passe dans les variables d'environnement) =====
 app.get('/admin', (req, res) => {
-    const password = req.query.password;
-    if (password !== 'justice2026') {
+    if (!ADMIN_PASSWORD) {
+        res.send(`
+            <h1 style="text-align:center; margin-top:50px;">🔒 Administration désactivée</h1>
+            <p style="text-align:center;">Définissez la variable d'environnement ADMIN_PASSWORD pour activer cette page.</p>
+            <p style="text-align:center;"><a href="/">Retour à l'accueil</a></p>
+        `);
+        return;
+    }
+    if (req.query.password !== ADMIN_PASSWORD) {
         res.send(`
             <h1 style="text-align:center; margin-top:50px;">🔒 Accès refusé</h1>
             <p style="text-align:center;">Mot de passe incorrect.</p>
@@ -236,6 +248,17 @@ app.get('/admin', (req, res) => {
         return;
     }
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Pages légales
+app.get('/privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+app.get('/terms', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'terms.html'));
+});
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'contact.html'));
 });
 
 // Accueil

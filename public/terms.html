@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions d'utilisation – Justice AI</title>
+    <meta name="description" content="Conditions d'utilisation de Justice AI : un outil éducatif d'orientation juridique, gratuit et anonyme.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1.5rem; }
+        .brand { font-weight: bold; color: #2c3e50; font-size: 1.1rem; }
+        .brand a { color: #2c3e50; text-decoration: none; }
+        select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem; }
+        h1 { color: #2c3e50; font-size: 1.6rem; margin-bottom: 0.2rem; }
+        .updated { color: #7f8c8d; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        h2 { color: #2c3e50; font-size: 1.15rem; margin-top: 1.6rem; margin-bottom: 0.4rem; }
+        p, li { color: #444; line-height: 1.65; }
+        ul { padding-left: 22px; }
+        [dir="rtl"] ul { padding-left: 0; padding-right: 22px; }
+        .note { background: #e8f4fd; border-left: 4px solid #3498db; padding: 12px 16px; border-radius: 6px; margin-top: 1.5rem; }
+        [dir="rtl"] .note { border-left: none; border-right: 4px solid #3498db; }
+        .footer { text-align: center; font-size: 0.8rem; color: #888; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem; }
+        .footer a { color: #3498db; text-decoration: none; margin: 0 5px; }
+        .back { display: inline-block; margin-top: 1.5rem; color: #3498db; text-decoration: none; font-weight: 600; }
+        .back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <span class="brand"><a href="/">⚖️ Justice AI</a></span>
+            <select id="langSelect" aria-label="Langue / Language">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+                <option value="hi">हिन्दी</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
+        <h1 id="pageTitle"></h1>
+        <div class="updated" id="updated"></div>
+        <div id="content"></div>
+        <a href="/" class="back" id="backLink"></a>
+        <div class="footer">
+            <span>🔒 100% anonyme · Justice AI</span><br>
+            <a href="/privacy" id="fPrivacy">Confidentialité</a> |
+            <a href="/terms" id="fTerms">Conditions</a> |
+            <a href="/contact" id="fContact">Contact</a><br>
+            <div style="margin-top: 8px;">
+                <a href="https://amour-et-verite-app.netlify.app/" target="_blank">🙏 Amour &amp; Vérité</a> |
+                <a href="https://lebon-juste-alignement.netlify.app/" target="_blank">🎯 Le Bon Alignement</a> |
+                <a href="https://bridge-your-project.lovable.app/" target="_blank">🌍 ONBRIDGE AI</a> |
+                <a href="https://cartepastorale-v5.onrender.com/" target="_blank">📜 Carta Pastorale</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const translations = {
+        "fr": {
+                "updated": "Dernière mise à jour : juillet 2026",
+                "back": "← Retour à l'accueil",
+                "fPrivacy": "Confidentialité",
+                "fTerms": "Conditions",
+                "fContact": "Contact",
+                "pageTitle": "Conditions d'utilisation",
+                "sections": [
+                        {
+                                "h": "1. Nature du service",
+                                "p": "Justice AI est un outil éducatif d'orientation juridique propulsé par l'intelligence artificielle. Il ne s'agit pas d'un cabinet d'avocats et aucune relation avocat-client n'est créée par son utilisation."
+                        },
+                        {
+                                "h": "2. Exactitude des informations",
+                                "p": "Les réponses fournies sont des informations générales à titre indicatif. Les lois varient selon les pays, les provinces et les situations particulières, et elles évoluent. Consultez toujours un avocat ou un professionnel du droit de votre région avant de prendre une décision."
+                        },
+                        {
+                                "h": "3. En cas d'urgence",
+                                "p": "Justice AI n'est pas un service d'urgence. Si vous ou une autre personne êtes en danger immédiat, contactez les services d'urgence de votre pays (les numéros sont affichés sur la page d'accueil selon votre pays)."
+                        },
+                        {
+                                "h": "4. Usage acceptable",
+                                "p": "Vous vous engagez à utiliser le service de manière licite, à ne pas soumettre de données personnelles concernant des tiers sans leur accord, et à ne pas tenter de perturber le fonctionnement du service."
+                        },
+                        {
+                                "h": "5. Gratuité et disponibilité",
+                                "p": "Le service est fourni gratuitement, « tel quel », sans garantie de disponibilité continue. Nous pouvons le modifier ou l'interrompre à tout moment."
+                        },
+                        {
+                                "h": "6. Limitation de responsabilité",
+                                "p": "Dans la mesure permise par la loi, Justice AI et ses créateurs ne peuvent être tenus responsables des décisions prises sur la base des informations fournies par le service."
+                        },
+                        {
+                                "h": "7. Modifications",
+                                "p": "Ces conditions peuvent être mises à jour. La date de la dernière mise à jour figure en haut de cette page."
+                        }
+                ],
+                "note": "En utilisant Justice AI, vous acceptez ces conditions d'utilisation."
+        },
+        "en": {
+                "updated": "Last updated: July 2026",
+                "back": "← Back to home",
+                "fPrivacy": "Privacy",
+                "fTerms": "Terms",
+                "fContact": "Contact",
+                "pageTitle": "Terms of Use",
+                "sections": [
+                        {
+                                "h": "1. Nature of the service",
+                                "p": "Justice AI is an educational legal guidance tool powered by artificial intelligence. It is not a law firm, and no lawyer-client relationship is created by using it."
+                        },
+                        {
+                                "h": "2. Accuracy of information",
+                                "p": "The answers provided are general information for guidance only. Laws vary by country, province, and individual circumstances, and they change over time. Always consult a lawyer or legal professional in your area before making any decision."
+                        },
+                        {
+                                "h": "3. Emergencies",
+                                "p": "Justice AI is not an emergency service. If you or someone else is in immediate danger, contact your country's emergency services (numbers are shown on the home page according to your country)."
+                        },
+                        {
+                                "h": "4. Acceptable use",
+                                "p": "You agree to use the service lawfully, not to submit personal data about third parties without their consent, and not to attempt to disrupt the service."
+                        },
+                        {
+                                "h": "5. Free service and availability",
+                                "p": "The service is provided free of charge, \"as is\", without any guarantee of continuous availability. We may modify or discontinue it at any time."
+                        },
+                        {
+                                "h": "6. Limitation of liability",
+                                "p": "To the extent permitted by law, Justice AI and its creators cannot be held liable for decisions made on the basis of information provided by the service."
+                        },
+                        {
+                                "h": "7. Changes",
+                                "p": "These terms may be updated. The date of the latest update appears at the top of this page."
+                        }
+                ],
+                "note": "By using Justice AI, you accept these terms of use."
+        },
+        "es": {
+                "updated": "Última actualización: julio de 2026",
+                "back": "← Volver al inicio",
+                "fPrivacy": "Privacidad",
+                "fTerms": "Términos",
+                "fContact": "Contacto",
+                "pageTitle": "Términos de uso",
+                "sections": [
+                        {
+                                "h": "1. Naturaleza del servicio",
+                                "p": "Justice AI es una herramienta educativa de orientación jurídica impulsada por inteligencia artificial. No es un bufete de abogados y su uso no crea ninguna relación abogado-cliente."
+                        },
+                        {
+                                "h": "2. Exactitud de la información",
+                                "p": "Las respuestas ofrecidas son información general con fines orientativos. Las leyes varían según el país, la provincia y las circunstancias particulares, y cambian con el tiempo. Consulte siempre a un abogado o profesional del derecho de su zona antes de tomar una decisión."
+                        },
+                        {
+                                "h": "3. Emergencias",
+                                "p": "Justice AI no es un servicio de emergencias. Si usted u otra persona están en peligro inmediato, contacte con los servicios de emergencia de su país (los números se muestran en la página principal según su país)."
+                        },
+                        {
+                                "h": "4. Uso aceptable",
+                                "p": "Usted se compromete a utilizar el servicio de forma lícita, a no enviar datos personales de terceros sin su consentimiento y a no intentar perturbar el funcionamiento del servicio."
+                        },
+                        {
+                                "h": "5. Gratuidad y disponibilidad",
+                                "p": "El servicio se ofrece gratuitamente, \"tal cual\", sin garantía de disponibilidad continua. Podemos modificarlo o interrumpirlo en cualquier momento."
+                        },
+                        {
+                                "h": "6. Limitación de responsabilidad",
+                                "p": "En la medida permitida por la ley, Justice AI y sus creadores no pueden ser considerados responsables de las decisiones tomadas sobre la base de la información proporcionada por el servicio."
+                        },
+                        {
+                                "h": "7. Modificaciones",
+                                "p": "Estos términos pueden actualizarse. La fecha de la última actualización aparece en la parte superior de esta página."
+                        }
+                ],
+                "note": "Al utilizar Justice AI, usted acepta estos términos de uso."
+        },
+        "zh": {
+                "updated": "最后更新：2026年7月",
+                "back": "← 返回首页",
+                "fPrivacy": "隐私",
+                "fTerms": "条款",
+                "fContact": "联系",
+                "pageTitle": "使用条款",
+                "sections": [
+                        {
+                                "h": "1. 服务性质",
+                                "p": "Justice AI 是由人工智能驱动的教育性法律指导工具。它不是律师事务所，使用本服务不构成任何律师-客户关系。"
+                        },
+                        {
+                                "h": "2. 信息的准确性",
+                                "p": "所提供的回复仅为一般性参考信息。法律因国家、省份和具体情况而异，并且会随时间变化。在做出任何决定之前，请务必咨询您所在地区的律师或法律专业人士。"
+                        },
+                        {
+                                "h": "3. 紧急情况",
+                                "p": "Justice AI 不是紧急服务。如果您或他人面临紧急危险，请联系您所在国家的紧急服务部门（首页会根据您的国家显示相应号码）。"
+                        },
+                        {
+                                "h": "4. 合理使用",
+                                "p": "您同意合法使用本服务，不在未经第三方同意的情况下提交其个人数据，也不试图干扰服务的正常运行。"
+                        },
+                        {
+                                "h": "5. 免费服务与可用性",
+                                "p": "本服务免费提供，按“原样”提供，不保证持续可用。我们可随时修改或停止本服务。"
+                        },
+                        {
+                                "h": "6. 责任限制",
+                                "p": "在法律允许的范围内，Justice AI 及其创建者不对基于本服务所提供信息而做出的决定承担责任。"
+                        },
+                        {
+                                "h": "7. 条款变更",
+                                "p": "本条款可能会更新。最近更新日期显示在本页顶部。"
+                        }
+                ],
+                "note": "使用 Justice AI 即表示您接受本使用条款。"
+        },
+        "hi": {
+                "updated": "अंतिम अद्यतन: जुलाई 2026",
+                "back": "← मुखपृष्ठ पर लौटें",
+                "fPrivacy": "गोपनीयता",
+                "fTerms": "शर्तें",
+                "fContact": "संपर्क",
+                "pageTitle": "उपयोग की शर्तें",
+                "sections": [
+                        {
+                                "h": "1. सेवा की प्रकृति",
+                                "p": "Justice AI कृत्रिम बुद्धिमत्ता द्वारा संचालित एक शैक्षिक कानूनी मार्गदर्शन उपकरण है। यह कोई लॉ फर्म नहीं है, और इसके उपयोग से कोई वकील-मुवक्किल संबंध नहीं बनता।"
+                        },
+                        {
+                                "h": "2. जानकारी की सटीकता",
+                                "p": "प्रदान किए गए उत्तर केवल मार्गदर्शन के लिए सामान्य जानकारी हैं। कानून देश, प्रांत और व्यक्तिगत परिस्थितियों के अनुसार भिन्न होते हैं और समय के साथ बदलते हैं। कोई भी निर्णय लेने से पहले हमेशा अपने क्षेत्र के वकील या कानूनी पेशेवर से सलाह लें।"
+                        },
+                        {
+                                "h": "3. आपात स्थिति",
+                                "p": "Justice AI कोई आपातकालीन सेवा नहीं है। यदि आप या कोई अन्य व्यक्ति तत्काल खतरे में है, तो अपने देश की आपातकालीन सेवाओं से संपर्क करें (मुखपृष्ठ पर आपके देश के अनुसार नंबर दिखाए जाते हैं)।"
+                        },
+                        {
+                                "h": "4. स्वीकार्य उपयोग",
+                                "p": "आप सेवा का कानूनी रूप से उपयोग करने, तीसरे पक्ष के व्यक्तिगत डेटा को उनकी सहमति के बिना प्रस्तुत न करने और सेवा के संचालन को बाधित करने का प्रयास न करने के लिए सहमत हैं।"
+                        },
+                        {
+                                "h": "5. निःशुल्क सेवा और उपलब्धता",
+                                "p": "सेवा निःशुल्क, \"जैसी है\" वैसी ही प्रदान की जाती है, बिना निरंतर उपलब्धता की गारंटी के। हम इसे कभी भी संशोधित या बंद कर सकते हैं।"
+                        },
+                        {
+                                "h": "6. दायित्व की सीमा",
+                                "p": "कानून द्वारा अनुमत सीमा तक, सेवा द्वारा प्रदान की गई जानकारी के आधार पर लिए गए निर्णयों के लिए Justice AI और इसके निर्माता उत्तरदायी नहीं होंगे।"
+                        },
+                        {
+                                "h": "7. संशोधन",
+                                "p": "ये शर्तें अद्यतन की जा सकती हैं। अंतिम अद्यतन की तिथि इस पृष्ठ के शीर्ष पर दी गई है।"
+                        }
+                ],
+                "note": "Justice AI का उपयोग करके, आप इन उपयोग की शर्तों को स्वीकार करते हैं।"
+        },
+        "ar": {
+                "updated": "آخر تحديث: يوليو 2026",
+                "back": "← العودة إلى الصفحة الرئيسية",
+                "fPrivacy": "الخصوصية",
+                "fTerms": "الشروط",
+                "fContact": "اتصل",
+                "pageTitle": "شروط الاستخدام",
+                "sections": [
+                        {
+                                "h": "1. طبيعة الخدمة",
+                                "p": "Justice AI هي أداة تعليمية للتوجيه القانوني مدعومة بالذكاء الاصطناعي. ليست مكتب محاماة، ولا يؤدي استخدامها إلى إنشاء أي علاقة محامٍ-عميل."
+                        },
+                        {
+                                "h": "2. دقة المعلومات",
+                                "p": "الإجابات المقدمة هي معلومات عامة لأغراض إرشادية فقط. تختلف القوانين حسب البلد والمقاطعة والظروف الفردية، وهي تتغير بمرور الوقت. استشر دائمًا محاميًا أو مختصًا قانونيًا في منطقتك قبل اتخاذ أي قرار."
+                        },
+                        {
+                                "h": "3. حالات الطوارئ",
+                                "p": "Justice AI ليست خدمة طوارئ. إذا كنت أنت أو أي شخص آخر في خطر مباشر، فاتصل بخدمات الطوارئ في بلدك (تظهر الأرقام في الصفحة الرئيسية حسب بلدك)."
+                        },
+                        {
+                                "h": "4. الاستخدام المقبول",
+                                "p": "أنت توافق على استخدام الخدمة بشكل قانوني، وعلى عدم إرسال بيانات شخصية تخص أطرافًا ثالثة دون موافقتهم، وعلى عدم محاولة تعطيل عمل الخدمة."
+                        },
+                        {
+                                "h": "5. المجانية والتوفر",
+                                "p": "تُقدَّم الخدمة مجانًا، \"كما هي\"، دون أي ضمان للتوفر المستمر. يمكننا تعديلها أو إيقافها في أي وقت."
+                        },
+                        {
+                                "h": "6. حدود المسؤولية",
+                                "p": "في الحدود التي يسمح بها القانون، لا يمكن تحميل Justice AI ومنشئيها المسؤولية عن القرارات المتخذة بناءً على المعلومات المقدمة من الخدمة."
+                        },
+                        {
+                                "h": "7. التعديلات",
+                                "p": "قد يتم تحديث هذه الشروط. يظهر تاريخ آخر تحديث أعلى هذه الصفحة."
+                        }
+                ],
+                "note": "باستخدامك Justice AI، فإنك تقبل شروط الاستخدام هذه."
+        }
+};
+        const LANGS = ['fr','en','es','zh','hi','ar'];
+        function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function render(lang) {
+            const t = translations[lang] || translations.fr;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.title = t.pageTitle + ' – Justice AI';
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('updated').textContent = t.updated;
+            document.getElementById('backLink').textContent = t.back;
+            document.getElementById('fPrivacy').textContent = t.fPrivacy;
+            document.getElementById('fTerms').textContent = t.fTerms;
+            document.getElementById('fContact').textContent = t.fContact;
+            let html = '';
+            t.sections.forEach(function(sec) {
+                if (sec.h) html += '<h2>' + esc(sec.h) + '</h2>';
+                if (sec.p) html += '<p>' + esc(sec.p) + '</p>';
+                if (sec.list) html += '<ul>' + sec.list.map(function(li){ return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
+            });
+            if (t.note) html += '<div class="note">' + esc(t.note) + '</div>';
+            if (t.contactLink) html += '<p style="margin-top:1rem;"><a href="' + t.contactLink.url + '" target="_blank" style="color:#3498db;font-weight:600;">' + esc(t.contactLink.label) + '</a></p>';
+            document.getElementById('content').innerHTML = html;
+        }
+        let lang = 'fr';
+        try { lang = localStorage.getItem('justice_lang') || ''; } catch(e) {}
+        if (!LANGS.includes(lang)) {
+            const nav = (navigator.language || '').slice(0,2).toLowerCase();
+            lang = LANGS.includes(nav) ? nav : 'fr';
+        }
+        const sel = document.getElementById('langSelect');
+        sel.value = lang;
+        sel.addEventListener('change', function() {
+            try { localStorage.setItem('justice_lang', sel.value); } catch(e) {}
+            render(sel.value);
+        });
+        render(lang);
+    </script>
+</body>
+</html>

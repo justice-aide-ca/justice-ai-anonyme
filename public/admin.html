@@ -163,12 +163,18 @@
     <script>
         async function loadDemandes() {
             try {
-                const response = await fetch('/api/admin/demandes');
+                const pwd = new URLSearchParams(window.location.search).get('password') || '';
+                const response = await fetch('/api/admin/demandes?password=' + encodeURIComponent(pwd));
                 const demandes = await response.json();
 
                 const container = document.getElementById('demandesList');
                 const totalSpan = document.getElementById('totalDemandes');
                 const paysSpan = document.getElementById('totalPays');
+
+                if (!Array.isArray(demandes)) {
+                    container.innerHTML = '<div class="empty">🔒 Accès refusé. Vérifiez le mot de passe dans l\'adresse.</div>';
+                    return;
+                }
 
                 if (!demandes || demandes.length === 0) {
                     container.innerHTML = '<div class="empty">📭 Aucune demande reçue pour le moment.</div>';
