@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
@@ -10,12 +10,40 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
 const openai = new OpenAI({
-    // Si la clé est absente, le site reste en ligne et seules les réponses IA échouent proprement.
     apiKey: process.env.OPENAI_API_KEY || 'cle-non-configuree'
 });
 
+// =========================================================================
+// CONFIGURATION CORS RESTREINTE (Sécurité & GitHub Pages)
+// =========================================================================
+const ALLOWED_ORIGINS = [
+    'https://justice-aide-ca.github.io',
+    'https://justice-ai-anonyme-u4sn.onrender.com',
+    'http://localhost:3000',
+    'http://127.0.0.1:5500'
+];
+
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (ALLOWED_ORIGINS.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    // Réponse immédiate pour les requêtes de pré-vérification du navigateur (preflight)
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+    next();
+});
+
 app.use(express.json());
-app.use(express.static('public'));// Route pour le conseil juridique
+app.use(express.static('public'));
+
+// =========================================================================
+// ROUTE CONSEIL JURIDIQUE
+// =========================================================================
 app.post('/api/conseil', async (req, res) => {
   try {
     const { situation, lang, country, category } = req.body;
@@ -27,7 +55,6 @@ app.post('/api/conseil', async (req, res) => {
     const juridiction = country || 'fr';
     const categorie = category || 'general';
 
-    // Mapping des catégories en termes compréhensibles
     const categoriesNoms = {
       general: 'général',
       famille: 'droit de la famille',
@@ -77,8 +104,8 @@ Réponds en suivant strictement cette structure.`;
       messages: [
         { role: 'system', content: systemPrompt }
       ],
-      temperature: 0.5, // Plus faible pour plus de cohérence
-      max_tokens: 800   // Augmenté pour des réponses plus détaillées
+      temperature: 0.5,
+      max_tokens: 800
     });
 
     const reponse = completion.choices[0].message.content;
@@ -88,6 +115,7 @@ Réponds en suivant strictement cette structure.`;
     res.status(500).json({ error: 'Erreur lors de la génération du conseil.' });
   }
 });
+
 // Route pays
 app.get('/api/countries', (req, res) => {
     res.json([
@@ -120,11 +148,7 @@ app.get('/api/countries', (req, res) => {
 // Route demande anonyme + IA
 app.post('/api/submit-anonymous-case', async (req, res) => {
     const { country, caseType, description, language } = req.body;
-
-    console.log('📋 Demande reçue:', country, caseType, 'Langue:', language);
-
     const reference = 'REF_' + Date.now().toString(36).toUpperCase();
-
     let aiResponse = "Service IA en cours d'activation...";
 
     const languageNames = {
@@ -178,13 +202,11 @@ Sois clair, structuré, empathique et pratique.
             max_tokens: 700
         });
         aiResponse = completion.choices[0].message.content;
-        console.log('✅ IA a répondu en', promptLang);
     } catch (err) {
         console.error('❌ Erreur IA:', err.message);
         aiResponse = "Service IA indisponible. Réponse sous 24h.";
     }
 
-    // Sauvegarde
     let demandes = [];
     try {
         const data = fs.readFileSync('./data/demandes.json', 'utf8');
@@ -203,7 +225,11 @@ Sois clair, structuré, empathique et pratique.
         language
     });
 
-    fs.writeFileSync('./data/demandes.json', JSON.stringify(demandes, null, 2));
+    try {
+        fs.writeFileSync('./data/demandes.json', JSON.stringify(demandes, null, 2));
+    } catch (err) {
+        console.error('❌ Erreur écriture demandes:', err.message);
+    }
 
     res.json({
         success: true,
@@ -214,74 +240,40 @@ Sois clair, structuré, empathique et pratique.
     });
 });
 
-// ===== ROUTE ADMIN : RÉCUPÉRER TOUTES LES DEMANDES (protégée) =====
+// Admin
 app.get('/api/admin/demandes', (req, res) => {
     if (!ADMIN_PASSWORD || req.query.password !== ADMIN_PASSWORD) {
         return res.status(401).json({ error: 'Accès refusé.' });
     }
     try {
         const data = fs.readFileSync('./data/demandes.json', 'utf8');
-        const demandes = JSON.parse(data);
-        res.json(demandes);
+        res.json(JSON.parse(data));
     } catch (err) {
-        console.error('❌ Erreur lecture demandes:', err.message);
         res.json([]);
     }
 });
 
-// ===== PAGE ADMIN (mot de passe dans les variables d'environnement) =====
 app.get('/admin', (req, res) => {
-    if (!ADMIN_PASSWORD) {
-        res.send(`
-            <h1 style="text-align:center; margin-top:50px;">🔒 Administration désactivée</h1>
-            <p style="text-align:center;">Définissez la variable d'environnement ADMIN_PASSWORD pour activer cette page.</p>
-            <p style="text-align:center;"><a href="/">Retour à l'accueil</a></p>
-        `);
-        return;
-    }
-    if (req.query.password !== ADMIN_PASSWORD) {
-        res.send(`
-            <h1 style="text-align:center; margin-top:50px;">🔒 Accès refusé</h1>
-            <p style="text-align:center;">Mot de passe incorrect.</p>
-            <p style="text-align:center;"><a href="/">Retour à l'accueil</a></p>
-        `);
-        return;
+    if (!ADMIN_PASSWORD || req.query.password !== ADMIN_PASSWORD) {
+        return res.status(401).send('<h1 style="text-align:center;margin-top:50px;">🔒 Accès refusé</h1>');
     }
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Pages légales
-app.get('/privacy', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
-});
-app.get('/terms', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'terms.html'));
-});
-app.get('/contact', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'contact.html'));
-});
+app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'public', 'privacy.html')));
+app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'public', 'terms.html')));
+app.get('/contact', (req, res) => res.sendFile(path.join(__dirname, 'public', 'contact.html')));
 
-// Accueil
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Accueil Render
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 const server = app.listen(PORT, () => {
-    console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
-    console.log('🤖 IA conseillère activée');
+    console.log(`🚀 Serveur démarré sur le port ${PORT}`);
 }).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Le port ${PORT} est déjà utilisé.`);
-        console.log(`💡 Essaie de libérer le port ou utilise un autre port.`);
-    } else {
-        console.error('❌ Erreur serveur:', err);
-    }
+    console.error('❌ Erreur serveur:', err);
 });
 
 process.on('SIGINT', () => {
-    console.log('🛑 Arrêt du serveur...');
-    server.close(() => {
-        console.log('✅ Serveur arrêté proprement.');
-        process.exit(0);
-    });
+    server.close(() => process.exit(0));
 });
