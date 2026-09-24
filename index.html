@@ -332,6 +332,19 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .footer-links {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-separator {
+            color: var(--border);
+        }
     </style>
 </head>
 <body>
@@ -356,14 +369,14 @@
                 <div class="card">
                     <div class="form-group">
                         <label for="countrySearch">1. Juridiction & Pays d'application</label>
-                        <p class="helper-text">Filtrez par nom de pays ou code (ex. : France, Sénégal, CA, CI, US) :</p>
+                        <p class="helper-text">Filtrez par nom de pays ou code ISO (ex. : France, Sénégal, CA, CI, US, BI) :</p>
                         
                         <div class="country-filter-box">
                             <input type="text" id="countrySearch" placeholder="Rechercher un pays ou un code (ex: fr, senegal, canada)..." autocomplete="off" aria-label="Rechercher un pays dans la liste">
                         </div>
 
                         <select id="countrySelect" name="country" required aria-label="Sélectionner le pays d'application">
-                            <!-- Les options sont générées dynamiquement -->
+                            <!-- Options générées dynamiquement -->
                         </select>
 
                         <div id="emergencyBadge" class="emergency-badge" aria-live="polite">
@@ -450,13 +463,27 @@
             </div>
         </main>
 
+        <!-- Pied de page avec les partenaires -->
         <footer>
-            <p>Plateforme humanitaire d'accès au droit | Projet partenaire : <a href="https://justice-aide-ca.github.io/cartepastorale-v5/" target="_blank" rel="noopener noreferrer">Carta Pastorale</a></p>
+            <p>Plateforme humanitaire d'accès au droit et d'orientation d'urgence</p>
+            <div class="footer-links">
+                <a href="https://justice-aide-ca.github.io/cartepastorale-v5/" target="_blank" rel="noopener noreferrer">
+                    📜 Carta Pastorale
+                </a>
+                <span class="footer-separator">•</span>
+                <a href="https://onbridge-ai.org" target="_blank" rel="noopener noreferrer">
+                    🌐 ONBRIDGE AI
+                </a>
+                <span class="footer-separator">•</span>
+                <a href="https://amour-et-verite-app.netlify.app" target="_blank" rel="noopener noreferrer">
+                    🕊️ Au Foyer de l'Amour
+                </a>
+            </div>
         </footer>
     </div>
 
     <script>
-        // --- 1. CONFIGURATION DES PAYS & SYNCHRONISATION ---
+        // --- 1. LISTE COMPLÈTE ET SYNCHRONISÉE DES PAYS ---
         const COUNTRIES = [
             // Amériques
             { code: "ca", name: "Canada", flag: "🇨🇦", emergency: "Police, Ambulances, Pompiers : 911" },
@@ -507,17 +534,16 @@
             { code: "ru", name: "Russie", flag: "🇷🇺", emergency: "Urgences générales : 112" }
         ];
 
-        // URL d'API cible : Render sur GitHub Pages, relative en local/Render
+        // URL d'API : cible Render sur GitHub Pages, relative en local/Render
         const API_BASE = window.location.hostname.includes('github.io')
             ? 'https://justice-ai-anonyme-u4sn.onrender.com'
             : '';
 
-        // --- 2. GESTION DU SÉLECTEUR ET RECHERCHE SANS ACCENTS ---
+        // --- 2. SÉLECTEUR ET RECHERCHE INSENSIBLE AUX ACCENTS ---
         const countrySelect = document.getElementById('countrySelect');
         const countrySearch = document.getElementById('countrySearch');
         const emergencyBadge = document.getElementById('emergencyBadge');
 
-        // Fonction de normalisation pour ignorer les accents et la casse
         function normalizeString(str) {
             return (str || '')
                 .normalize('NFD')
@@ -551,7 +577,6 @@
                 countrySelect.appendChild(opt);
             });
 
-            // Si l'ancien choix n'est plus dans le filtre, sélectionner le premier
             if (!filteredList.some(c => c.code === countrySelect.value)) {
                 countrySelect.value = filteredList[0].code;
             }
@@ -569,7 +594,7 @@
             }
         }
 
-        // Écoute de la recherche : tolérance aux accents et code ISO
+        // Filtre de recherche dynamique
         countrySearch.addEventListener('input', (e) => {
             const query = normalizeString(e.target.value);
             if (!query) {
@@ -588,10 +613,10 @@
 
         countrySelect.addEventListener('change', updateEmergencyInfo);
 
-        // Initialisation de la liste
+        // Initialisation de la liste des pays
         populateCountrySelect(COUNTRIES);
 
-        // --- 3. DÉTECTION DE COORDONNÉES PERSONNELLES & COMPTEUR ---
+        // --- 3. DÉTECTION DE DONNÉES PERSONNELLES & COMPTEUR ---
         const situationText = document.getElementById('situationText');
         const charCounter = document.getElementById('charCounter');
         const piiAlert = document.getElementById('piiAlert');
@@ -619,7 +644,7 @@
                     document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
                 });
             } catch (e) {
-                // Ignore en cas de blocage d'accès au stockage
+                // Ignore si le stockage est restreint par le navigateur
             }
             window.location.replace("https://www.meteofrance.com");
         }
@@ -685,11 +710,10 @@
                 return;
             }
 
-            // Interface en cours de traitement
             submitBtn.disabled = true;
             retryBtn.style.display = 'none';
             resultBox.style.display = 'none';
-            setStatus('loading', "Analyse en cours... Recherche des textes de loi et structuration de votre synthèse.");
+            setStatus('loading', "Analyse en cours... Recherche des textes de lois et structuration de votre orientation.");
 
             try {
                 const controller = new AbortController();
@@ -719,7 +743,6 @@
                     return;
                 }
 
-                // Succès : affichage du résultat
                 hideStatus();
                 resultContent.textContent = data.advice;
                 resultBox.style.display = 'block';
