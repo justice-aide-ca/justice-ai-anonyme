@@ -3,628 +3,743 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justice AI – Assistance et orientation juridique anonyme</title>
-    <meta name="description" content="Première orientation juridique gratuite, confidentielle et accessible partout dans le monde.">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <link rel="canonical" href="https://justice-ai-anonyme-u4sn.onrender.com/">
-
+    <title>Justice AI Anonyme — Information et Orientation Juridique Sécurisée</title>
+    <meta name="description" content="Plateforme confidentielle et gratuite d'orientation juridique sans inscription. Sortie d'urgence rapide et purge locale.">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --danger: #dc2626;
-            --danger-hover: #b91c1c;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #0f172a;
-            --muted: #64748b;
-            --border: #e2e8f0;
-            --warning-bg: #fef3c7;
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --warning-bg: #451a03;
             --warning-border: #f59e0b;
+            --success-border: #10b981;
+            --border: #334155;
+            --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            padding: 16px;
-            padding-top: 70px;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font);
+            line-height: 1.6;
+            padding-bottom: 60px;
         }
 
-        .top-emergency-bar {
-            position: fixed;
+        /* Barre d'urgence supérieure fixe */
+        .emergency-bar {
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 56px;
-            background: #ffffff;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
             z-index: 1000;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: #111827;
+            border-bottom: 1px solid #374151;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }
-        .brand-logo { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
+
+        .emergency-text {
+            font-size: 0.85rem;
+            color: #d1d5db;
+        }
+
         .quick-exit-btn {
             background: var(--danger);
-            color: #ffffff;
+            color: white;
             border: none;
             padding: 8px 14px;
-            font-size: 0.8rem;
             font-weight: 600;
+            font-size: 0.85rem;
             border-radius: 6px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: background 0.15s;
+            transition: background 0.2s;
+            white-space: nowrap;
         }
-        .quick-exit-btn:hover { background: var(--danger-hover); }
-        .quick-exit-btn:focus { outline: 3px solid #fca5a5; }
+
+        .quick-exit-btn:hover, .quick-exit-btn:focus-visible {
+            background: var(--danger-hover);
+            outline: 2px solid #fff;
+        }
 
         .container {
-            max-width: 760px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            padding: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            max-width: 820px;
+            margin: 32px auto;
+            padding: 0 16px;
         }
 
-        .header { text-align: center; margin-bottom: 24px; }
-        .badge {
-            display: inline-block;
-            background: #ecfdf5;
-            color: #059669;
-            border: 1px solid #a7f3d0;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 2rem;
             margin-bottom: 8px;
+            color: var(--text-main);
         }
-        h1 { font-size: 1.6rem; color: var(--text); font-weight: 800; }
-        .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
 
-        .selector-group {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
-        @media (min-width: 600px) {
-            .selector-group { grid-template-columns: 140px 1fr; }
-        }
 
-        label { font-size: 0.8rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 4px; }
-        select, input[type="text"], textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-family: inherit;
-            background: #ffffff;
-            color: var(--text);
-        }
-        select:focus, input[type="text"]:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-        }
-
-        .country-search-wrapper { position: relative; }
-        .country-filter-input { margin-bottom: 6px; }
-
-        .category-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 16px 0;
-        }
-        .cat-chip {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 6px 14px;
-            border-radius: 9999px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .cat-chip:hover { border-color: var(--primary); color: var(--primary); }
-        .cat-chip[aria-pressed="true"] {
-            background: var(--primary);
-            color: #ffffff;
-            border-color: var(--primary);
+        label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--accent);
+            border-color: transparent;
+        }
+
+        .country-filter-box {
+            margin-bottom: 8px;
+        }
+
+        .emergency-badge {
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: #182234;
+            border-left: 4px solid var(--accent);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 8px;
+        }
+
+        .pill-radio {
+            position: relative;
+        }
+
+        .pill-radio input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .pill-label {
+            display: block;
+            text-align: center;
+            padding: 10px 8px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .pill-radio input:checked + .pill-label {
+            background: #0369a1;
+            border-color: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        .pill-radio input:focus-visible + .pill-label {
+            outline: 2px solid var(--accent);
         }
 
         textarea {
-            height: 140px;
             resize: vertical;
-            line-height: 1.4;
+            min-height: 140px;
         }
-        .field-help {
-            font-size: 0.75rem;
-            color: var(--muted);
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-muted);
             margin-top: 4px;
-            display: flex;
-            justify-content: space-between;
         }
-        .error-message {
-            color: var(--danger);
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            padding: 10px 14px;
+
+        .pii-alert {
+            display: none;
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: #fef3c7;
+            padding: 12px;
             border-radius: 6px;
             font-size: 0.85rem;
             margin-top: 10px;
-            display: none;
-            font-weight: 500;
-            line-height: 1.4;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .checkbox-container input {
+            margin-top: 4px;
+            cursor: pointer;
         }
 
         .submit-btn {
-            background: var(--primary);
-            color: #ffffff;
-            border: none;
             width: 100%;
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--accent-hover);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .retry-btn {
+            display: none;
+            width: 100%;
+            background: #475569;
+            color: white;
+            border: none;
             padding: 12px;
-            border-radius: 8px;
             font-size: 0.95rem;
             font-weight: 600;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 14px;
-            transition: background 0.15s;
+            margin-top: 10px;
         }
-        .submit-btn:hover:not(:disabled) { background: var(--primary-hover); }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* --- ÉTAT DE CHARGEMENT PROGRESSIF --- */
-        .loading-box {
+        .retry-btn:hover {
+            background: #64748b;
+        }
+
+        /* Zone de résultat et erreurs */
+        .status-box {
             display: none;
-            margin-top: 16px;
-            padding: 14px 16px;
-            background: #f1f5f9;
+            padding: 16px;
             border-radius: 8px;
-            font-size: 0.88rem;
-            color: #334155;
-            text-align: center;
-            border: 1px solid #cbd5e1;
-            line-height: 1.4;
+            margin-top: 24px;
         }
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #cbd5e1;
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
+
+        .status-loading {
+            background: #1e293b;
+            border: 1px solid var(--accent);
+            color: var(--text-main);
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .status-error {
+            background: #450a0a;
+            border: 1px solid var(--danger);
+            color: #fecaca;
+        }
 
         .result-box {
             display: none;
+            background: #1e293b;
+            border: 1px solid var(--success-border);
+            border-radius: 12px;
+            padding: 24px;
             margin-top: 24px;
-            padding: 20px;
-            background: #f8fafc;
-            border-left: 4px solid var(--primary);
-            border-radius: 6px;
+        }
+
+        .result-box h2 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-content {
+            white-space: pre-wrap;
             font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .result-box:focus { outline: none; }
-        .result-box h2 { margin-bottom: 12px; color: var(--text); font-size: 1.1rem; }
-        .result-content p { margin-bottom: 10px; }
-
-        .emergency-card {
-            background: var(--warning-bg);
-            border: 1px solid var(--warning-border);
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            margin-top: 20px;
+            line-height: 1.7;
+            color: #e2e8f0;
         }
 
-        .privacy-notice {
-            margin-top: 24px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-            font-size: 0.75rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .partner-links {
+        footer {
             text-align: center;
-            font-size: 0.8rem;
-            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 40px;
         }
-        .partner-links a { color: var(--primary); text-decoration: none; margin: 0 8px; }
-        .partner-links a:hover { text-decoration: underline; }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <header class="top-emergency-bar" role="banner">
-        <div class="brand-logo">
-            <span role="img" aria-hidden="true">⚖️</span>
-            <span>Justice AI Anonyme</span>
-        </div>
-        <button
-            type="button"
-            class="quick-exit-btn"
-            id="quickExitBtn"
-            aria-keyshortcuts="Escape Escape"
-            aria-label="Quitter immédiatement ce site et effacer vos données locales. Raccourci clavier : double appui sur Échap."
-        >
-            <span role="img" aria-hidden="true">🚪</span>
-            <span>Quitter le site (Échap x2)</span>
+    <!-- Barre d'échappement d'urgence -->
+    <div class="emergency-bar" role="region" aria-label="Sortie d'urgence">
+        <span class="emergency-text">Besoin de quitter immédiatement ? Appuyez 2 fois sur <strong>Échap</strong> ou cliquez ici :</span>
+        <button id="quickExitBtn" class="quick-exit-btn" type="button" aria-keyshortcuts="Escape Escape">
+            Quitter le site (Échap x2)
         </button>
-    </header>
+    </div>
 
-    <main class="container" id="mainContent">
-        <header class="header">
-            <span class="badge">🔒 SANS ENREGISTREMENT NI COMPTE</span>
-            <h1>Diagnostic Juridique Instantané</h1>
-            <p class="subtitle">Sélectionnez votre juridiction, décrivez les faits, obtenez un premier repère juridique.</p>
+    <div class="container">
+        <header>
+            <h1>⚖️ Justice AI Anonyme</h1>
+            <p class="subtitle">Information et orientation juridique d'urgence. Entièrement anonyme et sans compte.</p>
         </header>
 
-        <section class="selector-group" aria-label="Paramètres régionaux">
-            <div>
-                <label for="languageSelector">Langue d'échange</label>
-                <select id="languageSelector">
-                    <option value="fr" selected>Français</option>
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="ar">العربية</option>
-                </select>
+        <main>
+            <form id="justiceForm" novalidate>
+                <!-- 1. Sélection du pays -->
+                <div class="card">
+                    <div class="form-group">
+                        <label for="countrySearch">1. Juridiction & Pays d'application</label>
+                        <p class="helper-text">Filtrez par nom de pays ou code (ex. : France, Sénégal, CA, CI, US) :</p>
+                        
+                        <div class="country-filter-box">
+                            <input type="text" id="countrySearch" placeholder="Rechercher un pays ou un code (ex: fr, senegal, canada)..." autocomplete="off" aria-label="Rechercher un pays dans la liste">
+                        </div>
+
+                        <select id="countrySelect" name="country" required aria-label="Sélectionner le pays d'application">
+                            <!-- Les options sont générées dynamiquement -->
+                        </select>
+
+                        <div id="emergencyBadge" class="emergency-badge" aria-live="polite">
+                            <!-- Numéro d'urgence affiché dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Catégorie juridique -->
+                <div class="card">
+                    <div class="form-group">
+                        <label>2. Domaine juridique concerné</label>
+                        <div class="pills-container" role="radiogroup" aria-label="Domaines juridiques">
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-logement" name="category" value="logement" checked>
+                                <label for="cat-logement" class="pill-label">🏠 Logement</label>
+                            </div>
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-travail" name="category" value="travail">
+                                <label for="cat-travail" class="pill-label">💼 Travail</label>
+                            </div>
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-famille" name="category" value="famille">
+                                <label for="cat-famille" class="pill-label">👨‍👩‍👧 Famille</label>
+                            </div>
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-consommation" name="category" value="consommation">
+                                <label for="cat-consommation" class="pill-label">💳 Conso</label>
+                            </div>
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-etrangers" name="category" value="etrangers">
+                                <label for="cat-etrangers" class="pill-label">🌍 Séjour</label>
+                            </div>
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-penal" name="category" value="penal">
+                                <label for="cat-penal" class="pill-label">⚖️ Pénal</label>
+                            </div>
+                            <div class="pill-radio">
+                                <input type="radio" id="cat-autre" name="category" value="autre">
+                                <label for="cat-autre" class="pill-label">📄 Autre</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Description de la situation -->
+                <div class="card">
+                    <div class="form-group">
+                        <label for="situationText">3. Décrivez votre situation en toute confidentialité</label>
+                        <p class="helper-text">Conseil d'anonymat : Ne mentionnez ni nom, ni adresse précise, ni numéro de téléphone ou e-mail.</p>
+                        
+                        <textarea id="situationText" name="situation" placeholder="Exemple : Mon propriétaire refuse d'effectuer les réparations urgentes de plomberie après m'avoir envoyé un avis d'augmentation..." required></textarea>
+                        
+                        <div id="charCounter" class="char-counter">0 / 4000 caractères (minimum 20)</div>
+
+                        <!-- Avertissement détection données personnelles -->
+                        <div id="piiAlert" class="pii-alert" role="alert">
+                            ⚠️ Attention : Votre texte semble contenir des coordonnées personnelles (e-mail, téléphone ou adresse). Pour votre propre sécurité, retirez ces informations avant de valider.
+                        </div>
+
+                        <!-- Consentement explicite -->
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="consentCheckbox" required>
+                            <label for="consentCheckbox">
+                                Je comprends que Justice AI est un outil automatisé d'information générale qui ne remplace pas un avocat, et j'accepte le traitement anonyme de ma demande.
+                            </label>
+                        </div>
+
+                        <button id="submitBtn" class="submit-btn" type="submit">Obtenir l'orientation juridique</button>
+                        <button id="retryBtn" class="retry-btn" type="button">Réessayer l'analyse</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Indicateur d'état (chargement / erreurs) -->
+            <div id="statusBox" class="status-box" role="status" aria-live="polite">
+                <span id="statusMessage"></span>
             </div>
 
-            <div class="country-search-wrapper">
-                <label for="countrySearch">Pays concerné</label>
-                <input
-                    type="text"
-                    id="countrySearch"
-                    class="country-filter-input"
-                    placeholder="Filtrer un pays (ex : Canada, France...)"
-                    aria-label="Filtrer les pays de la liste"
-                >
-                <select id="countrySelector" aria-label="Sélectionner le pays"></select>
+            <!-- Résultat de l'analyse -->
+            <div id="resultBox" class="result-box" tabindex="-1" role="region" aria-label="Résultat de l'analyse juridique">
+                <h2><span>📋</span> Analyse et orientation personnalisées</h2>
+                <div id="resultContent" class="result-content"></div>
             </div>
-        </section>
+        </main>
 
-        <section aria-labelledby="catLabel">
-            <label id="catLabel">Domaine juridique principal</label>
-            <div class="category-grid" role="group" aria-labelledby="catLabel">
-                <button type="button" class="cat-chip" data-cat="general" aria-pressed="true">Général</button>
-                <button type="button" class="cat-chip" data-cat="logement" aria-pressed="false">Logement & Bail</button>
-                <button type="button" class="cat-chip" data-cat="travail" aria-pressed="false">Travail & Emploi</button>
-                <button type="button" class="cat-chip" data-cat="famille" aria-pressed="false">Famille & Divorce</button>
-                <button type="button" class="cat-chip" data-cat="consommation" aria-pressed="false">Consommation & Litiges</button>
-                <button type="button" class="cat-chip" data-cat="penal" aria-pressed="false">Pénal & Infractions</button>
-                <button type="button" class="cat-chip" data-cat="etrangers" aria-pressed="false">Immigration & Étrangers</button>
-            </div>
-        </section>
-
-        <section style="margin-top: 14px;">
-            <label for="situation">Description de votre situation (sans nom, sans adresse, sans numéro)</label>
-            <textarea
-                id="situation"
-                maxlength="4000"
-                placeholder="Exemple : Mon bailleur refuse de réparer une fuite d'eau majeure qui dure depuis 3 semaines malgré plusieurs relances écrites..."
-                aria-describedby="fieldHelp validationError"
-            ></textarea>
-            <div class="field-help" id="fieldHelp">
-                <span>Ne partagez aucun nom, courriel ou téléphone.</span>
-                <span id="charCount">0 / 4000 car.</span>
-            </div>
-            <div id="validationError" class="error-message" role="alert" aria-live="assertive"></div>
-        </section>
-
-        <button type="button" class="submit-btn" id="submitBtn">
-            Obtenir l'orientation juridique
-        </button>
-
-        <div id="loadingIndicator" class="loading-box" role="status" aria-live="polite">
-            <span class="spinner" aria-hidden="true"></span>
-            <span id="loadingMessage">Analyse juridique en cours...</span>
-        </div>
-
-        <section id="resultContainer" class="result-box" tabindex="-1" role="region" aria-live="polite">
-            <h2 id="resultTitle">📋 Synthèse et orientation juridique</h2>
-            <div id="resultTextContent" class="result-content"></div>
-        </section>
-
-        <section class="emergency-card" aria-label="Numéros d'urgence">
-            <strong>⚠️ Danger immédiat ?</strong> Ne restez pas seul(e).
-            <div id="emergencyNumbers" style="margin-top: 4px; font-weight: 600;"></div>
-        </section>
-
-        <nav class="partner-links" aria-label="Autres projets de l'écosystème">
-            <a href="https://amour-et-verite-app.netlify.app/" target="_blank" rel="noopener noreferrer">⛪ Amour & Vérité</a> |
-            <a href="https://bridge-your-project.lovable.app/" target="_blank" rel="noopener noreferrer">🌍 ONBRIDGE AI</a> |
-            <a href="https://justice-aide-ca.github.io/cartepastorale-v5/" target="_blank" rel="noopener noreferrer">📜 Carta Pastorale</a> |
-            <a href="https://justice-ai-anonyme-u4sn.onrender.com/contact" target="_blank" rel="noopener noreferrer">✉️ Contact & Retrait REF</a>
-        </nav>
-
-        <footer class="privacy-notice" role="contentinfo">
-            <strong>Engagement de confidentialité et limites de l'outil :</strong><br>
-            • <em>Ce qui est effacé :</em> Le bouton « Quitter » efface immédiatement vos saisies et la mémoire temporaire du site.<br>
-            • <em>Ce qui dépend de votre appareil :</em> L'adresse de ce site peut rester inscrite dans l'historique général de votre navigateur. Pour une discrétion absolue, <strong>utilisez la Navigation privée</strong>.<br>
-            • <em>Limite juridique :</em> Cet outil est un guide informatif automatisé. Il ne remplace ni un avocat, ni une consultation juridique, et aucun secret professionnel ne protège ces échanges.
+        <footer>
+            <p>Plateforme humanitaire d'accès au droit | Projet partenaire : <a href="https://justice-aide-ca.github.io/cartepastorale-v5/" target="_blank" rel="noopener noreferrer">Carta Pastorale</a></p>
         </footer>
-    </main>
+    </div>
 
     <script>
-        // =========================================================================
-        // CONFIGURATION DYNAMIQUE DE L'ENDPOINT API
-        // =========================================================================
-        const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
-        const BACKEND_BASE = IS_GITHUB_PAGES ? "https://justice-ai-anonyme-u4sn.onrender.com" : "";
-
-        const API_CONFIG = {
-            endpoint: BACKEND_BASE ? `${BACKEND_BASE}/api/conseil` : "/api/conseil",
-            healthEndpoint: BACKEND_BASE ? `${BACKEND_BASE}/api/health` : "/api/health",
-            timeoutMs: 45000, // 45s pour couvrir confortablement le réveil Render
-            emergencyRedirectUrl: "https://www.meteofrance.com"
-        };
-
-        // =========================================================================
-        // 1. PRÉCHAUFFAGE DISCRET DU SERVEUR RENDER AU CHARGEMENT
-        // =========================================================================
-        window.addEventListener("DOMContentLoaded", () => {
-            fetch(API_CONFIG.healthEndpoint, { method: "GET" })
-                .catch(() => { /* échec silencieux si le serveur démarre */ });
-        });
-
-        // =========================================================================
-        // 2. PROTOCOLE D'ÉCHAPPEMENT RAPIDE & PURGE LOCALE
-        // =========================================================================
-        function triggerQuickExit() {
-            try {
-                sessionStorage.clear();
-                localStorage.clear();
-                document.querySelectorAll("input, textarea").forEach(el => el.value = "");
-                document.cookie.split(";").forEach(c => {
-                    const name = c.split("=")[0].trim();
-                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-                });
-            } catch (e) {}
-
-            window.location.replace(API_CONFIG.emergencyRedirectUrl);
-        }
-
-        document.getElementById("quickExitBtn").addEventListener("click", triggerQuickExit);
-
-        let lastEscapeTime = 0;
-        window.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") {
-                const now = Date.now();
-                if (now - lastEscapeTime <= 500) {
-                    e.preventDefault();
-                    triggerQuickExit();
-                }
-                lastEscapeTime = now;
-            }
-        });
-
-        // =========================================================================
-        // 3. DONNÉES PAYS (ISO) ET NUMÉROS D'URGENCE
-        // =========================================================================
+        // --- 1. CONFIGURATION DES PAYS & SYNCHRONISATION ---
         const COUNTRIES = [
-            { code: "fr", name: "France", flag: "🇫🇷", emergency: "SAMU : 15 | Police : 17 | Urgences Europe : 112" },
+            // Amériques
             { code: "ca", name: "Canada", flag: "🇨🇦", emergency: "Police, Ambulances, Pompiers : 911" },
+            { code: "us", name: "États-Unis", flag: "🇺🇸", emergency: "Police, Ambulance, Fire : 911" },
+            { code: "ht", name: "Haïti", flag: "🇭🇹", emergency: "Police : 114 | Ambulance : 116 | Pompiers : 115" },
+            { code: "mx", name: "Mexique", flag: "🇲🇽", emergency: "Urgences générales : 911" },
+            { code: "br", name: "Brésil", flag: "🇧🇷", emergency: "Police : 190 | SAMU : 192 | Pompiers : 193" },
+
+            // Europe
+            { code: "fr", name: "France", flag: "🇫🇷", emergency: "SAMU : 15 | Police : 17 | Urgences Europe : 112" },
             { code: "be", name: "Belgique", flag: "🇧🇪", emergency: "Secours / Médical : 112 | Police : 101" },
             { code: "ch", name: "Suisse", flag: "🇨🇭", emergency: "Ambulance : 144 | Police : 117 | Pompiers : 118" },
+            { code: "lu", name: "Luxembourg", flag: "🇱🇺", emergency: "Secours : 112 | Police : 113" },
+            { code: "mc", name: "Monaco", flag: "🇲🇨", emergency: "Pompiers/Ambulance : 18 | Police : 17" },
+            { code: "gb", name: "Royaume-Uni", flag: "🇬🇧", emergency: "Urgences : 999 ou 112" },
+            { code: "de", name: "Allemagne", flag: "🇩🇪", emergency: "Police : 110 | Secours & Pompiers : 112" },
+            { code: "es", name: "Espagne", flag: "🇪🇸", emergency: "Urgences générales : 112 | Police : 091" },
+            { code: "it", name: "Italie", flag: "🇮🇹", emergency: "Urgences Europe : 112 | Police : 113" },
+            { code: "pt", name: "Portugal", flag: "🇵🇹", emergency: "Numéro national d'urgence : 112" },
+
+            // Afrique du Nord
+            { code: "ma", name: "Maroc", flag: "🇲🇦", emergency: "Police : 19 | Gendarmerie : 177 | Pompiers : 15" },
+            { code: "dz", name: "Algérie", flag: "🇩🇿", emergency: "Police : 17 ou 1548 | Protection Civile : 14" },
+            { code: "tn", name: "Tunisie", flag: "🇹🇳", emergency: "Police : 197 | SAMU : 190 | Protection Civile : 198" },
+
+            // Afrique subsaharienne et centrale
             { code: "sn", name: "Sénégal", flag: "🇸🇳", emergency: "Police : 17 | Pompiers : 18 | SAMU : 15 15" },
             { code: "ci", name: "Côte d'Ivoire", flag: "🇨🇮", emergency: "Police : 170 | Pompiers : 180 | SAMU : 185" },
-            { code: "cd", name: "RD Congo", flag: "🇨🇩", emergency: "Police secours : 112" },
-            { code: "ma", name: "Maroc", flag: "🇲🇦", emergency: "Police : 19 | Gendarmerie : 177 | Pompiers : 15" },
-            { code: "ht", name: "Haïti", flag: "🇭🇹", emergency: "Police Nationale : 114 | Ambulance : 116" },
-            { code: "us", name: "États-Unis", flag: "🇺🇸", emergency: "Police, Ambulance, Fire : 911" }
+            { code: "cm", name: "Cameroun", flag: "🇨🇲", emergency: "Police secours : 117 | Pompiers : 118" },
+            { code: "cd", name: "RD Congo", flag: "🇨🇩", emergency: "Police secours : 112 | Urgences : 118" },
+            { code: "cg", name: "Congo-Brazzaville", flag: "🇨🇬", emergency: "Police : 117 | Pompiers : 118" },
+            { code: "ga", name: "Gabon", flag: "🇬🇦", emergency: "Police secours : 177 | Pompiers : 18" },
+            { code: "gn", name: "Guinée", flag: "🇬🇳", emergency: "Police secours : 117 | Protection civile : 18" },
+            { code: "ml", name: "Mali", flag: "🇲🇱", emergency: "Police : 17 | Pompiers : 18" },
+            { code: "bf", name: "Burkina Faso", flag: "🇧🇫", emergency: "Police : 17 | Pompiers : 18" },
+            { code: "tg", name: "Togo", flag: "🇹🇬", emergency: "Police secours : 117 | Pompiers : 118" },
+            { code: "bj", name: "Bénin", flag: "🇧🇯", emergency: "Police : 117 | Pompiers : 118" },
+            { code: "ne", name: "Niger", flag: "🇳🇪", emergency: "Police : 17 | Pompiers : 18" },
+            { code: "mg", name: "Madagascar", flag: "🇲🇬", emergency: "Police : 117 | Pompiers : 118" },
+            { code: "rw", name: "Rwanda", flag: "🇷🇼", emergency: "Police générale : 112 | Ambulance : 912" },
+            { code: "bi", name: "Burundi", flag: "🇧🇮", emergency: "Police : 117 | Urgences médicales : 112" },
+
+            // Asie & reste du monde
+            { code: "in", name: "Inde", flag: "🇮🇳", emergency: "Urgences nationales : 112" },
+            { code: "cn", name: "Chine", flag: "🇨🇳", emergency: "Police : 110 | Ambulance : 120" },
+            { code: "jp", name: "Japon", flag: "🇯🇵", emergency: "Police : 110 | Ambulance : 119" },
+            { code: "kr", name: "Corée du Sud", flag: "🇰🇷", emergency: "Police : 112 | Secours : 119" },
+            { code: "ru", name: "Russie", flag: "🇷🇺", emergency: "Urgences générales : 112" }
         ];
 
-        const countrySelector = document.getElementById("countrySelector");
-        const countrySearch = document.getElementById("countrySearch");
-        const emergencyNumbers = document.getElementById("emergencyNumbers");
+        // URL d'API cible : Render sur GitHub Pages, relative en local/Render
+        const API_BASE = window.location.hostname.includes('github.io')
+            ? 'https://justice-ai-anonyme-u4sn.onrender.com'
+            : '';
 
-        function renderCountryOptions(filter = "") {
-            countrySelector.innerHTML = "";
-            const q = filter.toLowerCase().trim();
-            const filtered = COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.code.includes(q));
+        // --- 2. GESTION DU SÉLECTEUR ET RECHERCHE SANS ACCENTS ---
+        const countrySelect = document.getElementById('countrySelect');
+        const countrySearch = document.getElementById('countrySearch');
+        const emergencyBadge = document.getElementById('emergencyBadge');
 
-            filtered.forEach(c => {
-                const opt = document.createElement("option");
+        // Fonction de normalisation pour ignorer les accents et la casse
+        function normalizeString(str) {
+            return (str || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .trim();
+        }
+
+        function populateCountrySelect(filteredList) {
+            const currentSelected = countrySelect.value;
+            countrySelect.innerHTML = '';
+
+            if (filteredList.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = "";
+                opt.textContent = "Aucun pays trouvé";
+                opt.disabled = true;
+                opt.selected = true;
+                countrySelect.appendChild(opt);
+                emergencyBadge.textContent = "Aucune juridiction sélectionnée.";
+                return;
+            }
+
+            filteredList.forEach(c => {
+                const opt = document.createElement('option');
                 opt.value = c.code;
                 opt.textContent = `${c.flag} ${c.name} (${c.code.toUpperCase()})`;
-                countrySelector.appendChild(opt);
-            });
-
-            if (filtered.length > 0) {
-                updateEmergencyDisplay(filtered[0].code);
-            }
-        }
-
-        function updateEmergencyDisplay(countryCode) {
-            const found = COUNTRIES.find(c => c.code === countryCode);
-            emergencyNumbers.textContent = found ? found.emergency : "Composez les numéros d'urgence officiels de votre pays.";
-        }
-
-        countrySelector.addEventListener("change", (e) => updateEmergencyDisplay(e.target.value));
-        countrySearch.addEventListener("input", (e) => renderCountryOptions(e.target.value));
-        renderCountryOptions();
-
-        // =========================================================================
-        // 4. GESTION DES DOMAINES JURIDIQUES & COMPTEUR
-        // =========================================================================
-        let selectedCategory = "general";
-        const catChips = document.querySelectorAll(".cat-chip");
-        catChips.forEach(btn => {
-            btn.addEventListener("click", () => {
-                catChips.forEach(b => b.setAttribute("aria-pressed", "false"));
-                btn.setAttribute("aria-pressed", "true");
-                selectedCategory = btn.getAttribute("data-cat");
-            });
-        });
-
-        const situationInput = document.getElementById("situation");
-        const charCount = document.getElementById("charCount");
-        situationInput.addEventListener("input", () => {
-            charCount.textContent = `${situationInput.value.length} / 4000 car.`;
-        });
-
-        // =========================================================================
-        // 5. RENDU SÉCURISÉ SANS XSS
-        // =========================================================================
-        function renderSafeText(rawText, containerElement) {
-            containerElement.innerHTML = "";
-            const paragraphs = String(rawText).split(/\n\s*\n/);
-
-            paragraphs.forEach(block => {
-                const trimmed = block.trim();
-                if (!trimmed) return;
-
-                if (trimmed.startsWith("•") || trimmed.startsWith("-")) {
-                    const ul = document.createElement("ul");
-                    ul.style.paddingLeft = "20px";
-                    trimmed.split("\n").forEach(line => {
-                        const li = document.createElement("li");
-                        li.textContent = line.replace(/^[•\-]\s*/, "");
-                        ul.appendChild(li);
-                    });
-                    containerElement.appendChild(ul);
-                } else {
-                    const p = document.createElement("p");
-                    p.textContent = trimmed;
-                    containerElement.appendChild(p);
+                if (c.code === currentSelected) {
+                    opt.selected = true;
                 }
+                countrySelect.appendChild(opt);
             });
+
+            // Si l'ancien choix n'est plus dans le filtre, sélectionner le premier
+            if (!filteredList.some(c => c.code === countrySelect.value)) {
+                countrySelect.value = filteredList[0].code;
+            }
+
+            updateEmergencyInfo();
         }
 
-        // =========================================================================
-        // 6. SOUMISSION AVEC INDICATEUR ÉVOLUTIF ET VALIDATION COMPLÈTE
-        // =========================================================================
-        const submitBtn = document.getElementById("submitBtn");
-        const loadingIndicator = document.getElementById("loadingIndicator");
-        const loadingMessage = document.getElementById("loadingMessage");
-        const resultContainer = document.getElementById("resultContainer");
-        const resultTitle = document.getElementById("resultTitle");
-        const resultTextContent = document.getElementById("resultTextContent");
-        const validationError = document.getElementById("validationError");
+        function updateEmergencyInfo() {
+            const selectedCode = countrySelect.value;
+            const country = COUNTRIES.find(c => c.code === selectedCode);
+            if (country) {
+                emergencyBadge.innerHTML = `🚨 <strong>${country.name}</strong> — ${country.emergency}`;
+            } else {
+                emergencyBadge.textContent = "Numéros d'urgence indisponibles.";
+            }
+        }
 
-        submitBtn.addEventListener("click", async () => {
-            const text = situationInput.value.trim();
-            validationError.style.display = "none";
-            validationError.textContent = "";
-
-            // Validation longueur minimale
-            if (text.length < 20) {
-                validationError.textContent = "Veuillez détailler votre situation en au moins 20 caractères.";
-                validationError.style.display = "block";
-                situationInput.focus();
+        // Écoute de la recherche : tolérance aux accents et code ISO
+        countrySearch.addEventListener('input', (e) => {
+            const query = normalizeString(e.target.value);
+            if (!query) {
+                populateCountrySelect(COUNTRIES);
                 return;
             }
 
-            // Validation longueur maximale
-            if (text.length > 4000) {
-                validationError.textContent = "Votre texte dépasse la limite de 4 000 caractères. Veuillez résumer les faits principaux.";
-                validationError.style.display = "block";
-                situationInput.focus();
+            const filtered = COUNTRIES.filter(c => {
+                const normalizedName = normalizeString(c.name);
+                const normalizedCode = normalizeString(c.code);
+                return normalizedName.includes(query) || normalizedCode === query || normalizedCode.startsWith(query);
+            });
+
+            populateCountrySelect(filtered);
+        });
+
+        countrySelect.addEventListener('change', updateEmergencyInfo);
+
+        // Initialisation de la liste
+        populateCountrySelect(COUNTRIES);
+
+        // --- 3. DÉTECTION DE COORDONNÉES PERSONNELLES & COMPTEUR ---
+        const situationText = document.getElementById('situationText');
+        const charCounter = document.getElementById('charCounter');
+        const piiAlert = document.getElementById('piiAlert');
+
+        const PII_REGEX = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)|(\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9})/g;
+
+        situationText.addEventListener('input', () => {
+            const len = situationText.value.length;
+            charCounter.textContent = `${len} / 4000 caractères (minimum 20)`;
+
+            if (PII_REGEX.test(situationText.value)) {
+                piiAlert.style.display = 'block';
+            } else {
+                piiAlert.style.display = 'none';
+            }
+        });
+
+        // --- 4. PROCÉDURE DE SORTIE RAPIDE SÉCURISÉE ---
+        function executeEmergencyExit() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                situationText.value = '';
+                document.cookie.split(";").forEach(c => {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+            } catch (e) {
+                // Ignore en cas de blocage d'accès au stockage
+            }
+            window.location.replace("https://www.meteofrance.com");
+        }
+
+        document.getElementById('quickExitBtn').addEventListener('click', executeEmergencyExit);
+
+        // Double appui sur Échap en moins de 600 ms
+        let lastEscapeTime = 0;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                const now = Date.now();
+                if (now - lastEscapeTime < 600) {
+                    executeEmergencyExit();
+                } else {
+                    lastEscapeTime = now;
+                }
+            }
+        });
+
+        // --- 5. SOUMISSION ET ANALYSE JURIDIQUE ---
+        const form = document.getElementById('justiceForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const retryBtn = document.getElementById('retryBtn');
+        const statusBox = document.getElementById('statusBox');
+        const statusMessage = document.getElementById('statusMessage');
+        const resultBox = document.getElementById('resultBox');
+        const resultContent = document.getElementById('resultContent');
+
+        function setStatus(type, message) {
+            statusBox.style.display = 'block';
+            statusBox.className = 'status-box ' + (type === 'loading' ? 'status-loading' : 'status-error');
+            statusMessage.textContent = message;
+        }
+
+        function hideStatus() {
+            statusBox.style.display = 'none';
+        }
+
+        async function handleFormSubmit(e) {
+            if (e) e.preventDefault();
+
+            const country = countrySelect.value;
+            const categoryElem = document.querySelector('input[name="category"]:checked');
+            const category = categoryElem ? categoryElem.value : null;
+            const situation = situationText.value.trim();
+            const consent = document.getElementById('consentCheckbox').checked;
+
+            if (!country) {
+                setStatus('error', "Veuillez sélectionner un pays valide.");
+                countrySelect.focus();
                 return;
             }
 
-            // Détection de données sensibles
-            const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-            const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}/;
-            if (emailRegex.test(text) || phoneRegex.test(text)) {
-                validationError.textContent = "Information personnelle détectée (email ou numéro). Pour garantir votre anonymat, supprimez-la avant l'envoi.";
-                validationError.style.display = "block";
-                situationInput.focus();
+            if (!consent) {
+                setStatus('error', "Veuillez cocher la case d'acceptation et de compréhension des limites de l'outil.");
+                document.getElementById('consentCheckbox').focus();
                 return;
             }
 
-            // Lancement de l'affichage de chargement
-            loadingIndicator.style.display = "block";
-            loadingMessage.textContent = "Analyse juridique en cours...";
-            resultContainer.style.display = "none";
+            if (situation.length < 20) {
+                setStatus('error', "Veuillez décrire votre situation avec au moins 20 caractères.");
+                situationText.focus();
+                return;
+            }
+
+            // Interface en cours de traitement
             submitBtn.disabled = true;
-
-            // Messages progressifs selon le temps de réponse (cold start Render)
-            const timerStep1 = setTimeout(() => {
-                loadingMessage.textContent = "⏳ Démarrage du serveur en cours (l'instance gratuite Render se réveille)...";
-            }, 5000);
-
-            const timerStep2 = setTimeout(() => {
-                loadingMessage.textContent = "⚙️ Le serveur est prêt, l'intelligence artificielle analyse votre situation...";
-            }, 16000);
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeoutMs);
+            retryBtn.style.display = 'none';
+            resultBox.style.display = 'none';
+            setStatus('loading', "Analyse en cours... Recherche des textes de loi et structuration de votre synthèse.");
 
             try {
-                const response = await fetch(API_CONFIG.endpoint, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    signal: controller.signal,
-                    body: JSON.stringify({
-                        situation: text,
-                        lang: document.getElementById("languageSelector").value,
-                        country: countrySelector.value,
-                        category: selectedCategory
-                    })
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+                const response = await fetch(`${API_BASE}/api/conseil`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country, category, situation, consent }),
+                    signal: controller.signal
                 });
 
                 clearTimeout(timeoutId);
-                clearTimeout(timerStep1);
-                clearTimeout(timerStep2);
 
                 const data = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(data.error || "Erreur " + response.status);
+                if (response.status === 429) {
+                    const delay = data.retryAfter || 60;
+                    setStatus('error', `Trop de demandes rapprochées. Veuillez patienter ${delay} secondes avant de relancer.`);
+                    retryBtn.style.display = 'block';
+                    return;
                 }
 
-                const content = data.conseil || "Aucune orientation retournée.";
-                resultTitle.textContent = "📋 Synthèse et orientation juridique";
-                renderSafeText(content, resultTextContent);
-                resultContainer.style.display = "block";
-                resultContainer.focus();
+                if (!response.ok) {
+                    setStatus('error', data.error || "Une erreur est survenue lors de l'analyse.");
+                    retryBtn.style.display = 'block';
+                    return;
+                }
+
+                // Succès : affichage du résultat
+                hideStatus();
+                resultContent.textContent = data.advice;
+                resultBox.style.display = 'block';
+                resultBox.scrollIntoView({ behavior: 'smooth' });
+                resultBox.focus();
 
             } catch (err) {
-                clearTimeout(timeoutId);
-                clearTimeout(timerStep1);
-                clearTimeout(timerStep2);
-
-                resultTitle.textContent = "⚠️ Échec de la connexion";
-                let errorMsg = "";
-
-                if (err.name === "AbortError") {
-                    errorMsg = "Le serveur Render a mis plus de 45 secondes à répondre (délai de réveil dépassé). Votre texte est entièrement préservé : réessayez maintenant, le serveur est désormais actif.";
+                if (err.name === 'AbortError') {
+                    setStatus('error', "Le délai d'attente est dépassé (45s). Le serveur se réveille peut-être, veuillez réessayer.");
                 } else {
-                    errorMsg = err.message.includes("Erreur") || err.message.includes("description")
-                        ? err.message
-                        : "Impossible de joindre le serveur d'analyse. Votre texte a été conservé : vérifiez votre connexion ou réessayez dans quelques secondes.";
+                    setStatus('error', "Connexion interrompue. Vérifiez votre accès internet ou réessayez.");
                 }
-
-                renderSafeText(errorMsg, resultTextContent);
-                resultContainer.style.display = "block";
-                resultContainer.focus();
+                retryBtn.style.display = 'block';
             } finally {
-                loadingIndicator.style.display = "none";
                 submitBtn.disabled = false;
             }
-        });
+        }
+
+        form.addEventListener('submit', handleFormSubmit);
+        retryBtn.addEventListener('click', () => handleFormSubmit(null));
     </script>
 </body>
 </html>
