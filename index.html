@@ -162,12 +162,13 @@
             color: var(--danger);
             background: #fef2f2;
             border: 1px solid #fecaca;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 6px;
             font-size: 0.85rem;
-            margin-top: 8px;
+            margin-top: 10px;
             display: none;
             font-weight: 500;
+            line-height: 1.4;
         }
 
         .submit-btn {
@@ -185,6 +186,32 @@
         }
         .submit-btn:hover:not(:disabled) { background: var(--primary-hover); }
         .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* --- ÉTAT DE CHARGEMENT PROGRESSIF --- */
+        .loading-box {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            color: #334155;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+            line-height: 1.4;
+        }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #cbd5e1;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .result-box {
             display: none;
@@ -294,12 +321,13 @@
             <label for="situation">Description de votre situation (sans nom, sans adresse, sans numéro)</label>
             <textarea
                 id="situation"
-                placeholder="Exemple : Mon bailleur refuse de réparer une fuite majeure d'eau qui dure depuis 3 semaines malgré plusieurs relances écrites..."
+                maxlength="4000"
+                placeholder="Exemple : Mon bailleur refuse de réparer une fuite d'eau majeure qui dure depuis 3 semaines malgré plusieurs relances écrites..."
                 aria-describedby="fieldHelp validationError"
             ></textarea>
             <div class="field-help" id="fieldHelp">
                 <span>Ne partagez aucun nom, courriel ou téléphone.</span>
-                <span id="charCount">0 car.</span>
+                <span id="charCount">0 / 4000 car.</span>
             </div>
             <div id="validationError" class="error-message" role="alert" aria-live="assertive"></div>
         </section>
@@ -308,8 +336,9 @@
             Obtenir l'orientation juridique
         </button>
 
-        <div id="loadingIndicator" style="display: none; text-align: center; margin-top: 16px; color: var(--muted); font-size: 0.9rem;" role="status" aria-live="polite">
-            ⏳ Analyse juridique en cours... Merci de patienter quelques secondes.
+        <div id="loadingIndicator" class="loading-box" role="status" aria-live="polite">
+            <span class="spinner" aria-hidden="true"></span>
+            <span id="loadingMessage">Analyse juridique en cours...</span>
         </div>
 
         <section id="resultContainer" class="result-box" tabindex="-1" role="region" aria-live="polite">
@@ -341,24 +370,32 @@
         // =========================================================================
         // CONFIGURATION DYNAMIQUE DE L'ENDPOINT API
         // =========================================================================
+        const IS_GITHUB_PAGES = window.location.hostname.includes("github.io");
+        const BACKEND_BASE = IS_GITHUB_PAGES ? "https://justice-ai-anonyme-u4sn.onrender.com" : "";
+
         const API_CONFIG = {
-            endpoint: window.location.hostname.includes("github.io")
-                ? "https://justice-ai-anonyme-u4sn.onrender.com/api/conseil"
-                : "/api/conseil",
-            timeoutMs: 35000,
+            endpoint: BACKEND_BASE ? `${BACKEND_BASE}/api/conseil` : "/api/conseil",
+            healthEndpoint: BACKEND_BASE ? `${BACKEND_BASE}/api/health` : "/api/health",
+            timeoutMs: 45000, // 45s pour couvrir confortablement le réveil Render
             emergencyRedirectUrl: "https://www.meteofrance.com"
         };
 
         // =========================================================================
-        // 1. PROTOCOLE D'ÉCHAPPEMENT RAPIDE & PURGE LOCALE
+        // 1. PRÉCHAUFFAGE DISCRET DU SERVEUR RENDER AU CHARGEMENT
+        // =========================================================================
+        window.addEventListener("DOMContentLoaded", () => {
+            fetch(API_CONFIG.healthEndpoint, { method: "GET" })
+                .catch(() => { /* échec silencieux si le serveur démarre */ });
+        });
+
+        // =========================================================================
+        // 2. PROTOCOLE D'ÉCHAPPEMENT RAPIDE & PURGE LOCALE
         // =========================================================================
         function triggerQuickExit() {
             try {
                 sessionStorage.clear();
                 localStorage.clear();
-
                 document.querySelectorAll("input, textarea").forEach(el => el.value = "");
-
                 document.cookie.split(";").forEach(c => {
                     const name = c.split("=")[0].trim();
                     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
@@ -383,7 +420,7 @@
         });
 
         // =========================================================================
-        // 2. DONNÉES PAYS (ISO) ET NUMÉROS D'URGENCE
+        // 3. DONNÉES PAYS (ISO) ET NUMÉROS D'URGENCE
         // =========================================================================
         const COUNTRIES = [
             { code: "fr", name: "France", flag: "🇫🇷", emergency: "SAMU : 15 | Police : 17 | Urgences Europe : 112" },
@@ -429,7 +466,7 @@
         renderCountryOptions();
 
         // =========================================================================
-        // 3. GESTION DES DOMAINES JURIDIQUES & COMPTEUR
+        // 4. GESTION DES DOMAINES JURIDIQUES & COMPTEUR
         // =========================================================================
         let selectedCategory = "general";
         const catChips = document.querySelectorAll(".cat-chip");
@@ -444,11 +481,11 @@
         const situationInput = document.getElementById("situation");
         const charCount = document.getElementById("charCount");
         situationInput.addEventListener("input", () => {
-            charCount.textContent = `${situationInput.value.length} car.`;
+            charCount.textContent = `${situationInput.value.length} / 4000 car.`;
         });
 
         // =========================================================================
-        // 4. RENDU SÉCURISÉ SANS XSS
+        // 5. RENDU SÉCURISÉ SANS XSS
         // =========================================================================
         function renderSafeText(rawText, containerElement) {
             containerElement.innerHTML = "";
@@ -476,10 +513,11 @@
         }
 
         // =========================================================================
-        // 5. SOUMISSION AVEC ACCESSIBILITÉ ET RÉSILIENCE RÉSEAU
+        // 6. SOUMISSION AVEC INDICATEUR ÉVOLUTIF ET VALIDATION COMPLÈTE
         // =========================================================================
         const submitBtn = document.getElementById("submitBtn");
         const loadingIndicator = document.getElementById("loadingIndicator");
+        const loadingMessage = document.getElementById("loadingMessage");
         const resultContainer = document.getElementById("resultContainer");
         const resultTitle = document.getElementById("resultTitle");
         const resultTextContent = document.getElementById("resultTextContent");
@@ -490,6 +528,7 @@
             validationError.style.display = "none";
             validationError.textContent = "";
 
+            // Validation longueur minimale
             if (text.length < 20) {
                 validationError.textContent = "Veuillez détailler votre situation en au moins 20 caractères.";
                 validationError.style.display = "block";
@@ -497,18 +536,38 @@
                 return;
             }
 
-            const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-            const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}/;
-            if (emailRegex.test(text) || phoneRegex.test(text)) {
-                validationError.textContent = "Information personnelle détectée (email ou numéro). Pour votre anonymat, retirez-la avant l'envoi.";
+            // Validation longueur maximale
+            if (text.length > 4000) {
+                validationError.textContent = "Votre texte dépasse la limite de 4 000 caractères. Veuillez résumer les faits principaux.";
                 validationError.style.display = "block";
                 situationInput.focus();
                 return;
             }
 
+            // Détection de données sensibles
+            const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+            const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}/;
+            if (emailRegex.test(text) || phoneRegex.test(text)) {
+                validationError.textContent = "Information personnelle détectée (email ou numéro). Pour garantir votre anonymat, supprimez-la avant l'envoi.";
+                validationError.style.display = "block";
+                situationInput.focus();
+                return;
+            }
+
+            // Lancement de l'affichage de chargement
             loadingIndicator.style.display = "block";
+            loadingMessage.textContent = "Analyse juridique en cours...";
             resultContainer.style.display = "none";
             submitBtn.disabled = true;
+
+            // Messages progressifs selon le temps de réponse (cold start Render)
+            const timerStep1 = setTimeout(() => {
+                loadingMessage.textContent = "⏳ Démarrage du serveur en cours (l'instance gratuite Render se réveille)...";
+            }, 5000);
+
+            const timerStep2 = setTimeout(() => {
+                loadingMessage.textContent = "⚙️ Le serveur est prêt, l'intelligence artificielle analyse votre situation...";
+            }, 16000);
 
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeoutMs);
@@ -527,24 +586,36 @@
                 });
 
                 clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    throw new Error("Code retour : " + response.status);
-                }
+                clearTimeout(timerStep1);
+                clearTimeout(timerStep2);
 
                 const data = await response.json();
-                const content = data.conseil || data.response || "Aucun avis juridique retourné.";
 
+                if (!response.ok) {
+                    throw new Error(data.error || "Erreur " + response.status);
+                }
+
+                const content = data.conseil || "Aucune orientation retournée.";
                 resultTitle.textContent = "📋 Synthèse et orientation juridique";
                 renderSafeText(content, resultTextContent);
                 resultContainer.style.display = "block";
                 resultContainer.focus();
 
             } catch (err) {
-                resultTitle.textContent = "⚠️ Connexion interrompue";
-                const errorMsg = err.name === "AbortError"
-                    ? "Le serveur a mis trop de temps à répondre (redémarrage du serveur gratuit en cours). Votre texte est conservé : réessayez dans 15 secondes."
-                    : "Impossible de joindre le service d'analyse. Votre texte a été conservé sans perte : vous pouvez réessayer.";
+                clearTimeout(timeoutId);
+                clearTimeout(timerStep1);
+                clearTimeout(timerStep2);
+
+                resultTitle.textContent = "⚠️ Échec de la connexion";
+                let errorMsg = "";
+
+                if (err.name === "AbortError") {
+                    errorMsg = "Le serveur Render a mis plus de 45 secondes à répondre (délai de réveil dépassé). Votre texte est entièrement préservé : réessayez maintenant, le serveur est désormais actif.";
+                } else {
+                    errorMsg = err.message.includes("Erreur") || err.message.includes("description")
+                        ? err.message
+                        : "Impossible de joindre le serveur d'analyse. Votre texte a été conservé : vérifiez votre connexion ou réessayez dans quelques secondes.";
+                }
 
                 renderSafeText(errorMsg, resultTextContent);
                 resultContainer.style.display = "block";
