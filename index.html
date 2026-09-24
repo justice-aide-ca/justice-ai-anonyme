@@ -33,7 +33,6 @@
             padding-top: 70px;
         }
 
-        /* --- BARRE FIXE D'ÉCHAPPEMENT RAPIDE --- */
         .top-emergency-bar {
             position: fixed;
             top: 0;
@@ -67,7 +66,6 @@
         .quick-exit-btn:hover { background: var(--danger-hover); }
         .quick-exit-btn:focus { outline: 3px solid #fca5a5; }
 
-        /* --- CONTENEUR PRINCIPAL --- */
         .container {
             max-width: 760px;
             margin: 0 auto;
@@ -93,7 +91,6 @@
         h1 { font-size: 1.6rem; color: var(--text); font-weight: 800; }
         .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
 
-        /* --- SÉLECTEURS --- */
         .selector-group {
             display: grid;
             grid-template-columns: 1fr;
@@ -124,7 +121,6 @@
         .country-search-wrapper { position: relative; }
         .country-filter-input { margin-bottom: 6px; }
 
-        /* --- SÉLECTEUR DE CATÉGORIES --- */
         .category-grid {
             display: flex;
             flex-wrap: wrap;
@@ -150,7 +146,6 @@
             font-weight: 600;
         }
 
-        /* --- FORMULAIRE & ACTIONS --- */
         textarea {
             height: 140px;
             resize: vertical;
@@ -191,7 +186,6 @@
         .submit-btn:hover:not(:disabled) { background: var(--primary-hover); }
         .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* --- RÉSULTAT SÉCURISÉ --- */
         .result-box {
             display: none;
             margin-top: 24px;
@@ -206,7 +200,6 @@
         .result-box h2 { margin-bottom: 12px; color: var(--text); font-size: 1.1rem; }
         .result-content p { margin-bottom: 10px; }
 
-        /* --- ENCADRÉ D'URGENCE --- */
         .emergency-card {
             background: var(--warning-bg);
             border: 1px solid var(--warning-border);
@@ -216,7 +209,6 @@
             margin-top: 20px;
         }
 
-        /* --- LIMITES & CONFIDENTIALITÉ --- */
         .privacy-notice {
             margin-top: 24px;
             padding-top: 16px;
@@ -237,7 +229,6 @@
 </head>
 <body>
 
-    <!-- BARRE FIXE DE SORTIE D'URGENCE -->
     <header class="top-emergency-bar" role="banner">
         <div class="brand-logo">
             <span role="img" aria-hidden="true">⚖️</span>
@@ -258,102 +249,88 @@
     <main class="container" id="mainContent">
         <header class="header">
             <span class="badge">🔒 SANS ENREGISTREMENT NI COMPTE</span>
-            <h1>Orientation Juridique</h1>
-            <p class="subtitle">Sélectionnez votre juridiction pour recevoir un premier éclairage légal.</p>
+            <h1>Diagnostic Juridique Instantané</h1>
+            <p class="subtitle">Sélectionnez votre juridiction, décrivez les faits, obtenez un premier repère juridique.</p>
         </header>
 
-        <!-- SÉLECTION LANGUE ET PAYS -->
-        <div class="selector-group">
+        <section class="selector-group" aria-label="Paramètres régionaux">
             <div>
-                <label for="languageSelector">Langue de lecture</label>
-                <select id="languageSelector" aria-label="Choisir la langue d'affichage">
+                <label for="languageSelector">Langue d'échange</label>
+                <select id="languageSelector">
                     <option value="fr" selected>Français</option>
                     <option value="en">English</option>
                     <option value="es">Español</option>
+                    <option value="ar">العربية</option>
                 </select>
             </div>
 
             <div class="country-search-wrapper">
-                <label for="countrySearch">Juridiction (Pays concerné)</label>
+                <label for="countrySearch">Pays concerné</label>
                 <input
                     type="text"
                     id="countrySearch"
                     class="country-filter-input"
-                    placeholder="Filtrer (ex: Canada, France, Sénégal)..."
-                    aria-label="Filtrer la liste des pays"
+                    placeholder="Filtrer un pays (ex : Canada, France...)"
+                    aria-label="Filtrer les pays de la liste"
                 >
-                <select id="countrySelector" aria-label="Sélectionner votre pays"></select>
+                <select id="countrySelector" aria-label="Sélectionner le pays"></select>
             </div>
-        </div>
+        </section>
 
-        <!-- SÉLECTEUR DE MATIÈRE JURIDIQUE -->
-        <label id="categoryLabel">Domaine juridique concerné</label>
-        <div class="category-grid" role="group" aria-labelledby="categoryLabel">
-            <button type="button" class="cat-chip" data-cat="general" aria-pressed="true">Général</button>
-            <button type="button" class="cat-chip" data-cat="logement" aria-pressed="false">Logement & Bail</button>
-            <button type="button" class="cat-chip" data-cat="travail" aria-pressed="false">Travail & Emploi</button>
-            <button type="button" class="cat-chip" data-cat="famille" aria-pressed="false">Famille</button>
-            <button type="button" class="cat-chip" data-cat="penal" aria-pressed="false">Droit pénal</button>
-            <button type="button" class="cat-chip" data-cat="etrangers" aria-pressed="false">Séjour & Étrangers</button>
-            <button type="button" class="cat-chip" data-cat="consommation" aria-pressed="false">Consommation</button>
-        </div>
+        <section aria-labelledby="catLabel">
+            <label id="catLabel">Domaine juridique principal</label>
+            <div class="category-grid" role="group" aria-labelledby="catLabel">
+                <button type="button" class="cat-chip" data-cat="general" aria-pressed="true">Général</button>
+                <button type="button" class="cat-chip" data-cat="logement" aria-pressed="false">Logement & Bail</button>
+                <button type="button" class="cat-chip" data-cat="travail" aria-pressed="false">Travail & Emploi</button>
+                <button type="button" class="cat-chip" data-cat="famille" aria-pressed="false">Famille & Divorce</button>
+                <button type="button" class="cat-chip" data-cat="consommation" aria-pressed="false">Consommation & Litiges</button>
+                <button type="button" class="cat-chip" data-cat="penal" aria-pressed="false">Pénal & Infractions</button>
+                <button type="button" class="cat-chip" data-cat="etrangers" aria-pressed="false">Immigration & Étrangers</button>
+            </div>
+        </section>
 
-        <!-- ZONE DE SAISIE DE LA SITUATION -->
-        <div>
-            <label for="situation">Votre situation</label>
+        <section style="margin-top: 14px;">
+            <label for="situation">Description de votre situation (sans nom, sans adresse, sans numéro)</label>
             <textarea
                 id="situation"
-                placeholder="Décrivez les faits principaux sans nom propre, email ni numéro de téléphone..."
+                placeholder="Exemple : Mon bailleur refuse de réparer une fuite majeure d'eau qui dure depuis 3 semaines malgré plusieurs relances écrites..."
                 aria-describedby="fieldHelp validationError"
-                aria-required="true"
             ></textarea>
             <div class="field-help" id="fieldHelp">
-                <span>Minimum 20 caractères recommandés.</span>
-                <span id="charCount" aria-live="polite">0 car.</span>
+                <span>Ne partagez aucun nom, courriel ou téléphone.</span>
+                <span id="charCount">0 car.</span>
             </div>
             <div id="validationError" class="error-message" role="alert" aria-live="assertive"></div>
-        </div>
+        </section>
 
-        <button type="button" id="submitBtn" class="submit-btn" aria-controls="resultContainer">
-            Obtenir l'orientation juridique →
+        <button type="button" class="submit-btn" id="submitBtn">
+            Obtenir l'orientation juridique
         </button>
 
-        <div id="loadingIndicator" style="display: none; text-align: center; margin-top: 14px; font-size: 0.9rem; color: var(--muted);" role="status" aria-live="polite">
-            Analyse des règles applicables en cours...
+        <div id="loadingIndicator" style="display: none; text-align: center; margin-top: 16px; color: var(--muted); font-size: 0.9rem;" role="status" aria-live="polite">
+            ⏳ Analyse juridique en cours... Merci de patienter quelques secondes.
         </div>
 
-        <!-- ENCADRÉ DE RÉSULTAT ACCESSIBLE -->
-        <section
-            id="resultContainer"
-            class="result-box"
-            role="region"
-            aria-live="polite"
-            aria-label="Résultat de l'analyse juridique"
-            tabindex="-1"
-        >
-            <h2 id="resultTitle">Orientation juridique</h2>
+        <section id="resultContainer" class="result-box" tabindex="-1" role="region" aria-live="polite">
+            <h2 id="resultTitle">📋 Synthèse et orientation juridique</h2>
             <div id="resultTextContent" class="result-content"></div>
         </section>
 
-        <!-- NUMÉROS D'URGENCE LOCAUX -->
-        <aside class="emergency-card" id="emergencyCard" aria-label="Numéros d'urgence locaux">
-            <strong>⚠️ En cas d'urgence vitale ou de danger immédiat :</strong>
-            <div id="emergencyNumbers" style="margin-top: 4px;">Police, pompiers ou secours médicaux d'urgence.</div>
-        </aside>
+        <section class="emergency-card" aria-label="Numéros d'urgence">
+            <strong>⚠️ Danger immédiat ?</strong> Ne restez pas seul(e).
+            <div id="emergencyNumbers" style="margin-top: 4px; font-weight: 600;"></div>
+        </section>
 
-        <!-- LIENS ÉCOSYSTÈME -->
-                <!-- LIENS ÉCOSYSTÈME -->
         <nav class="partner-links" aria-label="Autres projets de l'écosystème">
             <a href="https://amour-et-verite-app.netlify.app/" target="_blank" rel="noopener noreferrer">⛪ Amour & Vérité</a> |
             <a href="https://bridge-your-project.lovable.app/" target="_blank" rel="noopener noreferrer">🌍 ONBRIDGE AI</a> |
             <a href="https://justice-aide-ca.github.io/cartepastorale-v5/" target="_blank" rel="noopener noreferrer">📜 Carta Pastorale</a> |
-            <a href="/contact">✉️ Contact & Retrait REF</a>
+            <a href="https://justice-ai-anonyme-u4sn.onrender.com/contact" target="_blank" rel="noopener noreferrer">✉️ Contact & Retrait REF</a>
         </nav>
 
-
-        <!-- AVERTISSEMENTS LÉGAUX STRICTS -->
-        <footer class="privacy-notice">
-            <strong>Engagement de confidentialité & Limites techniques :</strong><br>
+        <footer class="privacy-notice" role="contentinfo">
+            <strong>Engagement de confidentialité et limites de l'outil :</strong><br>
             • <em>Ce qui est effacé :</em> Le bouton « Quitter » efface immédiatement vos saisies et la mémoire temporaire du site.<br>
             • <em>Ce qui dépend de votre appareil :</em> L'adresse de ce site peut rester inscrite dans l'historique général de votre navigateur. Pour une discrétion absolue, <strong>utilisez la Navigation privée</strong>.<br>
             • <em>Limite juridique :</em> Cet outil est un guide informatif automatisé. Il ne remplace ni un avocat, ni une consultation juridique, et aucun secret professionnel ne protège ces échanges.
@@ -362,11 +339,13 @@
 
     <script>
         // =========================================================================
-        // CONFIGURATION DE L'ENDPOINT API
+        // CONFIGURATION DYNAMIQUE DE L'ENDPOINT API
         // =========================================================================
         const API_CONFIG = {
-            endpoint: "/api/conseil",
-            timeoutMs: 30000,
+            endpoint: window.location.hostname.includes("github.io")
+                ? "https://justice-ai-anonyme-u4sn.onrender.com/api/conseil"
+                : "/api/conseil",
+            timeoutMs: 35000,
             emergencyRedirectUrl: "https://www.meteofrance.com"
         };
 
@@ -497,7 +476,7 @@
         }
 
         // =========================================================================
-        // 5. SOUMISSION AVEC ACCESSibilité ET RÉSILIENCE RÉSEAU
+        // 5. SOUMISSION AVEC ACCESSIBILITÉ ET RÉSILIENCE RÉSEAU
         // =========================================================================
         const submitBtn = document.getElementById("submitBtn");
         const loadingIndicator = document.getElementById("loadingIndicator");
@@ -559,14 +538,12 @@
                 resultTitle.textContent = "📋 Synthèse et orientation juridique";
                 renderSafeText(content, resultTextContent);
                 resultContainer.style.display = "block";
-
-                // Déplacement du focus vers le résultat pour les lecteurs d'écran
                 resultContainer.focus();
 
             } catch (err) {
                 resultTitle.textContent = "⚠️ Connexion interrompue";
                 const errorMsg = err.name === "AbortError"
-                    ? "Le serveur a mis trop de temps à répondre. Votre texte a été conservé : vous pouvez cliquer à nouveau sur Obtenir l'orientation."
+                    ? "Le serveur a mis trop de temps à répondre (redémarrage du serveur gratuit en cours). Votre texte est conservé : réessayez dans 15 secondes."
                     : "Impossible de joindre le service d'analyse. Votre texte a été conservé sans perte : vous pouvez réessayer.";
 
                 renderSafeText(errorMsg, resultTextContent);
