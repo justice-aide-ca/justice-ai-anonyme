@@ -14,7 +14,7 @@ const openai = new OpenAI({
 });
 
 // =========================================================================
-// CONFIGURATION CORS RESTREINTE (Sécurité & GitHub Pages)
+// CONFIGURATION CORS RESTREINTE
 // =========================================================================
 const ALLOWED_ORIGINS = [
     'https://justice-aide-ca.github.io',
@@ -31,48 +31,79 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-    // Réponse immédiate pour les requêtes de pré-vérification du navigateur (preflight)
     if (req.method === 'OPTIONS') {
         return res.sendStatus(204);
     }
     next();
 });
 
-app.use(express.json());
+app.use(express.json({ limit: '100kb' })); // Protection contre les payloads surdimensionnés
 app.use(express.static('public'));
 
 // =========================================================================
-// ROUTE CONSEIL JURIDIQUE
+// 1. ENDPOINT DE SANTÉ (Healthcheck & Préchauffage Render)
 // =========================================================================
+app.get('/api/health', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        service: 'justice-ai-backend',
+        uptime: Math.floor(process.uptime()),
+        timestamp: new Date().toISOString()
+    });
+});
+
+// =========================================================================
+// 2. ROUTE CONSEIL JURIDIQUE AVEC VALIDATION STRICTE
+// =========================================================================
+const CATEGORIES_VALIDEES = {
+    general: 'général',
+    famille: 'droit de la famille',
+    travail: 'droit du travail',
+    logement: 'droit du logement',
+    consommation: 'droit de la consommation',
+    penal: 'droit pénal',
+    etrangers: 'droit des étrangers',
+    affaires: 'droit des affaires',
+    fiscalite: 'fiscalité',
+    propriete: 'propriété intellectuelle',
+    sante: 'droit de la santé',
+    environnement: 'droit de l\'environnement',
+    successions: 'successions et héritage'
+};
+
 app.post('/api/conseil', async (req, res) => {
-  try {
-    const { situation, lang, country, category } = req.body;
-    if (!situation) {
-      return res.status(400).json({ error: 'Le champ "situation" est requis.' });
-    }
+    try {
+        const { situation, lang, country, category } = req.body;
 
-    const langue = lang || 'fr';
-    const juridiction = country || 'fr';
-    const categorie = category || 'general';
+        // Validation du type et présence
+        if (typeof situation !== 'string') {
+            return res.status(400).json({
+                error: 'Le champ "situation" est invalide ou absent.'
+            });
+        }
 
-    const categoriesNoms = {
-      general: 'général',
-      famille: 'droit de la famille',
-      travail: 'droit du travail',
-      logement: 'droit du logement',
-      consommation: 'droit de la consommation',
-      penal: 'droit pénal',
-      etrangers: 'droit des étrangers',
-      affaires: 'droit des affaires',
-      fiscalite: 'fiscalité',
-      propriete: 'propriété intellectuelle',
-      sante: 'droit de la santé',
-      environnement: 'droit de l\'environnement',
-      successions: 'successions et héritage'
-    };
-    const categorieNom = categoriesNoms[categorie] || 'général';
+        const texteNettoye = situation.trim();
 
-    const systemPrompt = `Tu es un assistant juridique virtuel empathique et précis.
+        // Validation des longueurs
+        if (texteNettoye.length < 20) {
+            return res.status(400).json({
+                error: 'La description doit contenir au moins 20 caractères pour permettre une analyse pertinente.'
+            });
+        }
+
+        if (texteNettoye.length > 4000) {
+            return res.status(400).json({
+                error: 'La description ne doit pas dépasser 4 000 caractères.'
+            });
+        }
+
+        // Assainissement des paramètres annexes
+        const langue = (typeof lang === 'string' && lang.length <= 5) ? lang.toLowerCase() : 'fr';
+        const juridiction = (typeof country === 'string' && country.length <= 5) ? country.toLowerCase() : 'fr';
+        const categorieCle = (typeof category === 'string' && CATEGORIES_VALIDEES[category]) ? category : 'general';
+        const categorieNom = CATEGORIES_VALIDEES[categorieCle];
+
+        const systemPrompt = `Tu es un assistant juridique virtuel empathique et précis.
 La personne qui s'adresse à toi se trouve dans la juridiction "${juridiction}" et parle la langue "${langue}".
 La catégorie juridique concernée est : "${categorieNom}".
 
@@ -95,25 +126,26 @@ Respecte scrupuleusement les règles suivantes :
    - Ne donne pas de conseil définitif, mais des pistes.
    - Rappelle toujours de consulter un professionnel du droit local.
 
-Voici la situation de la personne : "${situation}".
+Voici la situation de la personne : "${texteNettoye}".
 
 Réponds en suivant strictement cette structure.`;
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: systemPrompt }
-      ],
-      temperature: 0.5,
-      max_tokens: 800
-    });
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [{ role: 'system', content: systemPrompt }],
+            temperature: 0.5,
+            max_tokens: 800
+        });
 
-    const reponse = completion.choices[0].message.content;
-    res.json({ conseil: reponse });
-  } catch (error) {
-    console.error('Erreur OpenAI :', error);
-    res.status(500).json({ error: 'Erreur lors de la génération du conseil.' });
-  }
+        const reponse = completion.choices[0].message.content;
+        return res.json({ conseil: reponse });
+
+    } catch (error) {
+        console.error('Erreur API Conseil :', error.message || error);
+        return res.status(500).json({
+            error: 'Le service d\'analyse est momentanément saturé. Merci de réessayer dans un instant.'
+        });
+    }
 });
 
 // Route pays
@@ -145,121 +177,6 @@ app.get('/api/countries', (req, res) => {
     ]);
 });
 
-// Route demande anonyme + IA
-app.post('/api/submit-anonymous-case', async (req, res) => {
-    const { country, caseType, description, language } = req.body;
-    const reference = 'REF_' + Date.now().toString(36).toUpperCase();
-    let aiResponse = "Service IA en cours d'activation...";
-
-    const languageNames = {
-        fr: 'français',
-        en: 'anglais',
-        es: 'espagnol',
-        de: 'allemand',
-        ar: 'arabe',
-        pt: 'portugais',
-        it: 'italien',
-        ru: 'russe',
-        zh: 'chinois',
-        ja: 'japonais',
-        ko: 'coréen'
-    };
-
-    const promptLang = languageNames[language] || 'français';
-
-    const prompt = `
-Tu es un conseiller juridique professionnel, bienveillant et précis.
-
-Le pays concerné est : ${country}.
-Le type de situation est : ${caseType}.
-Voici la description de l'utilisateur :
-"${description}"
-
-Réponds dans la langue suivante : ${promptLang}.
-
-Structure ta réponse comme suit :
-
-1. RÉSUMÉ DE LA SITUATION
-   - Reformule la situation en 2-3 phrases dans la langue choisie.
-
-2. CONSEILS JURIDIQUES PRATIQUES
-   - Donne des conseils clairs et concrets, adaptés au pays et au type de situation.
-   - Indique les démarches à suivre, les délais à respecter.
-
-3. RECOMMANDATION FINALE
-   - Recommande vivement de consulter un avocat spécialisé pour un accompagnement personnalisé.
-
-Sois clair, structuré, empathique et pratique.
-`;
-
-    try {
-        const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [
-                { role: "system", content: "Tu es un conseiller juridique professionnel." },
-                { role: "user", content: prompt }
-            ],
-            max_tokens: 700
-        });
-        aiResponse = completion.choices[0].message.content;
-    } catch (err) {
-        console.error('❌ Erreur IA:', err.message);
-        aiResponse = "Service IA indisponible. Réponse sous 24h.";
-    }
-
-    let demandes = [];
-    try {
-        const data = fs.readFileSync('./data/demandes.json', 'utf8');
-        demandes = JSON.parse(data);
-    } catch (err) {
-        demandes = [];
-    }
-
-    demandes.push({
-        reference,
-        date: new Date().toISOString(),
-        country,
-        caseType,
-        description,
-        aiResponse,
-        language
-    });
-
-    try {
-        fs.writeFileSync('./data/demandes.json', JSON.stringify(demandes, null, 2));
-    } catch (err) {
-        console.error('❌ Erreur écriture demandes:', err.message);
-    }
-
-    res.json({
-        success: true,
-        message: 'Votre demande a bien été reçue',
-        reference: reference,
-        aiResponse: aiResponse,
-        date: new Date().toISOString()
-    });
-});
-
-// Admin
-app.get('/api/admin/demandes', (req, res) => {
-    if (!ADMIN_PASSWORD || req.query.password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ error: 'Accès refusé.' });
-    }
-    try {
-        const data = fs.readFileSync('./data/demandes.json', 'utf8');
-        res.json(JSON.parse(data));
-    } catch (err) {
-        res.json([]);
-    }
-});
-
-app.get('/admin', (req, res) => {
-    if (!ADMIN_PASSWORD || req.query.password !== ADMIN_PASSWORD) {
-        return res.status(401).send('<h1 style="text-align:center;margin-top:50px;">🔒 Accès refusé</h1>');
-    }
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
 // Pages légales
 app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'public', 'privacy.html')));
 app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'public', 'terms.html')));
@@ -269,7 +186,7 @@ app.get('/contact', (req, res) => res.sendFile(path.join(__dirname, 'public', 'c
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 const server = app.listen(PORT, () => {
-    console.log(`🚀 Serveur démarré sur le port ${PORT}`);
+    console.log(`🚀 Serveur actif sur le port ${PORT}`);
 }).on('error', (err) => {
     console.error('❌ Erreur serveur:', err);
 });
